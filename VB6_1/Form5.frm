@@ -110,7 +110,7 @@ Begin VB.Form Form5
       _Version        =   393216
       Value           =   1000
       BuddyControl    =   "Label6"
-      BuddyDispid     =   196618
+      BuddyDispid     =   196627
       OrigLeft        =   7920
       OrigTop         =   5160
       OrigRight       =   8175
@@ -467,6 +467,10 @@ Function BME_Fill_Lists()
     '---------------------------------------------------
 
 End Function
+
+Private Sub Form_Unload(Cancel As Integer)
+    Timer1.Enabled = False
+End Sub
 
 Private Sub Timer1_Timer()
     SendData "<BME_READING?>"

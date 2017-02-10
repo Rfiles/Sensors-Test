@@ -1,7 +1,7 @@
 Attribute VB_Name = "Module1"
 Dim parse_stat As Single
 Dim isdata As Single
-Dim content As Single
+Public content As Single
 Public id_string As String
 Public value_string As String
 
@@ -149,10 +149,20 @@ Function ExecuteCommand()
     If id_string = "DEBUGKEY" And content = 1 Then
         Form4.Text1.Text = Val(value_string)
     End If
+    
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "BME" And content = 1 Then
         Form5.BME_Fill_Lists
     End If
+        
+    '-----------------------------------------------------------------
+    If id_string = "I2C_SCAN" And content = 1 Then
+        Form6.parse_i2cscan_normal
+    End If
+    If Left(id_string, 11) = "I2CSCAN_TCA" And content = 1 Then
+        Form6.parse_i2cscan_tca
+    End If
+        
         
     ResetStrings
 End Function

@@ -117,13 +117,15 @@ void ExecuteCommand() {
   if (id_string == "SERVO2_ATTACH") Servo2_Setup(1);
   if (id_string == "SERVO2_DETACH") Servo2_Setup(2);
   if (id_string == "SERVO2_ISATTACHED") Servo2_Setup(3);
-  if (id_string == "I2C_SCAN") I2CScan_Data();
+  if (id_string == "I2C_SCAN") scan_i2c();
+  if (id_string == "I2CSCAN_TCA") i2ctca_scanner();
   if (id_string == "BME_READING") bme_reading();
   if (id_string == "BME_CALIB") bme_calib();
   if (id_string == "BME_REGS") bme_regs();
   if (id_string == "BME_SETUP") setup_bme();
   if (id_string == "BME_START") start_bme();
   if (id_string == "BME_RESET") reset_bme();
+  if (id_string == "TCA_SELECT") tca_sel_data();
 
   ResetStrings();
 }//func
@@ -162,10 +164,12 @@ void LED13_Data() {
   }
 }
 
-void I2CScan_Data () {
-  scan_i2c();
-  i2ctca_scanner();
+void tca_sel_data() {
+  if (content == CMD_SET) {
+    tcaselect(value_string.toInt());
+  }
 }
+
 
 
 //#################################################################################################

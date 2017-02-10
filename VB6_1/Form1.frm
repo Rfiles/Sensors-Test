@@ -23,7 +23,6 @@ Begin VB.Form Form1
       _ExtentX        =   12303
       _ExtentY        =   4895
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"Form1.frx":0000
    End
@@ -277,6 +276,9 @@ Begin VB.Form Form1
       Begin VB.Menu menu_bme 
          Caption         =   "BME280"
       End
+      Begin VB.Menu menu_rtc 
+         Caption         =   "DS3231"
+      End
    End
 End
 Attribute VB_Name = "Form1"
@@ -319,7 +321,7 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Form_Load()
-    Form5.Visible = True
+'    Form6.Visible = True
 End Sub
 
 
