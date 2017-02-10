@@ -6,8 +6,12 @@
 //Global sensor object
 BME280 mySensor;
 
-void setup_bme()
-{
+
+void reset_bme() {
+  mySensor.reset();
+}
+
+void setup_bme(){
   //***Driver settings********************************//
   //commInterface can be I2C_MODE or SPI_MODE
   //specify chipSelectPin using arduino pin names
@@ -65,124 +69,101 @@ void setup_bme()
   mySensor.settings.humidOverSample = 1;
   
   //Serial.begin(115200);
-  Serial.print("Program Started\n");
-  Serial.print("Starting BME280... result of .begin(): 0x");
-  
-  //Calling .begin() causes the settings to be loaded
-  delay(10);  //Make sure sensor had enough time to turn on. BME280 requires 2ms to start up.
-  Serial.println(mySensor.begin(), HEX);
-
-  Serial.print("Displaying ID, reset and ctrl regs\n");
-  
-  Serial.print("ID(0xD0): 0x");
-  Serial.println(mySensor.readRegister(BME280_CHIP_ID_REG), HEX);
-  Serial.print("Reset register(0xE0): 0x");
-  Serial.println(mySensor.readRegister(BME280_RST_REG), HEX);
-  Serial.print("ctrl_meas(0xF4): 0x");
-  Serial.println(mySensor.readRegister(BME280_CTRL_MEAS_REG), HEX);
-  Serial.print("ctrl_hum(0xF2): 0x");
-  Serial.println(mySensor.readRegister(BME280_CTRL_HUMIDITY_REG), HEX);
-
-  Serial.print("\n\n");
-
-  Serial.print("Displaying all regs\n");
-  uint8_t memCounter = 0x80;
-  uint8_t tempReadData;
-  for(int rowi = 8; rowi < 16; rowi++ )
-  {
-    Serial.print("0x");
-    Serial.print(rowi, HEX);
-    Serial.print("0:");
-    for(int coli = 0; coli < 16; coli++ )
-    {
-      tempReadData = mySensor.readRegister(memCounter);
-      Serial.print((tempReadData >> 4) & 0x0F, HEX);//Print first hex nibble
-      Serial.print(tempReadData & 0x0F, HEX);//Print second hex nibble
-      Serial.print(" ");
-      memCounter++;
-    }
-    Serial.print("\n");
-  }
-  
-  
-  Serial.print("\n\n");
-  
-  Serial.print("Displaying concatenated calibration words\n");
-  Serial.print("dig_T1, uint16: ");
-  Serial.println(mySensor.calibration.dig_T1);
-  Serial.print("dig_T2, int16: ");
-  Serial.println(mySensor.calibration.dig_T2);
-  Serial.print("dig_T3, int16: ");
-  Serial.println(mySensor.calibration.dig_T3);
-  
-  Serial.print("dig_P1, uint16: ");
-  Serial.println(mySensor.calibration.dig_P1);
-  Serial.print("dig_P2, int16: ");
-  Serial.println(mySensor.calibration.dig_P2);
-  Serial.print("dig_P3, int16: ");
-  Serial.println(mySensor.calibration.dig_P3);
-  Serial.print("dig_P4, int16: ");
-  Serial.println(mySensor.calibration.dig_P4);
-  Serial.print("dig_P5, int16: ");
-  Serial.println(mySensor.calibration.dig_P5);
-  Serial.print("dig_P6, int16: ");
-  Serial.println(mySensor.calibration.dig_P6);
-  Serial.print("dig_P7, int16: ");
-  Serial.println(mySensor.calibration.dig_P7);
-  Serial.print("dig_P8, int16: ");
-  Serial.println(mySensor.calibration.dig_P8);
-  Serial.print("dig_P9, int16: ");
-  Serial.println(mySensor.calibration.dig_P9);
-  
-  Serial.print("dig_H1, uint8: ");
-  Serial.println(mySensor.calibration.dig_H1);
-  Serial.print("dig_H2, int16: ");
-  Serial.println(mySensor.calibration.dig_H2);
-  Serial.print("dig_H3, uint8: ");
-  Serial.println(mySensor.calibration.dig_H3);
-  Serial.print("dig_H4, int16: ");
-  Serial.println(mySensor.calibration.dig_H4);
-  Serial.print("dig_H5, int16: ");
-  Serial.println(mySensor.calibration.dig_H5);
-  Serial.print("dig_H6, uint8: ");
-  Serial.println(mySensor.calibration.dig_H6);
-    
-  Serial.println();
+  //Serial.print("Program Started\n");
+  //Serial.print("Starting BME280... result of .begin(): 0x");
 }
 
-void bme_reading()
-{
+void bme_settings (){
+  //id_string
+  //value_string
+
+  
+}
+
+
+
+
+void start_bme() {
+  //Calling .begin() causes the settings to be loaded
+  //delay(10);  //Make sure sensor had enough time to turn on. BME280 requires 2ms to start up.
+  Serial.print(F("<BME_BEGIN="));
+  Serial.print(mySensor.begin(), HEX);
+  Serial.println(F(">"));
+}
+
+void bme_regs() {
+  
+  Serial.print(F("<BME_ID_REG="));
+  Serial.print(mySensor.readRegister(BME280_CHIP_ID_REG), HEX);
+  Serial.print(F("><BME_RST_REG="));
+  Serial.print(mySensor.readRegister(BME280_RST_REG), HEX);
+  Serial.print(F("><BME_CTRL_REG="));
+  Serial.print(mySensor.readRegister(BME280_CTRL_MEAS_REG), HEX);
+  Serial.print(F("><BME_CTRLHUM_REG="));
+  Serial.print(mySensor.readRegister(BME280_CTRL_HUMIDITY_REG), HEX);
+  Serial.println(F(">"));
+
+}
+
+void bme_calib() {
+  Serial.print(F("<BME_CAL_T1="));
+  Serial.print(mySensor.calibration.dig_T1);
+  Serial.print(F("><BME_CAL_T2="));
+  Serial.print(mySensor.calibration.dig_T2);
+  Serial.print(F("><BME_CAL_T3="));
+  Serial.print(mySensor.calibration.dig_T3);
+  
+  Serial.print(F("><BME_CAL_P1="));
+  Serial.print(mySensor.calibration.dig_P1);
+  Serial.print(F("><BME_CAL_P2="));
+  Serial.print(mySensor.calibration.dig_P2);
+  Serial.print(F("><BME_CAL_P3="));
+  Serial.print(mySensor.calibration.dig_P3);
+  Serial.print(F("><BME_CAL_P4="));
+  Serial.print(mySensor.calibration.dig_P4);
+  Serial.print(F("><BME_CAL_P5="));
+  Serial.print(mySensor.calibration.dig_P5);
+  Serial.print(F("><BME_CAL_P6="));
+  Serial.print(mySensor.calibration.dig_P6);
+  Serial.print(F("><BME_CAL_P7="));
+  Serial.print(mySensor.calibration.dig_P7);
+  Serial.print(F("><BME_CAL_P8="));
+  Serial.print(mySensor.calibration.dig_P8);
+  Serial.print(F("><BME_CAL_P9="));
+  Serial.print(mySensor.calibration.dig_P9);
+  
+  Serial.print(F("><BME_CAL_H1="));
+  Serial.print(mySensor.calibration.dig_H1);
+  Serial.print(F("><BME_CAL_H2="));
+  Serial.print(mySensor.calibration.dig_H2);
+  Serial.print(F("><BME_CAL_H3="));
+  Serial.print(mySensor.calibration.dig_H3);
+  Serial.print(F("><BME_CAL_H4="));
+  Serial.print(mySensor.calibration.dig_H4);
+  Serial.print(F("><BME_CAL_H5="));
+  Serial.print(mySensor.calibration.dig_H5);
+  Serial.print(F("><BME_CAL_H6="));
+  Serial.print(mySensor.calibration.dig_H6);
+  Serial.println(F(">"));
+}
+
+void bme_reading() {
   //Each loop, take a reading.
   //Start with temperature, as that data is needed for accurate compensation.
   //Reading the temperature updates the compensators of the other functions
   //in the background.
 
-  Serial.print("Temperature: ");
+  Serial.print(F("<BME_TEMP="));
   Serial.print(mySensor.readTempC(), 2);
-  Serial.println(" degrees C");
-
-  Serial.print("Temperature: ");
-  Serial.print(mySensor.readTempF(), 2);
-  Serial.println(" degrees F");
-
-  Serial.print("Pressure: ");
-  Serial.print(mySensor.readFloatPressure(), 2);
-  Serial.println(" Pa");
-
-  Serial.print("Altitude: ");
+  Serial.print(F("><BME_PRESS="));
+  Serial.print(mySensor.readFloatPressure(), 2);  //Pa
+  Serial.print(F("><BME_ALT="));
   Serial.print(mySensor.readFloatAltitudeMeters(), 2);
-  Serial.println("m");
-
-  Serial.print("Altitude: ");
-  Serial.print(mySensor.readFloatAltitudeFeet(), 2);
-  Serial.println("ft"); 
-
-  Serial.print("%RH: ");
+  Serial.print(F("><BME_HUM="));
   Serial.print(mySensor.readFloatHumidity(), 2);
-  Serial.println(" %");
-  
-  Serial.println();
-  
-  delay(1000);
-
+  Serial.println(F(">"));
 }
+
+
+
+

@@ -118,6 +118,24 @@ Begin VB.Form Form1
       DTREnable       =   -1  'True
       BaudRate        =   115200
    End
+   Begin VB.Label Label8 
+      Alignment       =   2  'Center
+      Caption         =   "Device ID"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   15
+      Top             =   120
+      Width           =   1215
+   End
    Begin VB.Label Label7 
       Caption         =   "Autorization Status"
       BeginProperty Font 
@@ -160,7 +178,7 @@ Begin VB.Form Form1
    End
    Begin VB.Label Label4 
       Alignment       =   2  'Center
-      Caption         =   "Device ID"
+      Caption         =   "-"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -170,10 +188,11 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H8000000D&
       Height          =   255
       Left            =   240
       TabIndex        =   5
-      Top             =   120
+      Top             =   360
       Width           =   1215
    End
    Begin VB.Label Label3 
@@ -243,7 +262,7 @@ Begin VB.Form Form1
    Begin VB.Menu menu_modulo 
       Caption         =   "Modulo"
       Enabled         =   0   'False
-      Begin VB.Menu I2CScan_menu 
+      Begin VB.Menu menu_I2CScan 
          Caption         =   "I2C Scanner"
       End
       Begin VB.Menu menu_servo 
@@ -303,8 +322,13 @@ Private Sub Form_Load()
     Form5.Visible = True
 End Sub
 
+
 Private Sub menu_bme_Click()
     Form5.Visible = True
+End Sub
+
+Private Sub menu_I2CScan_Click()
+Form6.Visible = True
 End Sub
 
 Private Sub menu_led13_Click()

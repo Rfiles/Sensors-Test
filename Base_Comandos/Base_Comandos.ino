@@ -47,8 +47,8 @@ void setup() {
   
   Serial.println(F("<BOOT=DONE>"));
   pinMode(LED_BUILTIN, OUTPUT);
-  setup_bme();
-  bme_reading();
+//  setup_bme();
+//  bme_reading();
 }
 
 //#################################################################################################
@@ -118,6 +118,12 @@ void ExecuteCommand() {
   if (id_string == "SERVO2_DETACH") Servo2_Setup(2);
   if (id_string == "SERVO2_ISATTACHED") Servo2_Setup(3);
   if (id_string == "I2C_SCAN") I2CScan_Data();
+  if (id_string == "BME_READING") bme_reading();
+  if (id_string == "BME_CALIB") bme_calib();
+  if (id_string == "BME_REGS") bme_regs();
+  if (id_string == "BME_SETUP") setup_bme();
+  if (id_string == "BME_START") start_bme();
+  if (id_string == "BME_RESET") reset_bme();
 
   ResetStrings();
 }//func

@@ -67,8 +67,11 @@ void i2caddr2name(uint8_t addr) {
     case 112:
       Serial.print(F("TCA9548A"));
       break;
+    case 118:
+      Serial.print(F("BME280"));
+      break;
     case 119:
-      Serial.print(F("BMP180")); //BME280 - BMP280 - BMP085
+      Serial.print(F("BMP180")); //BMP280 - BMP085
       break;
     default:
       Serial.print(F("Unknown"));

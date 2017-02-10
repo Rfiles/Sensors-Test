@@ -1,15 +1,15 @@
 VERSION 5.00
 Begin VB.Form Form6 
+   BackColor       =   &H80000011&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "I2C Scanner"
-   ClientHeight    =   6000
+   ClientHeight    =   5385
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   8370
    LinkTopic       =   "Form6"
    MaxButton       =   0   'False
-   MinButton       =   0   'False
-   ScaleHeight     =   6000
+   ScaleHeight     =   5385
    ScaleWidth      =   8370
    StartUpPosition =   3  'Windows Default
    Begin VB.Label Label1 

@@ -58,6 +58,9 @@ Function ResetStrings()
 End Function
     
 Function ExecuteCommand()
+
+' content = 1 info para vb6  content = 0 pedido de info
+
     Debug.Print "Comando: '" & id_string & "' com o valor '" & value_string & "'"
     If id_string = "BOOT" And value_string = "DONE" Then
         Form1.Label1.Caption = "DEVICE READY"
@@ -147,7 +150,9 @@ Function ExecuteCommand()
         Form4.Text1.Text = Val(value_string)
     End If
     '-----------------------------------------------------------------
-
+    If Left(id_string, 3) = "BME" And content = 1 Then
+        Form5.BME_Fill_Lists
+    End If
         
     ResetStrings
 End Function
