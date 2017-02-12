@@ -4,13 +4,13 @@ Begin VB.Form Form6
    BackColor       =   &H80000011&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "I2C Scanner"
-   ClientHeight    =   6555
+   ClientHeight    =   5100
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   8370
    LinkTopic       =   "Form6"
    MaxButton       =   0   'False
-   ScaleHeight     =   6555
+   ScaleHeight     =   5100
    ScaleWidth      =   8370
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 

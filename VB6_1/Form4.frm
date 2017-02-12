@@ -1,5 +1,6 @@
 VERSION 5.00
 Begin VB.Form Form4 
+   BackColor       =   &H8000000A&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Validate Device"
    ClientHeight    =   2940

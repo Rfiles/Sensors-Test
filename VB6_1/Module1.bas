@@ -62,59 +62,52 @@ Function ExecuteCommand()
 ' content = 1 info para vb6  content = 0 pedido de info
 
     Debug.Print "Comando: '" & id_string & "' com o valor '" & value_string & "'"
-    If id_string = "BOOT" And value_string = "DONE" Then
-        Form1.Label1.Caption = "DEVICE READY"
-        Form1.Shape1.FillColor = vbGreen
-        SendData ("<ID1?>")
-        SendData ("<LED13?>")
-        Form1.menu_modulo.Enabled = True
-        Form1.Timer1.Enabled = False
-    End If
-    If id_string = "ID1" And content = 1 Then
-        Form1.Label4.Caption = value_string
-    End If
+    
+    
+    Select Case id_string
+    '-----------------------------------------------------------------
+        Case "BOOT"
+            If value_string = "DONE" Then
+                Form1.Label1.Caption = "DEVICE READY"
+                Form1.Shape1.FillColor = vbGreen
+                SendData ("<ID1?>")
+                SendData ("<LED13?>")
+                Form1.menu_modulo.Enabled = True
+                Form1.Timer1.Enabled = False
+            End If
+    '-----------------------------------------------------------------
+        Case "ID"
+            Form1.Label4.Caption = value_string
+    '-----------------------------------------------------------------
+        Case "LED13"
+            Form3.led_cmd_rx
+        
+    '-----------------------------------------------------------------
+        Case "SERVO1"
+            Form2.servos_rx
+        Case "SERVO2"
+            Form2.servos_rx
+        Case "SERVO1_ISATTACHED"
+            Form2.servos_rx
+        Case "SERVO2_ISATTACHED"
+            Form2.servos_rx
+        Case "SERVO1_DETACH"
+            Form2.servos_rx
+        Case "SERVO2_DETACH"
+            Form2.servos_rx
+
+    '-----------------------------------------------------------------
     
     '-----------------------------------------------------------------
-    If id_string = "LED13" And content = 1 Then
-        If value_string = "OFF" Then
-            Form1.Shape2.FillColor = vbBlack
-            Form3.Shape1.FillColor = vbBlack
-        End If
-        If value_string = "ON" Then
-            Form1.Shape2.FillColor = vbRed
-            Form3.Shape1.FillColor = vbRed
-        End If
-    End If
     '-----------------------------------------------------------------
+        Case Else
 
-    If id_string = "SERVO1" And content = 1 Then
-        Form2.Slider1.Value = Val(value_string)
-        Form2.Text2.Text = Val(value_string)
-    End If
-    If id_string = "SERVO2" And content = 1 Then
-        Form2.Slider2.Value = Val(value_string)
-        Form2.Text1.Text = Val(value_string)
-    End If
-    If id_string = "SERVO1_ISATTACHED" And content = 1 Then
-        If value_string = "YES" Then
-            Form2.Shape1.FillColor = vbGreen
-        Else
-            Form2.Shape1.FillColor = vbRed
-        End If
-    End If
-    If id_string = "SERVO2_ISATTACHED" And content = 1 Then
-        If value_string = "YES" Then
-            Form2.Shape2.FillColor = vbGreen
-        Else
-            Form2.Shape2.FillColor = vbRed
-        End If
-    End If
-    If id_string = "SERVO1_DETACH" And content = 1 Then
-        Form2.Shape1.FillColor = vbRed
-    End If
-    If id_string = "SERVO2_DETACH" And content = 1 Then
-        Form2.Shape2.FillColor = vbRed
-    End If
+    End Select
+    
+    
+  
+
+
     '-----------------------------------------------------------------
     
     If id_string = "CHECK" And content = 1 Then
@@ -170,6 +163,10 @@ End Function
 
 Function SendData(Texto As String)
     If Form1.MSComm1.PortOpen Then
+        'Form1.RichTextBox1.SelColor = vbRed
+        'Form1.RichTextBox1.Text = Form1.RichTextBox1.Text & "Tx: " & InBuffer
+        'Form1.RichTextBox1.SelStart = Len(Form1.RichTextBox1.Text)
+        'Form1.RichTextBox1.SelColor = vbBlack
         Form1.MSComm1.Output = Texto
     End If
 End Function

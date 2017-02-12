@@ -7,13 +7,30 @@ Begin VB.Form Form2
    ClientHeight    =   4320
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   5145
+   ClientWidth     =   4980
    FillColor       =   &H80000015&
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    ScaleHeight     =   4320
-   ScaleWidth      =   5145
+   ScaleWidth      =   4980
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command4 
+      Caption         =   "Random"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   3240
+      TabIndex        =   7
+      Top             =   720
+      Width           =   1215
+   End
    Begin VB.CommandButton Command3 
       Caption         =   "Start / Stop"
       BeginProperty Font 
@@ -95,11 +112,11 @@ Begin VB.Form Form2
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   495
-      Left            =   3480
+      Height          =   375
+      Left            =   3240
       TabIndex        =   2
       Top             =   240
-      Width           =   1455
+      Width           =   1215
    End
    Begin MSComctlLib.Slider Slider2 
       Height          =   3255
@@ -174,6 +191,11 @@ Private Sub Command3_Click()
     End If
 End Sub
 
+Private Sub Command4_Click()
+    SendData "<SERVO1=" & Int(Rnd() * 180) & ">"
+    SendData "<SERVO2=" & Int(Rnd() * 180) & ">"
+End Sub
+
 Private Sub Form_Load()
 SendData "<SERVO1_ISATTACHED?>"
 SendData "<SERVO2_ISATTACHED?>"
@@ -188,4 +210,35 @@ Private Sub Slider2_Change()
 SendData "<SERVO2=" & Slider2.Value & ">"
 End Sub
 
+
+Function servos_rx()
+    If id_string = "SERVO1" And content = 1 Then
+        Form2.Slider1.Value = Val(value_string)
+        Form2.Text2.Text = Val(value_string)
+    End If
+    If id_string = "SERVO2" And content = 1 Then
+        Form2.Slider2.Value = Val(value_string)
+        Form2.Text1.Text = Val(value_string)
+    End If
+    If id_string = "SERVO1_ISATTACHED" And content = 1 Then
+        If value_string = "YES" Then
+            Form2.Shape1.FillColor = vbGreen
+        Else
+            Form2.Shape1.FillColor = vbRed
+        End If
+    End If
+    If id_string = "SERVO2_ISATTACHED" And content = 1 Then
+        If value_string = "YES" Then
+            Form2.Shape2.FillColor = vbGreen
+        Else
+            Form2.Shape2.FillColor = vbRed
+        End If
+    End If
+    If id_string = "SERVO1_DETACH" And content = 1 Then
+        Form2.Shape1.FillColor = vbRed
+    End If
+    If id_string = "SERVO2_DETACH" And content = 1 Then
+        Form2.Shape2.FillColor = vbRed
+    End If
+End Function
 

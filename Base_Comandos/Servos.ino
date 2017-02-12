@@ -1,3 +1,7 @@
+#include <Servo.h>
+
+Servo myservo1, myservo2;  // create servo object to control a servo
+int Servo1Pos, Servo2Pos;
 
 void Servo1_Data() {
     Servo1Pos = value_string.toInt();

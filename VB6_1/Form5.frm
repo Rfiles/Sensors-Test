@@ -5,13 +5,13 @@ Begin VB.Form Form5
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "BME280"
-   ClientHeight    =   6660
+   ClientHeight    =   5520
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   10425
    LinkTopic       =   "Form5"
    MaxButton       =   0   'False
-   ScaleHeight     =   6660
+   ScaleHeight     =   5520
    ScaleWidth      =   10425
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
@@ -24,11 +24,11 @@ Begin VB.Form Form5
    End
    Begin VB.Frame Frame4 
       BackColor       =   &H80000010&
-      Caption         =   "Frame4"
+      Caption         =   "Calculated"
       Height          =   1695
       Left            =   6840
       TabIndex        =   19
-      Top             =   3240
+      Top             =   3600
       Width           =   3375
       Begin MSComctlLib.ProgressBar ProgressBar5 
          Height          =   375
@@ -94,9 +94,9 @@ Begin VB.Form Form5
    Begin VB.CommandButton Command1 
       Caption         =   "Update All"
       Height          =   375
-      Left            =   360
+      Left            =   5280
       TabIndex        =   18
-      Top             =   5520
+      Top             =   1920
       Width           =   1455
    End
    Begin MSComCtl2.UpDown UpDown1 
@@ -125,8 +125,8 @@ Begin VB.Form Form5
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   1000
-      Left            =   9840
-      Top             =   5040
+      Left            =   5400
+      Top             =   4320
    End
    Begin VB.Frame Frame3 
       BackColor       =   &H80000010&
@@ -422,7 +422,7 @@ Function BME_Fill_Lists()
         ProgressBar2.Value = Val(value_string)
     End If
     If id_string = "BME_PRESS" Then
-        Label4.Caption = Val(value_string)
+        Label4.Caption = Val(value_string) / 100
         ProgressBar1.Value = Val(value_string)
     End If
     If id_string = "BME_HUM" Then

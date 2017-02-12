@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Form3 
-   BackColor       =   &H80000011&
+   BackColor       =   &H8000000A&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Led 13 Arduino"
    ClientHeight    =   3030
@@ -70,3 +70,14 @@ End Sub
 Private Sub Form_Load()
 'Form1.MSComm1.Output = "<LED13?>"
 End Sub
+
+Function led_cmd_rx()
+    If value_string = "OFF" Then
+        Form1.Shape2.FillColor = vbBlack
+        Shape1.FillColor = vbBlack
+    End If
+    If value_string = "ON" Then
+        Form1.Shape2.FillColor = vbRed
+        Shape1.FillColor = vbRed
+    End If
+End Function

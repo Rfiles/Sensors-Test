@@ -15,13 +15,13 @@ Begin VB.Form Form1
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
    Begin RichTextLib.RichTextBox RichTextBox1 
-      Height          =   2775
+      Height          =   3375
       Left            =   720
       TabIndex        =   14
-      Top             =   2040
+      Top             =   1440
       Width           =   6975
       _ExtentX        =   12303
-      _ExtentY        =   4895
+      _ExtentY        =   5953
       _Version        =   393217
       ScrollBars      =   2
       TextRTF         =   $"Form1.frx":0000
@@ -35,18 +35,18 @@ Begin VB.Form Form1
    Begin VB.CommandButton Command4 
       Caption         =   "Send"
       Height          =   255
-      Left            =   9960
+      Left            =   10080
       TabIndex        =   12
-      Top             =   3000
+      Top             =   3240
       Width           =   615
    End
    Begin VB.TextBox Text4 
       Height          =   1575
-      Left            =   8400
+      Left            =   8520
       MultiLine       =   -1  'True
       TabIndex        =   10
       Text            =   "Form1.frx":0082
-      Top             =   3360
+      Top             =   3600
       Width           =   2295
    End
    Begin VB.CommandButton Command3 
@@ -63,7 +63,7 @@ Begin VB.Form Form1
       Height          =   615
       Left            =   9360
       TabIndex        =   8
-      Top             =   1680
+      Top             =   1920
       Width           =   1575
    End
    Begin VB.TextBox Text3 
@@ -81,7 +81,7 @@ Begin VB.Form Form1
       Left            =   8400
       TabIndex        =   7
       Text            =   "6"
-      Top             =   1920
+      Top             =   2160
       Width           =   855
    End
    Begin VB.CommandButton Command2 
@@ -94,18 +94,18 @@ Begin VB.Form Form1
    End
    Begin VB.TextBox Text1 
       Height          =   285
-      Left            =   1800
+      Left            =   720
       TabIndex        =   1
       Text            =   "<LED13=ON>"
-      Top             =   480
-      Width           =   3495
+      Top             =   840
+      Width           =   5055
    End
    Begin VB.CommandButton Command1 
       Caption         =   "ENVIAR"
-      Height          =   375
-      Left            =   5520
+      Height          =   495
+      Left            =   5880
       TabIndex        =   0
-      Top             =   480
+      Top             =   840
       Width           =   1815
    End
    Begin MSCommLib.MSComm MSComm1 
@@ -116,6 +116,12 @@ Begin VB.Form Form1
       _Version        =   393216
       DTREnable       =   -1  'True
       BaudRate        =   115200
+   End
+   Begin VB.Shape Shape4 
+      Height          =   2175
+      Left            =   8400
+      Top             =   3120
+      Width           =   2535
    End
    Begin VB.Label Label8 
       Alignment       =   2  'Center
@@ -162,9 +168,9 @@ Begin VB.Form Form1
    Begin VB.Label Label6 
       Caption         =   "Simular Entradas"
       Height          =   255
-      Left            =   8520
+      Left            =   8640
       TabIndex        =   11
-      Top             =   3000
+      Top             =   3240
       Width           =   1215
    End
    Begin VB.Label Label5 
@@ -172,7 +178,7 @@ Begin VB.Form Form1
       Height          =   255
       Left            =   8400
       TabIndex        =   9
-      Top             =   1680
+      Top             =   1920
       Width           =   855
    End
    Begin VB.Label Label4 
@@ -224,7 +230,7 @@ Begin VB.Form Form1
       Height          =   255
       Left            =   720
       TabIndex        =   3
-      Top             =   1800
+      Top             =   1200
       Width           =   1335
    End
    Begin VB.Shape Shape1 
@@ -325,6 +331,8 @@ Private Sub Form_Load()
 End Sub
 
 
+
+
 Private Sub menu_bme_Click()
     Form5.Visible = True
 End Sub
@@ -335,6 +343,10 @@ End Sub
 
 Private Sub menu_led13_Click()
     Form3.Visible = True
+End Sub
+
+Private Sub menu_rtc_Click()
+    Form7.Visible = True
 End Sub
 
 Private Sub menu_servo_Click()
