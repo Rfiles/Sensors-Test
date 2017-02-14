@@ -105,27 +105,35 @@ void loop() {
 // REMOTE COMMANDS FUNCTION
 //#################################################################################################
 void ExecuteCommand() {
-  if (id_string == "ID1" )   ID1_Execute();
-  if (id_string == "LED13" ) LED13_Data();
-  if (id_string == "AUTH" ) Validate_Data();
-  if (id_string == "SERVO1") Servo1_Data();
-  if (id_string == "SERVO2") Servo2_Data();
-  if (id_string == "SERVO1_ATTACH") Servo1_Setup(1);
-  if (id_string == "SERVO1_DETACH") Servo1_Setup(2);
-  if (id_string == "SERVO1_ISATTACHED") Servo1_Setup(3);
-  if (id_string == "SERVO2_ATTACH") Servo2_Setup(1);
-  if (id_string == "SERVO2_DETACH") Servo2_Setup(2);
-  if (id_string == "SERVO2_ISATTACHED") Servo2_Setup(3);
-  if (id_string == "I2C_SCAN") scan_i2c();
-  if (id_string == "I2CSCAN_TCA") i2ctca_scanner();
-  if (id_string == "BME_READING") bme_reading();
-  if (id_string == "BME_CALIB") bme_calib();
-  if (id_string == "BME_REGS") bme_regs();
-  if (id_string == "BME_SETUP") setup_bme();
-  if (id_string == "BME_START") start_bme();
-  if (id_string == "BME_RESET") reset_bme();
-  if (id_string == "TCA_SELECT") tca_sel_data();
-
+  if (id_string == F("ID1"))   ID1_Execute();
+  if (id_string == F("LED13")) LED13_Data();
+  if (id_string == F("AUTH")) Validate_Data();
+  if (id_string == F("SERVO1")) Servo1_Data();
+  if (id_string == F("SERVO2")) Servo2_Data();
+  if (id_string == F("SERVO1_ATTACH")) Servo1_Setup(1);
+  if (id_string == F("SERVO1_DETACH")) Servo1_Setup(2);
+  if (id_string == F("SERVO1_ISATTACHED")) Servo1_Setup(3);
+  if (id_string == F("SERVO2_ATTACH")) Servo2_Setup(1);
+  if (id_string == F("SERVO2_DETACH")) Servo2_Setup(2);
+  if (id_string == F("SERVO2_ISATTACHED")) Servo2_Setup(3);
+  if (id_string == F("I2C_SCAN")) scan_i2c();
+  if (id_string == F("I2CSCAN_TCA")) i2ctca_scanner();
+  if (id_string == F("BME_READING")) bme_reading();
+  if (id_string == F("BME_CALIB")) bme_calib();
+  if (id_string == F("BME_REGS")) bme_regs();
+  if (id_string == F("BME_SETUP")) setup_bme();
+  if (id_string == F("BME_START")) start_bme();
+  if (id_string == F("BME_RESET")) reset_bme();
+  if (id_string == F("TCA_SELECT")) tca_sel_data();
+  if (id_string == F("RTC_START")) rtc_start();
+  if (content == CMD_GET) {
+    if (id_string == F("RTC_VALID")) rtc_get(1);
+    if (id_string == F("RTC_RUNNING")) rtc_get(2);
+    if (id_string == F("RTC_TEMP")) rtc_get(3);
+    if (id_string == F("RTC_DATE")) rtc_get(4);
+    if (id_string == F("RTC_TIME")) rtc_get(5);
+    if (id_string == F("RTC_AGOFFS")) rtc_get(6);
+  }
   ResetStrings();
 }//func
 
@@ -143,7 +151,7 @@ void ResetStrings() {
 
 
 void ID1_Execute(){
-  if (iscryptvalid) if (content == CMD_SET) DEVICE_ID = value_string.toInt();
+  if (content == CMD_SET) DEVICE_ID = value_string.toInt();
   Serial.print(F("<ID1="));
   Serial.print(DEVICE_ID);
   Serial.println(F(">"));

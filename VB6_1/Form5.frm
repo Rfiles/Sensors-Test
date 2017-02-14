@@ -431,7 +431,7 @@ Function BME_Fill_Lists()
     End If
     If id_string = "BME_ALT" Then
         Label11.Caption = Val(value_string)
-        ProgressBar4.Value = Val(value_string)
+        'ProgressBar4.Value = Val(value_string)
     End If
     '---------------------------------------------------
     
