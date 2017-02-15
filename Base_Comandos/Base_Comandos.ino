@@ -133,7 +133,18 @@ void ExecuteCommand() {
     if (id_string == F("RTC_DATE")) rtc_get(4);
     if (id_string == F("RTC_TIME")) rtc_get(5);
     if (id_string == F("RTC_AGOFFS")) rtc_get(6);
+    if (id_string == F("RTC_DAYWEEK")) rtc_get(7);
   }
+  if (content == CMD_SET) {
+    if (id_string == F("RTC_HOUR")) rtc_set(1);
+    if (id_string == F("RTC_MINUTE")) rtc_set(2);
+    if (id_string == F("RTC_SECOND")) rtc_set(3);
+    if (id_string == F("RTC_YEAR")) rtc_set(4);
+    if (id_string == F("RTC_MONTH")) rtc_set(5);
+    if (id_string == F("RTC_DAY")) rtc_set(6);
+  }
+
+  
   ResetStrings();
 }//func
 
@@ -151,7 +162,7 @@ void ResetStrings() {
 
 
 void ID1_Execute(){
-  if (content == CMD_SET) DEVICE_ID = value_string.toInt();
+  if ((content == CMD_SET)&(iscryptvalid)) DEVICE_ID = value_string.toInt();
   Serial.print(F("<ID1="));
   Serial.print(DEVICE_ID);
   Serial.println(F(">"));
@@ -160,8 +171,8 @@ void ID1_Execute(){
 
 void LED13_Data() {
   if (content == CMD_SET) {
-    if ( value_string == "ON" )  digitalWrite(LED_BUILTIN, HIGH);
-    if ( value_string == "OFF" ) digitalWrite(LED_BUILTIN, LOW);
+    if ( value_string == F("ON") )  digitalWrite(LED_BUILTIN, HIGH);
+    if ( value_string == F("OFF") ) digitalWrite(LED_BUILTIN, LOW);
   }
 
   if (digitalRead(LED_BUILTIN)) {

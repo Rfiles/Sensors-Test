@@ -326,7 +326,7 @@ Begin VB.Form Form7
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "Domingo"
+         Caption         =   "-"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   12
@@ -375,7 +375,7 @@ Begin VB.Form Form7
       Begin VB.Label Label6 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "2017"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   20.25
@@ -394,7 +394,7 @@ Begin VB.Form Form7
       Begin VB.Label Label5 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "02"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   20.25
@@ -413,7 +413,7 @@ Begin VB.Form Form7
       Begin VB.Label Label4 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "12"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   20.25
@@ -432,7 +432,7 @@ Begin VB.Form Form7
       Begin VB.Label Label3 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "37"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   27.75
@@ -451,7 +451,7 @@ Begin VB.Form Form7
       Begin VB.Label Label2 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "19"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   27.75
@@ -470,7 +470,7 @@ Begin VB.Form Form7
       Begin VB.Label Label1 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Caption         =   "12"
+         Caption         =   "0"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   27.75
@@ -638,3 +638,57 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Function ParseInput()
+Dim Temp_String As String
+
+    
+    If id_string = "RTC_TIME" Then
+        Label1.Caption = Val(Mid(value_string, 1, 2))
+        Label2.Caption = Val(Mid(value_string, 4, 2))
+        Label3.Caption = Val(Mid(value_string, 7, 2))
+    End If
+    If id_string = "RTC_DATE" Then
+        Label6.Caption = Val(Mid(value_string, 1, 4))
+        Label5.Caption = Val(Mid(value_string, 6, 2))
+        Label4.Caption = Val(Mid(value_string, 9, 2))
+    End If
+    If id_string = "RTC_DAYWEEK" Then
+        Select Case Val(value_string)
+            Case 1
+                Temp_String = "Monday"
+            Case 2
+                Temp_String = "Tuesday"
+            Case 3
+                Temp_String = "Wensday"
+            Case 4
+                Temp_String = "Thursday"
+            Case 5
+                Temp_String = "Friday"
+            Case 6
+                Temp_String = "Saturday"
+            Case 7
+                Temp_String = "Sunday"
+            Case Else
+                Temp_String = "ERROR"
+        End Select
+        Label21.Caption = Temp_String
+    End If
+
+
+
+End Function
+
+Private Sub Command2_Click()
+    SendData "<RTC_TIME?>"
+    SendData "<RTC_DATE?>"
+    SendData "<RTC_DAYWEEK?>"
+    SendData "<RTC_VALID?>"
+    SendData "<RTC_RUNNING?>"
+    SendData "<RTC_TEMP?>"
+    SendData "<RTC_AGOFFS?>"
+
+End Sub
+
+Private Sub Form_Load()
+    SendData "<RTC_START=>"
+End Sub

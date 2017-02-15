@@ -37,8 +37,10 @@ void rtc_get (int selected) {
       break;
     case 4:
       Serial.print(F("<RTC_DATE="));
-      Serial.print(now.Year()); Serial.print("/");
-      Serial.print(now.Month()); Serial.print("/");
+      Serial.print(now.Year()); Serial.print(F("/"));
+      if (now.Month() < 10) Serial.print(F("0"));
+      Serial.print(now.Month()); Serial.print(F("/"));
+      if (now.Day() < 10) Serial.print(F("0"));
       Serial.print(now.Day());
       Serial.println(F(">"));
       break;
@@ -57,9 +59,11 @@ void rtc_get (int selected) {
       Serial.print(Rtc.GetAgingOffset());
       Serial.println(F(">"));
       break;
-//    case 7:
-//      Serial.print(F("<RTC_="));
-//      break;
+    case 7:
+      Serial.print(F("<RTC_DAYWEEK="));
+      Serial.print(now.DayOfWeek());
+      Serial.println(F(">"));
+      break;
 //    case 8:
 //      Serial.print(F("<RTC_="));
 //      break;
@@ -75,12 +79,63 @@ void rtc_get (int selected) {
 }
 
 void rtc_set (int selected) {
+  RtcDateTime now = Rtc.GetDateTime();
+  //RtcDateTime new_now;
+  uint8_t value_temp;
   switch ( selected ) {
-    case 1:
+    case 1:                                   // set hour
+      value_temp = value_string.toInt();
+      if (value_temp<24) {
+        RtcDateTime new_now(now.Year(), now.Month(), now.Day(), value_temp, now.Minute(), now.Second());
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(5);
       break;
+    case 2:                                   // set minute
+      value_temp = value_string.toInt();
+      if (value_temp<60) {
+        RtcDateTime new_now(now.Year(), now.Month(), now.Day(), now.Hour(), value_temp, now.Second());
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(5);
+      break;
+    case 3:                                   // set second
+      value_temp = value_string.toInt();
+      if (value_temp<60) {
+        RtcDateTime new_now(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), value_temp);
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(5);
+      break;
+    case 4:                                   // set Year
+      value_temp = value_string.toInt();
+      if (value_temp<100) {
+        RtcDateTime new_now(value_temp, now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second());
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(4);
+      break;
+    case 5:                                   // set Month
+      value_temp = value_string.toInt();
+      if (value_temp<13) {
+        RtcDateTime new_now(now.Year(), value_temp, now.Day(), now.Hour(), now.Minute(), now.Second());
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(4);
+      break;
+    case 6:                                   // set Day
+      value_temp = value_string.toInt();
+      if (value_temp<32) {
+        RtcDateTime new_now(now.Year(), now.Month(), value_temp, now.Hour(), now.Minute(), now.Second());
+        Rtc.SetDateTime(new_now);
+      }
+      rtc_get(4);      
+      break;
+
     default:
     break;
   }
+  //Serial.println(value_temp);
 }
 
 

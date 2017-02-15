@@ -165,3 +165,39 @@ Function ValidateAuth() As Integer
     SendData "<AUTH=" & ValidateAuth & ">"
 End Function
 
+Function parse_cmd()
+
+    If id_string = "CHECK" Then
+        Text2.Text = Val(value_string)
+        Shape1.FillColor = vbRed
+        Shape2.FillColor = vbGreen
+        ValidateAuth
+    End If
+    If id_string = "AUTH" Then
+        If value_string = "PASS" Then
+            Shape1.FillColor = vbGreen
+            Shape2.FillColor = vbGreen
+            Form1.Shape3.FillColor = vbGreen
+            Form1.Label7.Caption = "Authorized"
+            Label1.Caption = 3
+        End If
+        If value_string = "FAIL" Then
+            Shape1.FillColor = vbRed
+            Shape2.FillColor = vbGreen
+            Form1.Shape3.FillColor = vbRed
+            Form1.Label7.Caption = "Fail"
+            Label1.Caption = Val(Label1.Caption) - 1
+        End If
+        If value_string = "LOCK" Then
+            Shape1.FillColor = vbRed
+            Shape2.FillColor = vbRed
+            Form1.Shape3.FillColor = vbRed
+            Form1.Label7.Caption = "Locked"
+
+        End If
+    End If
+    If id_string = "DEBUGKEY" Then
+        Text1.Text = Val(value_string)
+    End If
+End Function
+

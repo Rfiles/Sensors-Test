@@ -39,7 +39,7 @@ void Servo1_Setup(int setting){
       break;
   }
 }
-
+//-------------------------------------------------------------------
 
 void Servo2_Data() {
     Servo2Pos = value_string.toInt();

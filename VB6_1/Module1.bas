@@ -97,7 +97,6 @@ Function ExecuteCommand()
             Form2.servos_rx
 
     '-----------------------------------------------------------------
-    
     '-----------------------------------------------------------------
     '-----------------------------------------------------------------
         Case Else
@@ -105,43 +104,14 @@ Function ExecuteCommand()
     End Select
     
     
-  
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "RTC" And content = 1 Then
+        Form7.ParseInput
+    End If
 
 
     '-----------------------------------------------------------------
-    
-    If id_string = "CHECK" And content = 1 Then
-        Form4.Text2.Text = Val(value_string)
-        Form4.Shape1.FillColor = vbRed
-        Form4.Shape2.FillColor = vbGreen
-        Form4.ValidateAuth
-    End If
-    If id_string = "AUTH" And content = 1 Then
-        If value_string = "PASS" Then
-            Form4.Shape1.FillColor = vbGreen
-            Form4.Shape2.FillColor = vbGreen
-            Form1.Shape3.FillColor = vbGreen
-            Form1.Label7.Caption = "Authorized"
-            Form4.Label1.Caption = 3
-        End If
-        If value_string = "FAIL" Then
-            Form4.Shape1.FillColor = vbRed
-            Form4.Shape2.FillColor = vbGreen
-            Form1.Shape3.FillColor = vbRed
-            Form1.Label7.Caption = "Fail"
-            Form4.Label1.Caption = Val(Form4.Label1.Caption) - 1
-        End If
-        If value_string = "LOCK" Then
-            Form4.Shape1.FillColor = vbRed
-            Form4.Shape2.FillColor = vbRed
-            Form1.Shape3.FillColor = vbRed
-            Form1.Label7.Caption = "Locked"
-
-        End If
-    End If
-    If id_string = "DEBUGKEY" And content = 1 Then
-        Form4.Text1.Text = Val(value_string)
-    End If
+    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Form4.parse_cmd
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "BME" And content = 1 Then
