@@ -7,11 +7,11 @@ Begin VB.Form Form6
    ClientHeight    =   5100
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   8370
+   ClientWidth     =   8415
    LinkTopic       =   "Form6"
    MaxButton       =   0   'False
    ScaleHeight     =   5100
-   ScaleWidth      =   8370
+   ScaleWidth      =   8415
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
       Caption         =   "Scan Muxer"
@@ -132,11 +132,18 @@ Function parse_i2cscan_normal()
 End Function
 
 Function parse_i2cscan_tca()
+
+
     'If id_string = "I2C_SCAN" Then ListView1.ListItems.Item(1).ListSubItems.Add.Text = Val(value_string)
     
-    ListView1.ListItems.Add.Text = value_string
-    ListView1.ListItems.Item(ListView1.ListItems.Count).ListSubItems.Add.Text = I2C_Addr2Name(Val(value_string))
-
+    ListView2.ListItems.Add.Text = Right(id_string, 1)
+    ListView2.ListItems.Item(ListView2.ListItems.Count).ListSubItems.Add.Text = Val(value_string)
+    ListView2.ListItems.Item(ListView2.ListItems.Count).ListSubItems.Add.Text = I2C_Addr2Name(Val(value_string))
+    
+    'TreeView1.Nodes.Add.Text = Right(id_string, 1)
+    'TreeView1.nodes.add(,,,"OLA")
+    
+    
 End Function
 
 Function I2C_Addr2Name(addr As Integer) As String

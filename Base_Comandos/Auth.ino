@@ -7,9 +7,9 @@ void Validate_Data () {
       if (keytrylock) {
         randomkey = random(0,1024);       // chave de resposta
         checkkey = randomkey ^ cryptokey; // xor challenge
-        Serial.print(F("<DEBUGKEY="));
-        Serial.print(randomkey);
-        Serial.println(F(">"));
+//        Serial.print(F("<DEBUGKEY="));
+//        Serial.print(randomkey);
+//        Serial.println(F(">"));
         Serial.print(F("<CHECK="));
         Serial.print(checkkey);
         Serial.println(F(">"));

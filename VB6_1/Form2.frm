@@ -177,17 +177,17 @@ End Sub
 
 Private Sub Command2_Click()
     If Shape1.FillColor = vbRed Then
-        SendData "<SERVO1_ATTACH=1>"
+        SendData "<SERVO1_ATTACH=>"
     Else
-        SendData "<SERVO1_DETACH=1>"
+        SendData "<SERVO1_DETACH=>"
     End If
 End Sub
 
 Private Sub Command3_Click()
     If Shape2.FillColor = vbRed Then
-        SendData "<SERVO2_ATTACH=1>"
+        SendData "<SERVO2_ATTACH=>"
     Else
-        SendData "<SERVO2_DETACH=1>"
+        SendData "<SERVO2_DETACH=>"
     End If
 End Sub
 

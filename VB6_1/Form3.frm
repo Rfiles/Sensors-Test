@@ -68,7 +68,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
-'Form1.MSComm1.Output = "<LED13?>"
+    SendData "<LED13?>"
 End Sub
 
 Function led_cmd_rx()

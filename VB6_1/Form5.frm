@@ -364,8 +364,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Command1_Click()
-    SendData "<BME_SETUP?>"
-    SendData "<BME_START?>"
     SendData "<BME_REGS?>"
     SendData "<BME_CALIB?>"
     SendData "<BME_READING?>"
@@ -411,6 +409,8 @@ Private Sub Form_Load()
     ListView2.ListItems.Add.Text = "tempOverSample"
     ListView2.ListItems.Add.Text = "pressOverSample"
     ListView2.ListItems.Add.Text = "humidOverSample"
+    SendData "<BME_SETUP?>"
+    SendData "<BME_START?>"
 
 End Sub
 

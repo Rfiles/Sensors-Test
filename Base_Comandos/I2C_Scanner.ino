@@ -25,12 +25,12 @@ void scan_i2c() {
       //Serial.println("  !");
       nDevices++;
     }
-    //else if (error==4) {
-      //Serial.print(F("I2C error: 0x"));
-      //if (address<16) Serial.print("0");
-      //Serial.println(address,HEX);
-      
-    //}    
+    else if (error) {
+      Serial.print(F("<I2C_SCAN_ERR="));
+      if (address<16) Serial.print(F("0"));
+      Serial.print(address,HEX);
+      Serial.println(F(">"));
+    }    
     delay(5); //Scan not too fast
   }
   //if (nDevices == 0)
@@ -94,7 +94,7 @@ void i2ctca_scanner() {
       byte error = Wire.endTransmission();
       //if (! twi_writeTo(addr, &data, 0, 1, 1)) {
       if (error == 0) {
-        Serial.print(F("<SCANI2C_TCA")); 
+        Serial.print(F("<I2CSCAN_TCA")); 
         Serial.print(t);
         Serial.print(F("="));
         Serial.print(addr);

@@ -98,6 +98,7 @@ void loop() {
 
   }//if
 
+  Alarmed();
 
 }//func
 
@@ -105,6 +106,11 @@ void loop() {
 // REMOTE COMMANDS FUNCTION
 //#################################################################################################
 void ExecuteCommand() {
+//  Serial.print(" ( ");
+//  Serial.print(id_string);
+//  Serial.print(" - ");
+//  Serial.print(value_string);
+//  Serial.println(" ) ");
   if (id_string == F("ID1"))   ID1_Execute();
   if (id_string == F("LED13")) LED13_Data();
   if (id_string == F("AUTH")) Validate_Data();

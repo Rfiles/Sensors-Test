@@ -122,7 +122,7 @@ Function ExecuteCommand()
     If id_string = "I2C_SCAN" And content = 1 Then
         Form6.parse_i2cscan_normal
     End If
-    If Left(id_string, 11) = "I2CSCAN_TCA" And content = 1 Then
+    If Left(id_string, (Len(id_string) - 1)) = "SCANI2C_TCA" And content = 1 Then
         Form6.parse_i2cscan_tca
     End If
         
@@ -138,6 +138,7 @@ Function SendData(Texto As String)
         'Form1.RichTextBox1.SelStart = Len(Form1.RichTextBox1.Text)
         'Form1.RichTextBox1.SelColor = vbBlack
         Form1.MSComm1.Output = Texto
+        Form1.Timer2.Enabled = True
     End If
 End Function
 

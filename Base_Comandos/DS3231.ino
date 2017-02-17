@@ -2,8 +2,44 @@
 
 RtcDS3231<TwoWire> Rtc(Wire);
 
+// Interrupt Pin Lookup Table
+// (copied from Arduino Docs)
+//
+// CAUTION:  The interrupts are Arduino numbers NOT Atmel numbers
+//   and may not match (example, Mega2560 int.4 is actually Atmel Int2)
+//   this is only an issue if you plan to use the lower level interupt features
+//
+// Board           int.0    int.1   int.2   int.3   int.4   int.5
+// ---------------------------------------------------------------
+// Uno, Ethernet    2       3
+// Mega2560         2       3       21      20     [19]      18 
+// Leonardo         3       2       0       1       7
+#define RtcSquareWavePin 2 
+#define RtcSquareWaveInterrupt 0
+
+volatile uint16_t interruptCount = 0;
+volatile bool interruptFlag = false;
+
+void InterruptServiceRoutine()
+{
+    // since this interupted any other running code,
+    // don't do anything that takes long and especially avoid
+    // any communications calls within this routine
+    interruptCount++;
+    interruptFlag = true;
+}
+
 void rtc_start (){
   Rtc.Begin();
+
+  // set the interupt pin to input mode
+  pinMode(RtcSquareWavePin, INPUT);
+  Rtc.Enable32kHzPin(false);
+  Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeAlarmBoth);
+  // throw away any old alarm state before we ran
+  Rtc.LatchAlarmsTriggeredFlags();
+  // setup external interupt 
+  attachInterrupt(RtcSquareWaveInterrupt, InterruptServiceRoutine, FALLING);
 }
 
 void rtc_get (int selected) {
@@ -137,6 +173,24 @@ void rtc_set (int selected) {
   }
   //Serial.println(value_temp);
 }
+
+bool Alarmed(){
+    bool wasAlarmed = false;
+    if (interruptFlag) {
+        wasAlarmed = true;
+        interruptFlag = false; // reset the flag
+        
+        // this gives us which alarms triggered and
+        // then allows for others to trigger again
+        DS3231AlarmFlag flag = Rtc.LatchAlarmsTriggeredFlags();
+
+        if (flag & DS3231AlarmFlag_Alarm1) Serial.println("<RTC_ALARM1=TRUE>");
+        if (flag & DS3231AlarmFlag_Alarm2) Serial.println("<RTC_ALARM2=TRUE>");
+
+    }
+    return wasAlarmed;
+}
+
 
 
 

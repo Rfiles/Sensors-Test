@@ -4,15 +4,38 @@ Begin VB.Form Form7
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "RTC DS3231"
-   ClientHeight    =   5415
+   ClientHeight    =   5520
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   9180
    LinkTopic       =   "Form7"
    MaxButton       =   0   'False
-   ScaleHeight     =   5415
+   ScaleHeight     =   5520
    ScaleWidth      =   9180
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command4 
+      Caption         =   "Set Now"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   480
+      TabIndex        =   41
+      Top             =   1920
+      Width           =   1935
+   End
+   Begin VB.Timer Timer1 
+      Enabled         =   0   'False
+      Interval        =   1000
+      Left            =   4440
+      Top             =   2400
+   End
    Begin VB.CheckBox Check4 
       Caption         =   "Update Rate"
       BeginProperty Font 
@@ -26,22 +49,22 @@ Begin VB.Form Form7
       EndProperty
       Height          =   255
       Left            =   3120
-      TabIndex        =   41
+      TabIndex        =   39
       Top             =   2040
       Width           =   1695
    End
    Begin MSComCtl2.UpDown UpDown7 
       Height          =   255
       Left            =   3720
-      TabIndex        =   40
+      TabIndex        =   38
       Top             =   2400
       Width           =   255
       _ExtentX        =   450
       _ExtentY        =   450
       _Version        =   393216
-      Value           =   5
-      Max             =   100
-      Min             =   5
+      Value           =   1
+      Max             =   5
+      Min             =   1
       Enabled         =   -1  'True
    End
    Begin VB.CommandButton Command2 
@@ -56,38 +79,38 @@ Begin VB.Form Form7
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3000
+      Left            =   480
       TabIndex        =   25
-      Top             =   4560
+      Top             =   2520
       Width           =   1935
    End
    Begin VB.Frame Frame4 
       BackColor       =   &H8000000C&
       Caption         =   "Misc"
-      Height          =   1575
-      Left            =   5160
+      Height          =   1815
+      Left            =   6480
       TabIndex        =   11
-      Top             =   3480
-      Width           =   3735
+      Top             =   3360
+      Width           =   2415
       Begin VB.CheckBox Check1 
          Caption         =   "Enable 32kHz pin"
          Height          =   255
-         Left            =   120
+         Left            =   240
          TabIndex        =   26
          Top             =   240
          Width           =   1575
       End
       Begin VB.ComboBox Combo2 
          Height          =   315
-         Left            =   1920
+         Left            =   240
          TabIndex        =   21
          Text            =   "Frequency"
-         Top             =   600
+         Top             =   1080
          Width           =   1695
       End
       Begin VB.ComboBox Combo1 
          Height          =   315
-         Left            =   120
+         Left            =   240
          TabIndex        =   20
          Text            =   "Pin Mode"
          Top             =   600
@@ -97,18 +120,40 @@ Begin VB.Form Form7
    Begin VB.Frame Frame3 
       BackColor       =   &H8000000C&
       Caption         =   "Alarm 2"
-      Height          =   1455
-      Left            =   240
+      Height          =   1815
+      Left            =   3360
       TabIndex        =   10
-      Top             =   3600
+      Top             =   3360
       Width           =   2535
-      Begin VB.CheckBox Check3 
-         Caption         =   "Repeat"
+      Begin MSComCtl2.UpDown UpDown11 
          Height          =   255
-         Left            =   1200
-         TabIndex        =   38
+         Left            =   2160
+         TabIndex        =   51
+         Top             =   960
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   450
+         _Version        =   393216
+         Enabled         =   -1  'True
+      End
+      Begin MSComCtl2.UpDown UpDown10 
+         Height          =   255
+         Left            =   2160
+         TabIndex        =   50
          Top             =   600
-         Width           =   1215
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   450
+         _Version        =   393216
+         Enabled         =   -1  'True
+      End
+      Begin VB.ComboBox Combo4 
+         Height          =   315
+         Left            =   120
+         TabIndex        =   43
+         Text            =   "Repeat Mode"
+         Top             =   1320
+         Width           =   2295
       End
       Begin VB.CommandButton Command3 
          Caption         =   "Enable"
@@ -160,6 +205,24 @@ Begin VB.Form Form7
          _Version        =   393216
          Enabled         =   -1  'True
       End
+      Begin VB.Label Label27 
+         Alignment       =   2  'Center
+         Caption         =   "Jan"
+         Height          =   255
+         Left            =   1200
+         TabIndex        =   49
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.Label Label26 
+         Alignment       =   2  'Center
+         Caption         =   "Mon"
+         Height          =   255
+         Left            =   1200
+         TabIndex        =   48
+         Top             =   600
+         Width           =   975
+      End
       Begin VB.Label Label20 
          Alignment       =   2  'Center
          Caption         =   "0"
@@ -191,18 +254,50 @@ Begin VB.Form Form7
    Begin VB.Frame Frame2 
       BackColor       =   &H8000000C&
       Caption         =   "Alarm 1"
-      Height          =   1575
+      Height          =   1815
       Left            =   240
       TabIndex        =   9
-      Top             =   1800
+      Top             =   3360
       Width           =   2535
-      Begin VB.CheckBox Check2 
-         Caption         =   "Repeat"
+      Begin MSComCtl2.UpDown UpDown9 
          Height          =   255
-         Left            =   1200
-         TabIndex        =   37
-         Top             =   720
-         Width           =   1215
+         Left            =   2160
+         TabIndex        =   47
+         Top             =   960
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   450
+         _Version        =   393216
+         OrigLeft        =   1920
+         OrigTop         =   1080
+         OrigRight       =   2175
+         OrigBottom      =   1335
+         Enabled         =   -1  'True
+      End
+      Begin MSComCtl2.UpDown UpDown8 
+         Height          =   255
+         Left            =   2160
+         TabIndex        =   46
+         Top             =   600
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   450
+         _Version        =   393216
+         OrigLeft        =   1920
+         OrigTop         =   720
+         OrigRight       =   2175
+         OrigBottom      =   975
+         Enabled         =   -1  'True
+      End
+      Begin VB.ComboBox Combo3 
+         Height          =   315
+         ItemData        =   "Form7.frx":0000
+         Left            =   120
+         List            =   "Form7.frx":0007
+         TabIndex        =   42
+         Text            =   "Repeat Mode"
+         Top             =   1320
+         Width           =   2295
       End
       Begin VB.CommandButton Command1 
          Caption         =   "Enable"
@@ -218,14 +313,14 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   1200
          TabIndex        =   19
-         Top             =   360
+         Top             =   240
          Width           =   1215
       End
       Begin MSComCtl2.UpDown UpDown4 
          Height          =   255
          Left            =   840
          TabIndex        =   16
-         Top             =   360
+         Top             =   240
          Width           =   255
          _ExtentX        =   450
          _ExtentY        =   450
@@ -236,7 +331,7 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   840
          TabIndex        =   17
-         Top             =   720
+         Top             =   600
          Width           =   255
          _ExtentX        =   450
          _ExtentY        =   450
@@ -247,12 +342,30 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   840
          TabIndex        =   18
-         Top             =   1080
+         Top             =   960
          Width           =   255
          _ExtentX        =   450
          _ExtentY        =   450
          _Version        =   393216
          Enabled         =   -1  'True
+      End
+      Begin VB.Label Label25 
+         Alignment       =   2  'Center
+         Caption         =   "Jan"
+         Height          =   255
+         Left            =   1200
+         TabIndex        =   45
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.Label Label24 
+         Alignment       =   2  'Center
+         Caption         =   "Mon"
+         Height          =   255
+         Left            =   1200
+         TabIndex        =   44
+         Top             =   600
+         Width           =   975
       End
       Begin VB.Label Label15 
          Alignment       =   2  'Center
@@ -260,7 +373,7 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   120
          TabIndex        =   15
-         Top             =   1080
+         Top             =   960
          Width           =   735
       End
       Begin VB.Label Label14 
@@ -269,7 +382,7 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   120
          TabIndex        =   14
-         Top             =   720
+         Top             =   600
          Width           =   735
       End
       Begin VB.Label Label13 
@@ -278,17 +391,17 @@ Begin VB.Form Form7
          Height          =   255
          Left            =   120
          TabIndex        =   13
-         Top             =   360
+         Top             =   240
          Width           =   735
       End
    End
    Begin VB.Frame Frame1 
       BackColor       =   &H8000000A&
       Caption         =   "Frame1"
-      Height          =   1335
+      Height          =   1695
       Left            =   240
       TabIndex        =   0
-      Top             =   360
+      Top             =   0
       Width           =   8655
       Begin VB.Shape Shape8 
          FillStyle       =   0  'Solid
@@ -337,9 +450,9 @@ Begin VB.Form Form7
             Strikethrough   =   0   'False
          EndProperty
          Height          =   375
-         Left            =   4080
+         Left            =   6000
          TabIndex        =   36
-         Top             =   840
+         Top             =   1200
          Width           =   2535
       End
       Begin VB.Label Label8 
@@ -507,7 +620,7 @@ Begin VB.Form Form7
       EndProperty
       Height          =   255
       Left            =   4080
-      TabIndex        =   42
+      TabIndex        =   40
       Top             =   2400
       Width           =   495
    End
@@ -526,7 +639,7 @@ Begin VB.Form Form7
       EndProperty
       Height          =   255
       Left            =   3120
-      TabIndex        =   39
+      TabIndex        =   37
       Top             =   2400
       Width           =   495
    End
@@ -537,6 +650,7 @@ Begin VB.Form Form7
       Height          =   255
       Left            =   7800
       TabIndex        =   28
+      ToolTipText     =   "Oscilator Speed Tunning"
       Top             =   2880
       Width           =   1095
    End
@@ -568,7 +682,7 @@ Begin VB.Form Form7
       Width           =   1095
    End
    Begin VB.Label Label10 
-      Caption         =   "Temperature"
+      Caption         =   "Temperature ('C)"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -673,10 +787,32 @@ Dim Temp_String As String
         End Select
         Label21.Caption = Temp_String
     End If
-
-
+    If id_string = "RTC_TEMP" Then Label11.Caption = value_string
+    If id_string = "RTC_AGOFFS" Then Label17.Caption = Val(value_string)
+    If id_string = "RTC_VALID" Then
+        If value_string = "TRUE" Then
+            Shape3.FillColor = vbGreen
+        Else
+            Shape3.FillColor = vbRed
+        End If
+    End If
+    If id_string = "RTC_RUNNING" Then
+        If value_string = "TRUE" Then
+            Shape4.FillColor = vbGreen
+        Else
+            Shape4.FillColor = vbRed
+        End If
+    End If
 
 End Function
+
+Private Sub Check4_Click()
+    If Check4.Value = 1 Then
+        Timer1.Enabled = True
+    Else
+        Timer1.Enabled = False
+    End If
+End Sub
 
 Private Sub Command2_Click()
     SendData "<RTC_TIME?>"
@@ -685,10 +821,34 @@ Private Sub Command2_Click()
     SendData "<RTC_VALID?>"
     SendData "<RTC_RUNNING?>"
     SendData "<RTC_TEMP?>"
-    SendData "<RTC_AGOFFS?>"
+   ' SendData "<RTC_AGOFFS?>" provoca bug que nao executa time? correctamente.. arduino side?
+
+End Sub
+
+Private Sub Command4_Click()
+    SendData "<RTC_HOUR=" & Hour(Now) & ">"
+    SendData "<RTC_MINUTE=" & Minute(Now) & ">"
+    SendData "<RTC_SECOND=" & Second(Now) & ">"
+    
+    SendData "<RTC_YEAR=" & Year(Now) & ">"
+    SendData "<RTC_MONTH=" & Month(Now) & ">"
+    SendData "<RTC_DAY=" & Day(Now) & ">"
+    
 
 End Sub
 
 Private Sub Form_Load()
     SendData "<RTC_START=>"
+End Sub
+
+Private Sub Timer1_Timer()
+    SendData "<RTC_TIME?>"
+    SendData "<RTC_DATE?>"
+    SendData "<RTC_DAYWEEK?>"
+    SendData "<RTC_TEMP?>"
+End Sub
+
+Private Sub UpDown7_Change()
+    Label22.Caption = UpDown7.Value
+    Timer1.Interval = UpDown7.Value * 1000
 End Sub

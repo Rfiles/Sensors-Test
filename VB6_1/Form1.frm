@@ -14,6 +14,12 @@ Begin VB.Form Form1
    ScaleHeight     =   5670
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer Timer2 
+      Enabled         =   0   'False
+      Interval        =   1000
+      Left            =   1320
+      Top             =   5040
+   End
    Begin RichTextLib.RichTextBox RichTextBox1 
       Height          =   3375
       Left            =   720
@@ -23,6 +29,7 @@ Begin VB.Form Form1
       _ExtentX        =   12303
       _ExtentY        =   5953
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"Form1.frx":0000
    End
@@ -116,6 +123,30 @@ Begin VB.Form Form1
       _Version        =   393216
       DTREnable       =   -1  'True
       BaudRate        =   115200
+   End
+   Begin VB.Label Label9 
+      Caption         =   "Is Response Long?"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   8400
+      TabIndex        =   16
+      Top             =   1440
+      Width           =   2535
+   End
+   Begin VB.Shape Shape5 
+      FillStyle       =   0  'Solid
+      Height          =   255
+      Left            =   8040
+      Top             =   1440
+      Width           =   255
    End
    Begin VB.Shape Shape4 
       Height          =   2175
@@ -319,6 +350,7 @@ Private Sub Command3_Click()
         MSComm1.PortOpen = False
         Shape1.FillColor = &H80FF&
         Label4.Caption = ""
+        Command3.Caption = "Connect"
     End If
 End Sub
 
@@ -361,6 +393,8 @@ Private Sub MSComm1_OnComm()
     Dim InBuffer As String
     InBuffer = MSComm1.Input
     If MSComm1.CommEvent = comEvReceive Then
+        Timer2.Enabled = False
+        Shape5.FillColor = vbGreen
         'Text2.Text = Text2.Text & InBuffer
         RichTextBox1.Text = RichTextBox1.Text & InBuffer
         RichTextBox1.SelStart = Len(RichTextBox1.Text)
@@ -380,4 +414,8 @@ Private Sub Timer1_Timer()
     Label1.Caption = "Connection Timeout"
     Shape1.FillColor = vbRed
     Command3.Caption = "Connect"
+End Sub
+
+Private Sub Timer2_Timer()
+    Shape5.FillColor = vbRed
 End Sub
