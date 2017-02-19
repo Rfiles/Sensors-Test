@@ -61,8 +61,9 @@ Function ExecuteCommand()
 
 ' content = 1 info para vb6  content = 0 pedido de info
 
-    Debug.Print "Comando: '" & id_string & "' com o valor '" & value_string & "'"
-    
+    If Form1.menu_dbgin.Checked = True Then
+        Debug.Print "Recebido(" & content & "): '" & id_string & "' com o valor '" & value_string & "'"
+    End If
     
     Select Case id_string
     '-----------------------------------------------------------------
@@ -76,7 +77,7 @@ Function ExecuteCommand()
                 Form1.Timer1.Enabled = False
             End If
     '-----------------------------------------------------------------
-        Case "ID"
+        Case "ID1"
             Form1.Label4.Caption = value_string
     '-----------------------------------------------------------------
         Case "LED13"
@@ -100,9 +101,19 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
     '-----------------------------------------------------------------
         Case Else
-
     End Select
     
+    '-----------------------------------------------------------------
+    ' Start of Special Cases of Per Module Parsers
+    '-----------------------------------------------------------------
+    If Left(id_string, 5) = "ESERVO" And content = 1 Then
+        Form8.eservos_rx
+    End If
+            
+    '-----------------------------------------------------------------
+    If Left(id_string, 6) = "ENABLE" And content = 1 Then
+        Form1.Modules_Enabler
+    End If
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "RTC" And content = 1 Then
@@ -122,7 +133,7 @@ Function ExecuteCommand()
     If id_string = "I2C_SCAN" And content = 1 Then
         Form6.parse_i2cscan_normal
     End If
-    If Left(id_string, (Len(id_string) - 1)) = "SCANI2C_TCA" And content = 1 Then
+    If Left(id_string, (Len(id_string) - 1)) = "I2CSCAN_TCA" And content = 1 Then
         Form6.parse_i2cscan_tca
     End If
         
@@ -140,6 +151,10 @@ Function SendData(Texto As String)
         Form1.MSComm1.Output = Texto
         Form1.Timer2.Enabled = True
     End If
+    If Form1.menu_dbgin.Checked = True Then
+        Debug.Print "Enviado: " & Texto
+    End If
+
 End Function
 
 

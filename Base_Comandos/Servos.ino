@@ -1,7 +1,10 @@
+#ifdef ENABLE_INTERNAL_SERVO
 #include <Servo.h>
 
-Servo myservo1, myservo2;  // create servo object to control a servo
-int Servo1Pos, Servo2Pos;
+Servo myservo1;
+Servo myservo2;
+int Servo1Pos, 
+int Servo2Pos;
 
 void Servo1_Data() {
     Servo1Pos = value_string.toInt();
@@ -11,7 +14,7 @@ void Servo1_Data() {
     Serial.println(F(">"));
 }
 
-void Servo1_Setup(int setting){
+void Servo1_Setup(uint8_t setting){
   switch ( setting ) {
     case 1:
       Serial.print(F("<SERVO1_ISATTACHED="));
@@ -50,7 +53,7 @@ void Servo2_Data() {
 }
 
 
-void Servo2_Setup(int setting){
+void Servo2_Setup(uint8_t setting){
   switch ( setting ) {
     case 1:
       Serial.print(F("<SERVO2_ISATTACHED="));
@@ -79,3 +82,4 @@ void Servo2_Setup(int setting){
   }
 }
 
+#endif

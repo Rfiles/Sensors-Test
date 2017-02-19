@@ -1,3 +1,4 @@
+#ifdef ENABLE_RTC
 #include <RtcDS3231.h>
 
 RtcDS3231<TwoWire> Rtc(Wire);
@@ -42,11 +43,14 @@ void rtc_start (){
   attachInterrupt(RtcSquareWaveInterrupt, InterruptServiceRoutine, FALLING);
 }
 
-void rtc_get (int selected) {
+void rtc_get (uint8_t selected) {
 
   RtcDateTime now = Rtc.GetDateTime();
   RtcTemperature temp = Rtc.GetTemperature();
-
+  RtcDateTime alarmTime;
+  DS3231AlarmOne alarm1 = Rtc.GetAlarmOne();
+  DS3231AlarmTwo alarm2 = Rtc.GetAlarmTwo();
+  
   switch ( selected ) {
     case 1:
       Serial.print(F("<RTC_VALID="));
@@ -100,21 +104,44 @@ void rtc_get (int selected) {
       Serial.print(now.DayOfWeek());
       Serial.println(F(">"));
       break;
-//    case 8:
-//      Serial.print(F("<RTC_="));
-//      break;
-//    case 9:
-//      Serial.print(F("<RTC_="));
-//      break;
-//    case 10:
-//      Serial.print(F("<RTC_="));
-//      break;
+    case 8:
+      Serial.print(F("<RTC_ALARMFLAG="));
+      Serial.print(Rtc.LatchAlarmsTriggeredFlags());
+      Serial.println(F(">"));
+      break;
+    case 9:                         //get alarm 1
+      Serial.print(F("<RTC_AL1_W="));
+      Serial.print(alarm1.DayOf());
+      Serial.print(F("><RTC_AL1_H="));
+      Serial.print(alarm1.Hour());
+      Serial.print(F("><RTC_AL1_M="));
+      Serial.print(alarm1.Minute());
+      Serial.print(F("><RTC_AL1_S="));
+      Serial.print(alarm1.Second());
+      Serial.print(F("><RTC_AL1_CTRL="));
+      Serial.print(alarm1.ControlFlags());
+      Serial.println(F(">"));
+      break;
+    case 10:                        //get alarm 2
+      Serial.print(F("<RTC_AL2_W="));
+      Serial.print(alarm2.DayOf());
+      Serial.print(F("><RTC_AL2_H="));
+      Serial.print(alarm2.Hour());
+      Serial.print(F("><RTC_AL2_M="));
+      Serial.print(alarm2.Minute());
+      Serial.print("><RTC_AL2_CTRL=");
+      Serial.print(alarm2.ControlFlags());
+      Serial.println(F(">"));
+      break;
+     case 11:
+      
+      break;
     default:
       break;
   }
 }
 
-void rtc_set (int selected) {
+void rtc_set (uint8_t selected) {
   RtcDateTime now = Rtc.GetDateTime();
   //RtcDateTime new_now;
   uint8_t value_temp;
@@ -165,11 +192,22 @@ void rtc_set (int selected) {
         RtcDateTime new_now(now.Year(), now.Month(), value_temp, now.Hour(), now.Minute(), now.Second());
         Rtc.SetDateTime(new_now);
       }
-      rtc_get(4);      
+      rtc_get(4);   
       break;
-
-    default:
+    case 7:
+      if (value_string == "TRUE") {
+        Rtc.Enable32kHzPin(true);
+        Serial.println("<RTC_32OUT=TRUE>");
+      } else {
+        Rtc.Enable32kHzPin(false);
+        Serial.println("<RTC_32OUT=FALSE>");
+      }
+      break;
+    case 8:
+      
     break;
+    default:
+      break;
   }
   //Serial.println(value_temp);
 }
@@ -191,6 +229,6 @@ bool Alarmed(){
     return wasAlarmed;
 }
 
-
+#endif
 
 

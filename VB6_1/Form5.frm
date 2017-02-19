@@ -175,29 +175,56 @@ Begin VB.Form Form5
          Max             =   1,10000e5
          Scrolling       =   1
       End
+      Begin VB.Label Label16 
+         Caption         =   "%"
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   29
+         Top             =   2040
+         Width           =   735
+      End
+      Begin VB.Label Label15 
+         Caption         =   "'C"
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   28
+         Top             =   1200
+         Width           =   735
+      End
+      Begin VB.Label Label14 
+         Caption         =   "hPa"
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   27
+         Top             =   360
+         Width           =   735
+      End
       Begin VB.Label Label9 
+         Alignment       =   2  'Center
          Caption         =   "Label9"
          Height          =   255
          Left            =   1440
          TabIndex        =   17
          Top             =   2040
-         Width           =   1695
+         Width           =   855
       End
       Begin VB.Label Label8 
+         Alignment       =   2  'Center
          Caption         =   "Label8"
          Height          =   255
          Left            =   1440
          TabIndex        =   16
          Top             =   1200
-         Width           =   1695
+         Width           =   855
       End
       Begin VB.Label Label4 
+         Alignment       =   2  'Center
          Caption         =   "Label4"
          Height          =   255
          Left            =   1440
          TabIndex        =   11
          Top             =   360
-         Width           =   1695
+         Width           =   855
       End
       Begin VB.Label Label3 
          Caption         =   "Humidity"
@@ -205,7 +232,7 @@ Begin VB.Form Form5
          Left            =   240
          TabIndex        =   7
          Top             =   2040
-         Width           =   615
+         Width           =   975
       End
       Begin VB.Label Label2 
          Caption         =   "Temperature"
@@ -221,7 +248,7 @@ Begin VB.Form Form5
          Left            =   240
          TabIndex        =   5
          Top             =   360
-         Width           =   735
+         Width           =   975
       End
    End
    Begin VB.Frame Frame2 
@@ -479,3 +506,7 @@ End Sub
 Private Sub UpDown1_Change()
     Timer1.Interval = Val(Label6.Caption)
 End Sub
+
+Function Modules_Enabler()
+
+End Function

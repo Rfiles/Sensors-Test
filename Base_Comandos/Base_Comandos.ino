@@ -6,8 +6,11 @@
 //      -> use // to disable function
 //#################################################################################################
 
-//#define ENABLE_RTC
-
+#define ENABLE_BME
+#define ENABLE_RTC
+#define ENABLE_I2CSCAN
+//#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
+#define ENABLE_SERVO_EASER        //either this or servo_easer
 
 // USER CONFIGURATION ABOVE ONLY
 //#################################################################################################
@@ -20,9 +23,14 @@
 //#################################################################################################
 // DEFINITIONS
 //#################################################################################################
-
-
-
+//
+//#ifdef ENABLE_SERVO_EASER
+//  bool ServoLoopEnabled = false;
+//  Servo servo1;
+//  Servo servo2;
+//  ServoEaser servoEaser1;
+//  ServoEaser servoEaser2;
+//#endif
 
 String    id_string;
 String    value_string;
@@ -34,6 +42,7 @@ char      byterx;
 #define CMD_GET 2
 int DEVICE_ID = 1234;
 int checkkey, iscryptvalid, keytrylock=3, randomkey;
+unsigned long freetimeloop;
 
 //#################################################################################################
 // SETUP
@@ -43,11 +52,9 @@ void setup() {
   
 //  myservo1.attach(7);  // attaches the servo on pin 9 to the servo object
 //  myservo2.attach(8);  // attaches the servo on pin 9 to the servo object
-  
+  Modules_Data();
   Serial.println(F("<BOOT=DONE>"));
   pinMode(LED_BUILTIN, OUTPUT);
-//  setup_bme();
-//  bme_reading();
 }
 
 //#################################################################################################
@@ -97,15 +104,23 @@ void loop() {
     if ((parse_stat == 2) && (content > 0) && (isData == 0)) ExecuteCommand();       // command done
 
   }//if
-
+#ifdef ENABLE_RTC
   Alarmed();
-
+#endif
+#ifdef ENABLE_SERVO_EASER
+  EServos_Loop();
+#endif
 }//func
 
 //#################################################################################################
 // REMOTE COMMANDS FUNCTION
 //#################################################################################################
 void ExecuteCommand() {
+//  Serial.print("<LOOPFREETIME=");
+//  Serial.print( millis() - freetimeloop );
+//  Serial.println(">");
+//  freetimeloop = millis();
+
 //  Serial.print(" ( ");
 //  Serial.print(id_string);
 //  Serial.print(" - ");
@@ -114,6 +129,8 @@ void ExecuteCommand() {
   if (id_string == F("ID1"))   ID1_Execute();
   if (id_string == F("LED13")) LED13_Data();
   if (id_string == F("AUTH")) Validate_Data();
+  if (id_string == F("MODULES")) Modules_Data();
+#ifdef ENABLE_INTERNAL_SERVO
   if (id_string == F("SERVO1")) Servo1_Data();
   if (id_string == F("SERVO2")) Servo2_Data();
   if (id_string == F("SERVO1_ATTACH")) Servo1_Setup(1);
@@ -122,15 +139,21 @@ void ExecuteCommand() {
   if (id_string == F("SERVO2_ATTACH")) Servo2_Setup(1);
   if (id_string == F("SERVO2_DETACH")) Servo2_Setup(2);
   if (id_string == F("SERVO2_ISATTACHED")) Servo2_Setup(3);
+#endif
+#ifdef ENABLE_I2CSCAN
   if (id_string == F("I2C_SCAN")) scan_i2c();
   if (id_string == F("I2CSCAN_TCA")) i2ctca_scanner();
+#endif
+#ifdef ENABLE_BME
   if (id_string == F("BME_READING")) bme_reading();
   if (id_string == F("BME_CALIB")) bme_calib();
   if (id_string == F("BME_REGS")) bme_regs();
   if (id_string == F("BME_SETUP")) setup_bme();
   if (id_string == F("BME_START")) start_bme();
   if (id_string == F("BME_RESET")) reset_bme();
+#endif
   if (id_string == F("TCA_SELECT")) tca_sel_data();
+#ifdef ENABLE_RTC
   if (id_string == F("RTC_START")) rtc_start();
   if (content == CMD_GET) {
     if (id_string == F("RTC_VALID")) rtc_get(1);
@@ -140,6 +163,9 @@ void ExecuteCommand() {
     if (id_string == F("RTC_TIME")) rtc_get(5);
     if (id_string == F("RTC_AGOFFS")) rtc_get(6);
     if (id_string == F("RTC_DAYWEEK")) rtc_get(7);
+    if (id_string == F("RTC_ALARMFLAG")) rtc_get(8);
+    if (id_string == F("RTC_GETA1")) rtc_get(9);
+    if (id_string == F("RTC_GETA2")) rtc_get(10);
   }
   if (content == CMD_SET) {
     if (id_string == F("RTC_HOUR")) rtc_set(1);
@@ -149,6 +175,25 @@ void ExecuteCommand() {
     if (id_string == F("RTC_MONTH")) rtc_set(5);
     if (id_string == F("RTC_DAY")) rtc_set(6);
   }
+#endif
+#ifdef ENABLE_SERVO_EASER
+  if (id_string == F("ESERVOS_START")) EServos_Start();
+  if (id_string == F("ESERVOS_LOOPSTOP"))  EServos_Setup(5);
+  if (id_string == F("ESERVO1_DELAY")) EServos_Setup(1);
+  if (id_string == F("ESERVO2_DELAY")) EServos_Setup(2);
+  if (id_string == F("ESERVO1_ANGLE")) EServos_Setup(3);
+  if (id_string == F("ESERVO2_ANGLE")) EServos_Setup(4);
+
+  if (id_string == F("ESERVO1_GETPOS"))  EServos_Setup(6);
+  if (id_string == F("ESERVO1_ISRUN"))  EServos_Setup(7);
+  if (id_string == F("ESERVO1_SETFLIP"))  EServos_Setup(8);
+  if (id_string == F("ESERVO1_ISFLIP"))  EServos_Setup(9);
+  
+  if (id_string == F("ESERVO2_GETPOS"))  EServos_Setup(10);
+  if (id_string == F("ESERVO2_ISRUN"))  EServos_Setup(11);
+  if (id_string == F("ESERVO2_SETFLIP"))  EServos_Setup(12);
+  if (id_string == F("ESERVO2_ISFLIP"))  EServos_Setup(13);
+#endif
 
   
   ResetStrings();
@@ -194,6 +239,24 @@ void tca_sel_data() {
   }
 }
 
+void Modules_Data(){
+#ifdef ENABLE_BME
+  Serial.print(F("<ENABLE_BME=>"));
+#endif
+#ifdef ENABLE_RTC
+  Serial.print(F("<ENABLE_RTC=>"));
+#endif
+#ifdef ENABLE_INTERNAL_SERVO
+  Serial.print(F("<ENABLE_INT_SERVO=>"));
+#endif
+#ifdef ENABLE_SERVO_EASER
+  Serial.print(F("<ENABLE_ESERVO=>"));
+#endif
+#ifdef ENABLE_I2CSCAN
+  Serial.print(F("<ENABLE_I2CSCAN=>"));
+#endif
+  
+}
 
 
 //#################################################################################################

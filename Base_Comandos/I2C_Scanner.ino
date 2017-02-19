@@ -1,5 +1,6 @@
 
 #define TCAADDR 0x70
+#ifdef ENABLE_I2CSCAN
 
 void scan_i2c() {
   byte error, address;
@@ -127,6 +128,7 @@ void configMPU6050(byte address){
   Wire.write(0x00);
   Wire.endTransmission();  
 }
+#endif
 
 void tcaselect(uint8_t i) {
   if (i > 7) return;

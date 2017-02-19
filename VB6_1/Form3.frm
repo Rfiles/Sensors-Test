@@ -30,6 +30,7 @@ Begin VB.Form Form3
       Width           =   1695
    End
    Begin VB.Shape Shape1 
+      FillColor       =   &H00404040&
       FillStyle       =   0  'Solid
       Height          =   1215
       Left            =   2880
@@ -68,7 +69,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
-    SendData "<LED13?>"
+    'SendData "<LED13?>"
 End Sub
 
 Function led_cmd_rx()

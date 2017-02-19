@@ -295,14 +295,31 @@ Begin VB.Form Form1
          Caption         =   "Porta"
       End
    End
+   Begin VB.Menu menu_debug 
+      Caption         =   "Debug"
+      Begin VB.Menu menu_dbgout 
+         Caption         =   "Output"
+         Checked         =   -1  'True
+      End
+      Begin VB.Menu menu_dbgin 
+         Caption         =   "Input"
+         Checked         =   -1  'True
+      End
+   End
    Begin VB.Menu menu_modulo 
       Caption         =   "Modulo"
       Enabled         =   0   'False
+      Begin VB.Menu menu_eservo 
+         Caption         =   "Servos Easer"
+         Enabled         =   0   'False
+      End
       Begin VB.Menu menu_I2CScan 
          Caption         =   "I2C Scanner"
+         Enabled         =   0   'False
       End
       Begin VB.Menu menu_servo 
          Caption         =   "Servos"
+         Enabled         =   0   'False
       End
       Begin VB.Menu menu_led13 
          Caption         =   "Led13"
@@ -312,9 +329,11 @@ Begin VB.Form Form1
       End
       Begin VB.Menu menu_bme 
          Caption         =   "BME280"
+         Enabled         =   0   'False
       End
       Begin VB.Menu menu_rtc 
          Caption         =   "DS3231"
+         Enabled         =   0   'False
       End
    End
 End
@@ -325,8 +344,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Function Modules_Enabler()
+    If id_string = "ENABLE_BME" Then menu_bme.Enabled = True
+    If id_string = "ENABLE_RTC" Then menu_rtc.Enabled = True
+    If id_string = "ENABLE_INT_SERVO" Then menu_servo.Enabled = True
+    If id_string = "ENABLE_I2CSCAN" Then menu_I2CScan.Enabled = True
+    If id_string = "ENABLE_ESERVO" Then menu_eservo.Enabled = True
+
+End Function
+
+
 Private Sub Command1_Click()
-      SendData Text1.Text
+    SendData Text1.Text
 End Sub
 
 Private Sub Command2_Click()
@@ -362,15 +391,32 @@ Private Sub Form_Load()
 '    Form6.Visible = True
 End Sub
 
-
-
-
 Private Sub menu_bme_Click()
     Form5.Visible = True
 End Sub
 
+Private Sub menu_dbgin_Click()
+    If menu_dbgin.Checked = True Then
+        menu_dbgin.Checked = False
+    Else
+        menu_dbgin.Checked = True
+    End If
+End Sub
+
+Private Sub menu_dbgout_Click()
+    If menu_dbgout.Checked = True Then
+        menu_dbgout.Checked = False
+    Else
+        menu_dbgout.Checked = True
+    End If
+End Sub
+
+Private Sub menu_eservo_Click()
+    Form8.Visible = True
+End Sub
+
 Private Sub menu_I2CScan_Click()
-Form6.Visible = True
+    Form6.Visible = True
 End Sub
 
 Private Sub menu_led13_Click()

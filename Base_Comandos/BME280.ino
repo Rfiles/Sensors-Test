@@ -1,3 +1,5 @@
+#ifdef ENABLE_BME
+
 #include "SparkFunBME280.h"
 //Library allows either I2C or SPI, so include both.
 //#include "Wire.h"
@@ -164,6 +166,6 @@ void bme_reading() {
   Serial.println(F(">"));
 }
 
-
+#endif
 
 
