@@ -27,10 +27,10 @@ void scan_i2c() {
       nDevices++;
     }
     else if (error) {
-      Serial.print(F("<I2C_SCAN_ERR="));
-      if (address<16) Serial.print(F("0"));
-      Serial.print(address,HEX);
-      Serial.println(F(">"));
+  //    Serial.print(F("<I2C_SCAN_ERR="));
+  //    if (address<16) Serial.print(F("0"));
+  //    Serial.print(address,HEX);
+  //    Serial.println(F(">"));
     }    
     delay(5); //Scan not too fast
   }

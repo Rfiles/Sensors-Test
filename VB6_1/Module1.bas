@@ -4,11 +4,17 @@ Dim isdata As Single
 Public content As Single
 Public id_string As String
 Public value_string As String
-
+Public rx_byte_count As Double
+Public rx_counter As Long
+Public tx_counter As Long
 
 Function ParseInput(indata As String)
 Dim loop1 As Single
 'Debug.Print "indata " & Len(indata) & ": -> " & indata & " <-"
+rx_byte_count = rx_byte_count + Len(indata)
+rx_counter = rx_counter + Len(indata)
+main.Label13.Caption = rx_counter & " Bytes "
+
 For loop1 = 1 To Len(indata)
 'Debug.Print Mid(indata, loop1, 1)
     Select Case (Mid(indata, loop1, 1))
@@ -61,7 +67,7 @@ Function ExecuteCommand()
 
 ' content = 1 info para vb6  content = 0 pedido de info
 
-    If Form1.menu_dbgin.Checked = True Then
+    If main.menu_dbgin.Checked = True Then
         Debug.Print "Recebido(" & content & "): '" & id_string & "' com o valor '" & value_string & "'"
     End If
     
@@ -69,33 +75,33 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
         Case "BOOT"
             If value_string = "DONE" Then
-                Form1.Label1.Caption = "DEVICE READY"
-                Form1.Shape1.FillColor = vbGreen
+                main.Label1.Caption = "DEVICE READY"
+                main.Shape1.FillColor = vbGreen
                 SendData ("<ID1?>")
                 SendData ("<LED13?>")
-                Form1.menu_modulo.Enabled = True
-                Form1.Timer1.Enabled = False
+                main.menu_modulo.Enabled = True
+                main.Timer1.Enabled = False
             End If
     '-----------------------------------------------------------------
         Case "ID1"
-            Form1.Label4.Caption = value_string
+            main.Label4.Caption = value_string
     '-----------------------------------------------------------------
         Case "LED13"
-            Form3.led_cmd_rx
+            Led13.led_cmd_rx
         
     '-----------------------------------------------------------------
         Case "SERVO1"
-            Form2.servos_rx
+            Servos.servos_rx
         Case "SERVO2"
-            Form2.servos_rx
+            Servos.servos_rx
         Case "SERVO1_ISATTACHED"
-            Form2.servos_rx
+            Servos.servos_rx
         Case "SERVO2_ISATTACHED"
-            Form2.servos_rx
+            Servos.servos_rx
         Case "SERVO1_DETACH"
-            Form2.servos_rx
+            Servos.servos_rx
         Case "SERVO2_DETACH"
-            Form2.servos_rx
+            Servos.servos_rx
 
     '-----------------------------------------------------------------
     '-----------------------------------------------------------------
@@ -106,52 +112,58 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
     ' Start of Special Cases of Per Module Parsers
     '-----------------------------------------------------------------
-    If Left(id_string, 5) = "ESERVO" And content = 1 Then
-        Form8.eservos_rx
+    If Left(id_string, 6) = "ESERVO" Then
+        EServos.eservos_rx
     End If
             
     '-----------------------------------------------------------------
     If Left(id_string, 6) = "ENABLE" And content = 1 Then
-        Form1.Modules_Enabler
+        main.Modules_Enabler
     End If
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "RTC" And content = 1 Then
-        Form7.ParseInput
+        Rtc.ParseInput
     End If
 
-
     '-----------------------------------------------------------------
-    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Form4.parse_cmd
+    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Validate.parse_cmd
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "BME" And content = 1 Then
-        Form5.BME_Fill_Lists
+        BME.BME_Fill_Lists
     End If
         
     '-----------------------------------------------------------------
     If id_string = "I2C_SCAN" And content = 1 Then
-        Form6.parse_i2cscan_normal
+        i2c_scanner.parse_i2cscan_normal
     End If
     If Left(id_string, (Len(id_string) - 1)) = "I2CSCAN_TCA" And content = 1 Then
-        Form6.parse_i2cscan_tca
+        i2c_scanner.parse_i2cscan_tca
     End If
-        
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 5) = "LIGHT" And content = 1 Then
+        BH1750.light_parse
+    End If
+    
         
     ResetStrings
 End Function
 
 
 Function SendData(Texto As String)
-    If Form1.MSComm1.PortOpen Then
-        'Form1.RichTextBox1.SelColor = vbRed
-        'Form1.RichTextBox1.Text = Form1.RichTextBox1.Text & "Tx: " & InBuffer
-        'Form1.RichTextBox1.SelStart = Len(Form1.RichTextBox1.Text)
-        'Form1.RichTextBox1.SelColor = vbBlack
-        Form1.MSComm1.Output = Texto
-        Form1.Timer2.Enabled = True
+    If main.MSComm1.PortOpen Then
+        'Main.RichTextBox1.SelColor = vbRed
+        'Main.RichTextBox1.Text = Main.RichTextBox1.Text & "Tx: " & InBuffer
+        'Main.RichTextBox1.SelStart = Len(Main.RichTextBox1.Text)
+        'Main.RichTextBox1.SelColor = vbBlack
+        main.MSComm1.Output = Texto
+        main.Timer2.Enabled = True
+        tx_counter = tx_counter + Len(Texto)
+        main.Label12.Caption = tx_counter & " Bytes "
     End If
-    If Form1.menu_dbgin.Checked = True Then
+    If main.menu_dbgin.Checked = True Then
         Debug.Print "Enviado: " & Texto
     End If
 

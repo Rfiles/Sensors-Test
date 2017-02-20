@@ -28,13 +28,13 @@ void EServos_Loop() {
     servoEaser2.update();
     if (ServoLoopArrived1) {
       if(servoEaser1.hasArrived()) {
-        Serial.print("<ESERVO_ARR1=TRUE>");
+        Serial.print("<ESERVO1_ARR=TRUE>");
         ServoLoopArrived1 = false;
       }
     }
     if (ServoLoopArrived2) {
-      if(servoEaser1.hasArrived()) {
-        Serial.print("<ESERVO_ARR2=TRUE>");
+      if(servoEaser2.hasArrived()) {
+        Serial.print("<ESERVO2_ARR=TRUE>");
         ServoLoopArrived2 = false;
       }
     }
@@ -49,7 +49,7 @@ void EServos_Start () {
   servoEaser2.begin( servo2, servoFrameMillis);
   servoEaser2.useMicroseconds( true );  // fine-control mode
   ServoLoopEnabled = true;
-  Serial.println(F("<ESERVOS_START=TRUE"));
+  Serial.println(F("<ESERVOS_START=TRUE>"));
 }
 
 void EServos_Setup ( uint8_t setting ) {
@@ -81,7 +81,7 @@ void EServos_Setup ( uint8_t setting ) {
       Serial.println(F(">"));
       break;
     case 5:
-      Serial.print(F("<ESERVOS_LOOPSTOP="));
+      Serial.print(F("<ESERVOS_LOOPEN="));
       if ( value_string == F("TRUE") ) {
         ServoLoopEnabled = true;
         Serial.print(F("TRUE"));
@@ -106,7 +106,7 @@ void EServos_Setup ( uint8_t setting ) {
       Serial.println(F(">"));
       break;
     case 8:
-      Serial.print(F("<ESERVO1_ISFLIP="));
+      Serial.print(F("<ESERVO1_SETFLIP="));
       if ( value_string == F("TRUE") ) {
         servoEaser1.setFlipped( true );
         Serial.print(F("TRUE"));
@@ -140,7 +140,7 @@ void EServos_Setup ( uint8_t setting ) {
       Serial.println(F(">"));
       break;
     case 12:
-      Serial.print(F("<ESERVO2_ISFLIP="));
+      Serial.print(F("<ESERVO2_SETFLIP="));
       if ( value_string == F("TRUE") ) {
         servoEaser2.setFlipped( true );
         Serial.print(F("TRUE"));

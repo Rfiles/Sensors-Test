@@ -178,7 +178,7 @@ void ExecuteCommand() {
 #endif
 #ifdef ENABLE_SERVO_EASER
   if (id_string == F("ESERVOS_START")) EServos_Start();
-  if (id_string == F("ESERVOS_LOOPSTOP"))  EServos_Setup(5);
+  if (id_string == F("ESERVOS_LOOPEN"))  EServos_Setup(5);
   if (id_string == F("ESERVO1_DELAY")) EServos_Setup(1);
   if (id_string == F("ESERVO2_DELAY")) EServos_Setup(2);
   if (id_string == F("ESERVO1_ANGLE")) EServos_Setup(3);
