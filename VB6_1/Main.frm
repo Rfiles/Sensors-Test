@@ -4,7 +4,7 @@ Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form Main 
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Comandos Arduino"
+   Caption         =   "Modules Tester"
    ClientHeight    =   5670
    ClientLeft      =   45
    ClientTop       =   690
@@ -14,6 +14,14 @@ Begin VB.Form Main
    ScaleHeight     =   5670
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox Check1 
+      Caption         =   "Ping MCU every 15 seconds"
+      Height          =   255
+      Left            =   8400
+      TabIndex        =   25
+      Top             =   2640
+      Width           =   2535
+   End
    Begin VB.Timer Timer3 
       Enabled         =   0   'False
       Interval        =   1000
@@ -35,6 +43,7 @@ Begin VB.Form Main
       _ExtentX        =   12303
       _ExtentY        =   5953
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"Main.frx":0000
    End
@@ -45,12 +54,12 @@ Begin VB.Form Main
       Top             =   5040
    End
    Begin VB.CommandButton Command4 
-      Caption         =   "Send"
+      Caption         =   "Execute"
       Height          =   255
       Left            =   10080
       TabIndex        =   12
       Top             =   3240
-      Width           =   615
+      Width           =   735
    End
    Begin VB.TextBox Text4 
       Height          =   1575
@@ -97,7 +106,7 @@ Begin VB.Form Main
       Width           =   855
    End
    Begin VB.CommandButton Command2 
-      Caption         =   "Limpar"
+      Caption         =   "Clean"
       Height          =   375
       Left            =   6240
       TabIndex        =   6
@@ -113,7 +122,16 @@ Begin VB.Form Main
       Width           =   5055
    End
    Begin VB.CommandButton Command1 
-      Caption         =   "ENVIAR"
+      Caption         =   "Send"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   5880
       TabIndex        =   0
@@ -128,6 +146,33 @@ Begin VB.Form Main
       _Version        =   393216
       DTREnable       =   -1  'True
       BaudRate        =   115200
+   End
+   Begin VB.Label Label17 
+      Alignment       =   2  'Center
+      BackColor       =   &H80000016&
+      Caption         =   "-"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   4560
+      TabIndex        =   24
+      Top             =   360
+      Width           =   735
+   End
+   Begin VB.Label Label16 
+      Caption         =   "MCU Idle Loop Since Last cmd (ms):"
+      Height          =   255
+      Left            =   1920
+      TabIndex        =   23
+      Top             =   360
+      Width           =   2655
    End
    Begin VB.Label Label15 
       Caption         =   "RX"
@@ -253,12 +298,12 @@ Begin VB.Form Main
       Width           =   255
    End
    Begin VB.Label Label6 
-      Caption         =   "Simular Entradas"
+      Caption         =   "Simulate RX"
       Height          =   255
-      Left            =   8640
+      Left            =   8520
       TabIndex        =   11
       Top             =   3240
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.Label Label5 
       Caption         =   "COM PORT"
@@ -313,7 +358,7 @@ Begin VB.Form Main
       Width           =   255
    End
    Begin VB.Label Label2 
-      Caption         =   "Dados Recebidos:"
+      Caption         =   "Received Data:"
       Height          =   255
       Left            =   720
       TabIndex        =   3
@@ -346,9 +391,9 @@ Begin VB.Form Main
       Width           =   2535
    End
    Begin VB.Menu menu_ligacao 
-      Caption         =   "Ligação"
+      Caption         =   "Settings"
       Begin VB.Menu menu_porta 
-         Caption         =   "Porta"
+         Caption         =   "Comm Port"
       End
    End
    Begin VB.Menu menu_debug 
@@ -361,9 +406,12 @@ Begin VB.Form Main
          Caption         =   "Input"
          Checked         =   -1  'True
       End
+      Begin VB.Menu menu_ftr 
+         Caption         =   "FreeTime Report"
+      End
    End
    Begin VB.Menu menu_modulo 
-      Caption         =   "Modulo"
+      Caption         =   "Module"
       Enabled         =   0   'False
       Begin VB.Menu menu_eservo 
          Caption         =   "Servos Easer"
@@ -393,6 +441,15 @@ Begin VB.Form Main
       End
       Begin VB.Menu menu_light 
          Caption         =   "BH1750"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_uv 
+         Caption         =   "VEML6050"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_rgb 
+         Caption         =   "TCS34725"
+         Enabled         =   0   'False
       End
    End
 End
@@ -404,12 +461,14 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Function Modules_Enabler()
-    If id_string = "ENABLE_BME" Then menu_bme.Enabled = True
-    If id_string = "ENABLE_RTC" Then menu_rtc.Enabled = True
-    If id_string = "ENABLE_INT_SERVO" Then menu_servo.Enabled = True
-    If id_string = "ENABLE_I2CSCAN" Then menu_I2CScan.Enabled = True
-    If id_string = "ENABLE_ESERVO" Then menu_eservo.Enabled = True
-    If id_string = "ENABLE_BH1750" Then menu_light.Enabled = True
+    If value_string = "BME" Then menu_bme.Enabled = True
+    If value_string = "RTC" Then menu_rtc.Enabled = True
+    If value_string = "INT_SERVO" Then menu_servo.Enabled = True
+    If value_string = "I2CSCAN" Then menu_I2CScan.Enabled = True
+    If value_string = "ESERVO" Then menu_eservo.Enabled = True
+    If value_string = "BH1750" Then menu_light.Enabled = True
+    If value_string = "UV" Then menu_uv.Enabled = True
+    If value_string = "RGB" Then menu_rgb.Enabled = True
 
 End Function
 
@@ -437,12 +496,19 @@ Private Sub Command3_Click()
         RichTextBox1.Text = ""
     Else
         Timer3.Enabled = False
-        Label10.Caption = ""
+        Label10.Caption = "-"
+        Label12.Caption = "-"
+        Label13.Caption = "-"
         Label1.Caption = "Idle"
         MSComm1.PortOpen = False
         Shape1.FillColor = &H80FF&
         Label4.Caption = ""
         Command3.Caption = "Connect"
+        Shape2.FillColor = vbBlack
+        Shape3.FillColor = vbBlack
+        Shape5.FillColor = vbBlack
+        menu_modulo.Enabled = False
+        
     End If
 End Sub
 
@@ -451,7 +517,7 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Form_Load()
-'    i2c_scanner.Visible = True
+'TCS.Visible = True
 End Sub
 
 Private Sub menu_bme_Click()
@@ -478,6 +544,20 @@ Private Sub menu_eservo_Click()
     EServos.Visible = True
 End Sub
 
+Private Sub menu_ftr_Click()
+    If menu_ftr.Checked = True Then
+            menu_ftr.Checked = False
+            SendData "<FTR=OFF>"
+    Else
+        If Shape3.FillColor = vbGreen Then
+            menu_ftr.Checked = True
+            SendData "<FTR=ON>"
+        Else
+            MsgBox "You have to be autenticated to get this info", , "Warning"
+        End If
+    End If
+End Sub
+
 Private Sub menu_I2CScan_Click()
     i2c_scanner.Visible = True
 End Sub
@@ -490,12 +570,24 @@ Private Sub menu_light_Click()
     BH1750.Visible = True
 End Sub
 
+Private Sub menu_porta_Click()
+    MsgBox "Not implemented.", , "Warning"
+End Sub
+
+Private Sub menu_rgb_Click()
+    TCS.Visible = True
+End Sub
+
 Private Sub menu_rtc_Click()
     Rtc.Visible = True
 End Sub
 
 Private Sub menu_servo_Click()
     Servos.Visible = True
+End Sub
+
+Private Sub menu_uv_Click()
+    UV.Visible = True
 End Sub
 
 Private Sub menu_validate_Click()
@@ -531,6 +623,7 @@ End Sub
 
 Private Sub Timer2_Timer()
     Shape5.FillColor = vbRed
+    ResetStrings
 End Sub
 
 Private Sub Timer3_Timer()

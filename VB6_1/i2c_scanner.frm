@@ -14,7 +14,7 @@ Begin VB.Form i2c_scanner
    ScaleWidth      =   8415
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
-      Caption         =   "Scan Muxer"
+      Caption         =   "Scan With I2C Multiplexer"
       Height          =   495
       Left            =   3360
       TabIndex        =   4
@@ -22,7 +22,7 @@ Begin VB.Form i2c_scanner
       Width           =   1575
    End
    Begin VB.CommandButton Command1 
-      Caption         =   "Scan Normal"
+      Caption         =   "Normal I2C Scan"
       Height          =   495
       Left            =   3360
       TabIndex        =   3
@@ -98,7 +98,7 @@ Begin VB.Form i2c_scanner
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackColor       =   &H80000010&
-      Caption         =   "Able to Scan I2C addresses with MPU6050 slave i2c and TCA9548A Multiplexer"
+      Caption         =   "This Can Scan I2C addresses with MPU6050 slave i2c and TCA9548A Multiplexer"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   8.25
@@ -151,6 +151,12 @@ Function I2C_Addr2Name(addr As Integer) As String
   Select Case addr
     Case 30
       I2C_Addr2Name = "HMC5883L"
+      
+    Case 35
+      I2C_Addr2Name = "BH1750FVI"
+    
+    Case 41
+      I2C_Addr2Name = "TCS34725"
 
     Case 54
       I2C_Addr2Name = "MAX17043"
@@ -163,6 +169,9 @@ Function I2C_Addr2Name(addr As Integer) As String
 
     Case 58
       I2C_Addr2Name = "INA219"
+      
+    Case 83
+      I2C_Addr2Name = "AT24C32 Pin(A2)=1"
 
     Case 87
       I2C_Addr2Name = "DS3231"

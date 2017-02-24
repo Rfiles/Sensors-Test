@@ -78,7 +78,7 @@ Begin VB.Form Validate
       Width           =   855
    End
    Begin VB.Label Label6 
-      Caption         =   "Debug: Esperado"
+      Caption         =   "Debug: Expected"
       Height          =   255
       Left            =   240
       TabIndex        =   10
@@ -86,7 +86,7 @@ Begin VB.Form Validate
       Width           =   1335
    End
    Begin VB.Label Label5 
-      Caption         =   "Codigo Resposta"
+      Caption         =   "Challange Resp"
       Height          =   255
       Left            =   240
       TabIndex        =   9
@@ -94,7 +94,7 @@ Begin VB.Form Validate
       Width           =   1335
    End
    Begin VB.Label Label4 
-      Caption         =   "Codigo Recebido"
+      Caption         =   "Rx Challenge"
       Height          =   255
       Left            =   240
       TabIndex        =   8
@@ -102,7 +102,7 @@ Begin VB.Form Validate
       Width           =   1335
    End
    Begin VB.Label Label3 
-      Caption         =   "Chave Secreta"
+      Caption         =   "Secret Key"
       Height          =   255
       Left            =   240
       TabIndex        =   7
@@ -128,7 +128,7 @@ Begin VB.Form Validate
       Alignment       =   2  'Center
       BackColor       =   &H8000000D&
       BorderStyle     =   1  'Fixed Single
-      Caption         =   "3"
+      Caption         =   "4"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -159,34 +159,39 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
-    SendData "<AUTH?>"
+    If Val(Text3.Text) < 1000 Then
+        SendData "<AUTH?>"
+    Else
+        MsgBox "Secret Key must be less than 1000.", , "Warning"
+    End If
+
 End Sub
 
 Function ValidateAuth() As Integer
-    ValidateAuth = (Val(Text2.Text) Xor Val(Text3.Text))
-    Text4.Text = ValidateAuth
-    SendData "<AUTH=" & ValidateAuth & ">"
+        ValidateAuth = (Val(Text2.Text) Xor Val(Text3.Text))
+        Text4.Text = ValidateAuth
+        SendData "<AUTH=" & ValidateAuth & ">"
 End Function
 
 Function parse_cmd()
-
+    'usar case
     If id_string = "CHECK" Then
         Text2.Text = Val(value_string)
         Shape1.FillColor = vbRed
-        Shape2.FillColor = vbGreen
+        Shape2.FillColor = vbBlack
         ValidateAuth
     End If
     If id_string = "AUTH" Then
         If value_string = "PASS" Then
             Shape1.FillColor = vbGreen
-            Shape2.FillColor = vbGreen
+            'Shape2.FillColor = vbGreen
             main.Shape3.FillColor = vbGreen
             main.Label7.Caption = "Authorized"
             Label1.Caption = 3
         End If
         If value_string = "FAIL" Then
             Shape1.FillColor = vbRed
-            Shape2.FillColor = vbGreen
+            Shape2.FillColor = vbBlack
             main.Shape3.FillColor = vbRed
             main.Label7.Caption = "Fail"
             Label1.Caption = Val(Label1.Caption) - 1
@@ -196,7 +201,7 @@ Function parse_cmd()
             Shape2.FillColor = vbRed
             main.Shape3.FillColor = vbRed
             main.Label7.Caption = "Locked"
-
+            Label1.Caption = 0
         End If
     End If
     If id_string = "DEBUGKEY" Then

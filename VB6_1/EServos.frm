@@ -7,12 +7,12 @@ Begin VB.Form EServos
    ClientHeight    =   4920
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   10500
+   ClientWidth     =   10305
    FillColor       =   &H0000FFFF&
    LinkTopic       =   "Form8"
    MaxButton       =   0   'False
    ScaleHeight     =   4920
-   ScaleWidth      =   10500
+   ScaleWidth      =   10305
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame Frame1 
       BackColor       =   &H8000000A&
@@ -515,7 +515,7 @@ Private Sub Slider2_Change()
 End Sub
 
 Function eservos_rx()
-
+'usar case
     If id_string = "ESERVOS_START" Then
         Shape1.FillColor = vbGreen
     End If

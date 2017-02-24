@@ -104,6 +104,8 @@ Function ExecuteCommand()
             Servos.servos_rx
 
     '-----------------------------------------------------------------
+        Case "LOOPFREETIME"
+            main.Label17.Caption = Val(value_string)
     '-----------------------------------------------------------------
     '-----------------------------------------------------------------
         Case Else
@@ -127,7 +129,7 @@ Function ExecuteCommand()
     End If
 
     '-----------------------------------------------------------------
-    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Validate.parse_cmd
+    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Validate.Parse_Cmd
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "BME" And content = 1 Then
@@ -146,6 +148,16 @@ Function ExecuteCommand()
     If Left(id_string, 5) = "LIGHT" And content = 1 Then
         BH1750.light_parse
     End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 2) = "UV" And content = 1 Then
+        UV.UV_Parse
+    End If
+    
+    If Left(id_string, 3) = "RGB" And content = 1 Then
+        TCS.RGB_Parse
+    End If
+    
     
         
     ResetStrings

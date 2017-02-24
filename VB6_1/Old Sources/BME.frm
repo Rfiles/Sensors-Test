@@ -110,7 +110,7 @@ Begin VB.Form BME
       _Version        =   393216
       Value           =   1000
       BuddyControl    =   "Label6"
-      BuddyDispid     =   196630
+      BuddyDispid     =   196627
       OrigLeft        =   7920
       OrigTop         =   5160
       OrigRight       =   8175
@@ -171,7 +171,7 @@ Begin VB.Form BME
          _ExtentY        =   661
          _Version        =   393216
          Appearance      =   1
-         Min             =   80000
+         Min             =   90000
          Max             =   1,10000e5
          Scrolling       =   1
       End
@@ -447,8 +447,6 @@ End Sub
 
 Function BME_Fill_Lists()
     '---------------------------------------------------
-    
-    'usar case
     If id_string = "BME_TEMP" Then
         Label8.Caption = Val(value_string)
         ProgressBar2.Value = Val(value_string)

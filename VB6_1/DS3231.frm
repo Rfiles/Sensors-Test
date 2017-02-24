@@ -740,10 +740,10 @@ Begin VB.Form Rtc
    End
    Begin VB.Label Label31 
       BackStyle       =   0  'Transparent
-      Caption         =   "PC TIME OFF:"
+      Caption         =   "PC CLOCK DIFF:"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -920,7 +920,7 @@ Attribute VB_Exposed = False
 
 Function ParseInput()
 Dim Temp_String As String
-
+    'usar case
     
     If id_string = "RTC_TIME" Then
         Label32.Caption = ((Label1.Caption * 3600) + (Label2.Caption * 60) + Label3.Caption) - ((Hour(Now) * 3600) + (Minute(Now) * 60) + Second(Now))
@@ -1059,13 +1059,14 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Timer1_Timer()
+    SendData "<RTC_RUNNING?>"
     SendData "<RTC_TIME?>"
     SendData "<RTC_DATE?>"
     SendData "<RTC_DAYWEEK?>"
     SendData "<RTC_TEMP?>"
 
     SendData "<RTC_VALID?"
-    SendData "<RTC_RUNNING?>"
+    'SendData "<RTC_RUNNING?>"
 End Sub
 
 Private Sub UpDown12_DownClick()

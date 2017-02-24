@@ -6,11 +6,28 @@
 //      -> use // to disable function
 //#################################################################################################
 
+//         total    |   single
+//type  rom     ram | rom    ram
+//base  6888  , 402 | 0    , 0
+//bme   14948 , 493 | 8060 , 91
+//scan  7630  , 402 | 742  , 0
+//ease  13388 , 593 | 6500 , 191
+//ligh  11014 , 459 | 4126 , 57
+//ftr   7226  , 423 | 338  , 21
+//rgb   9084  , 483
+//  SUM 26654
+//  CMP 27856
+
 #define ENABLE_BME
 #define ENABLE_RTC
 #define ENABLE_I2CSCAN
-//#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
-#define ENABLE_SERVO_EASER        //either this or servo_easer
+////#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
+#define ENABLE_SERVO_EASER        //either this or internal_servo
+#define ENABLE_BH1750
+#define ENABLE_FREETIME_REPORT
+#define ENABLE_UV
+#define ENABLE_RGB
+
 
 // USER CONFIGURATION ABOVE ONLY
 //#################################################################################################
@@ -23,14 +40,6 @@
 //#################################################################################################
 // DEFINITIONS
 //#################################################################################################
-//
-//#ifdef ENABLE_SERVO_EASER
-//  bool ServoLoopEnabled = false;
-//  Servo servo1;
-//  Servo servo2;
-//  ServoEaser servoEaser1;
-//  ServoEaser servoEaser2;
-//#endif
 
 String    id_string;
 String    value_string;
@@ -43,13 +52,14 @@ char      byterx;
 int DEVICE_ID = 1234;
 int checkkey, iscryptvalid, keytrylock=3, randomkey;
 unsigned long freetimeloop;
+bool enable_ftr;
 
 //#################################################################################################
 // SETUP
 //#################################################################################################
 void setup() {
   Serial.begin(115200);
-  
+  Wire.begin();
 //  myservo1.attach(7);  // attaches the servo on pin 9 to the servo object
 //  myservo2.attach(8);  // attaches the servo on pin 9 to the servo object
   Modules_Data();
@@ -116,11 +126,14 @@ void loop() {
 // REMOTE COMMANDS FUNCTION
 //#################################################################################################
 void ExecuteCommand() {
-//  Serial.print("<LOOPFREETIME=");
-//  Serial.print( millis() - freetimeloop );
-//  Serial.println(">");
-//  freetimeloop = millis();
-
+#ifdef ENABLE_FREETIME_REPORT
+  if ( iscryptvalid & enable_ftr ) {
+    Serial.print("<LOOPFREETIME=");
+    Serial.print( millis() - freetimeloop );
+    Serial.println(">");
+    freetimeloop = millis();
+  }
+#endif
 //  Serial.print(" ( ");
 //  Serial.print(id_string);
 //  Serial.print(" - ");
@@ -130,6 +143,9 @@ void ExecuteCommand() {
   if (id_string == F("LED13")) LED13_Data();
   if (id_string == F("AUTH")) Validate_Data();
   if (id_string == F("MODULES")) Modules_Data();
+#ifdef ENABLE_FREETIME_REPORT  
+  if (id_string == F("FTR")) FreeTime_Data();
+#endif
 #ifdef ENABLE_INTERNAL_SERVO
   if (id_string == F("SERVO1")) Servo1_Data();
   if (id_string == F("SERVO2")) Servo2_Data();
@@ -194,6 +210,28 @@ void ExecuteCommand() {
   if (id_string == F("ESERVO2_SETFLIP"))  EServos_Setup(12);
   if (id_string == F("ESERVO2_ISFLIP"))  EServos_Setup(13);
 #endif
+#ifdef ENABLE_BH1750
+  if (id_string == F("LIGHT_START")) light_start();
+  if (id_string == F("LIGHT_RES"))  light_setup(1);
+  if (id_string == F("LIGHT_SENS"))  light_setup(2);
+  if (id_string == F("LIGHT_READ"))  light_setup(3);
+#endif
+#ifdef ENABLE_UV
+  if (id_string == F("UV_START"))  uv_start();
+  if (id_string == F("UV_READ"))  uv_read();
+  if (id_string == F("UV_SETIT"))  uv_set_it();
+#endif
+#ifdef ENABLE_RGB
+  if (id_string == F("RGB_START"))  rgb_start();
+  if (id_string == F("RGB_READ_1"))  rgb_cmd(0);
+  if (id_string == F("RGB_LED"))  rgb_cmd(1);
+  if (id_string == F("RGB_IT"))  rgb_cmd(2);
+  if (id_string == F("RGB_GAIN"))  rgb_cmd(3);
+  if (id_string == F("RGB_READ_2"))  rgb_cmd(4);
+  if (id_string == F("RGB_PWR"))  rgb_cmd(5);
+  if (id_string == F("RGB_ID"))  rgb_cmd(6);
+
+#endif
 
   
   ResetStrings();
@@ -233,6 +271,22 @@ void LED13_Data() {
   }
 }
 
+#ifdef ENABLE_FREETIME_REPORT  
+void FreeTime_Data() {
+  if (content == CMD_SET) {
+    if ( value_string == F("ON") ) {
+      enable_ftr = true;
+      Serial.println(F("<FTR=ON>"));
+    }
+    if ( value_string == F("OFF") ) {
+      enable_ftr = false;
+      Serial.println(F("<FTR=OFF>"));
+    }
+  }
+}
+#endif
+
+
 void tca_sel_data() {
   if (content == CMD_SET) {
     tcaselect(value_string.toInt());
@@ -241,19 +295,28 @@ void tca_sel_data() {
 
 void Modules_Data(){
 #ifdef ENABLE_BME
-  Serial.print(F("<ENABLE_BME=>"));
+  Serial.print(F("<ENABLE=BME>"));
 #endif
 #ifdef ENABLE_RTC
-  Serial.print(F("<ENABLE_RTC=>"));
+  Serial.print(F("<ENABLE=RTC>"));
 #endif
 #ifdef ENABLE_INTERNAL_SERVO
-  Serial.print(F("<ENABLE_INT_SERVO=>"));
+  Serial.print(F("<ENABLE=INT_SERVO>"));
 #endif
 #ifdef ENABLE_SERVO_EASER
-  Serial.print(F("<ENABLE_ESERVO=>"));
+  Serial.print(F("<ENABLE=ESERVO>"));
 #endif
 #ifdef ENABLE_I2CSCAN
-  Serial.print(F("<ENABLE_I2CSCAN=>"));
+  Serial.print(F("<ENABLE=I2CSCAN>"));
+#endif
+#ifdef ENABLE_BH1750
+  Serial.print(F("<ENABLE=BH1750>"));
+#endif
+#ifdef ENABLE_UV
+  Serial.print(F("<ENABLE=UV>"));
+#endif
+#ifdef ENABLE_RGB
+  Serial.print(F("<ENABLE=RGB>"));
 #endif
   
 }
