@@ -14,6 +14,7 @@ Begin VB.Form Validate
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Text4 
       Alignment       =   2  'Center
+      Enabled         =   0   'False
       Height          =   285
       Left            =   1680
       TabIndex        =   5
@@ -23,17 +24,18 @@ Begin VB.Form Validate
    End
    Begin VB.TextBox Text3 
       Alignment       =   2  'Center
+      BackColor       =   &H00C0FFC0&
       Height          =   285
       IMEMode         =   3  'DISABLE
       Left            =   1680
       PasswordChar    =   "*"
       TabIndex        =   4
-      Text            =   "845"
       Top             =   1320
       Width           =   1335
    End
    Begin VB.TextBox Text2 
       Alignment       =   2  'Center
+      Enabled         =   0   'False
       Height          =   285
       Left            =   1680
       TabIndex        =   3
@@ -43,6 +45,7 @@ Begin VB.Form Validate
    End
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
+      Enabled         =   0   'False
       Height          =   285
       Left            =   1680
       TabIndex        =   2
@@ -70,8 +73,17 @@ Begin VB.Form Validate
    Begin VB.Label Label7 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Tentativas"
-      Height          =   375
+      Caption         =   "Tries"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
       Left            =   3360
       TabIndex        =   11
       Top             =   1320
@@ -159,10 +171,14 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
-    If Val(Text3.Text) < 1000 Then
-        SendData "<AUTH?>"
+    If Text3.Text <> "" Then
+        If Val(Text3.Text) < 1000 Then
+            SendData "<AUTH?>", TCA_NONE
+        Else
+            MsgBox "Secret Key must be less than 1000.", , "Warning"
+        End If
     Else
-        MsgBox "Secret Key must be less than 1000.", , "Warning"
+        MsgBox "Must input Secret Key. Must be a Number.", , "Warning"
     End If
 
 End Sub
@@ -170,7 +186,7 @@ End Sub
 Function ValidateAuth() As Integer
         ValidateAuth = (Val(Text2.Text) Xor Val(Text3.Text))
         Text4.Text = ValidateAuth
-        SendData "<AUTH=" & ValidateAuth & ">"
+        SendData "<AUTH=" & ValidateAuth & ">", TCA_NONE
 End Function
 
 Function parse_cmd()
@@ -208,6 +224,10 @@ Function parse_cmd()
         Text1.Text = Val(value_string)
     End If
 End Function
+
+Private Sub Form_Load()
+
+End Sub
 
 Private Sub Label2_DblClick()
 If Text3.PasswordChar = "*" Then

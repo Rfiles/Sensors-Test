@@ -5,6 +5,7 @@ void Validate_Data () {
   if (content == CMD_GET){
     if (!iscryptvalid) {
       if (keytrylock) {
+        randomSeed(millis());
         randomkey = random(0,1024);       // chave de resposta
         checkkey = randomkey ^ cryptokey; // xor challenge
 //        Serial.print(F("<DEBUGKEY="));

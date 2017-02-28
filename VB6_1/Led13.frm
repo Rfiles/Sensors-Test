@@ -133,9 +133,9 @@ End Sub
 
 Private Sub Command1_Click()
     If Shape1.FillColor = vbBlack Then
-        SendData "<LED13=ON>"
+        SendData "<LED13=ON>", TCA_NONE
     Else
-        SendData "<LED13=OFF>"
+        SendData "<LED13=OFF>", TCA_NONE
     End If
 End Sub
 
@@ -157,9 +157,9 @@ End Function
 
 Private Sub Timer1_Timer()
     If Shape1.FillColor = vbBlack Then
-        SendData "<LED13=ON>"
+        SendData "<LED13=ON>", TCA_NONE
     Else
-        SendData "<LED13=OFF>"
+        SendData "<LED13=OFF>", TCA_NONE
     End If
 End Sub
 

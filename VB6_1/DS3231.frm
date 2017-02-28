@@ -201,7 +201,7 @@ Begin VB.Form Rtc
          Caption         =   "M"
          Height          =   255
          Left            =   120
-         TabIndex        =   65
+         TabIndex        =   64
          Top             =   600
          Width           =   255
       End
@@ -211,7 +211,7 @@ Begin VB.Form Rtc
          Caption         =   "H"
          Height          =   255
          Left            =   120
-         TabIndex        =   64
+         TabIndex        =   63
          Top             =   240
          Width           =   255
       End
@@ -227,7 +227,7 @@ Begin VB.Form Rtc
          Caption         =   "Enabled:"
          Height          =   255
          Left            =   1200
-         TabIndex        =   60
+         TabIndex        =   59
          Top             =   240
          Width           =   855
       End
@@ -355,7 +355,7 @@ Begin VB.Form Rtc
          Caption         =   "S"
          Height          =   255
          Left            =   120
-         TabIndex        =   63
+         TabIndex        =   62
          Top             =   960
          Width           =   255
       End
@@ -365,7 +365,7 @@ Begin VB.Form Rtc
          Caption         =   "M"
          Height          =   255
          Left            =   120
-         TabIndex        =   62
+         TabIndex        =   61
          Top             =   600
          Width           =   255
       End
@@ -375,7 +375,7 @@ Begin VB.Form Rtc
          Caption         =   "H"
          Height          =   255
          Left            =   120
-         TabIndex        =   61
+         TabIndex        =   60
          Top             =   240
          Width           =   255
       End
@@ -391,7 +391,7 @@ Begin VB.Form Rtc
          Caption         =   "Enabled:"
          Height          =   255
          Left            =   1200
-         TabIndex        =   59
+         TabIndex        =   58
          Top             =   240
          Width           =   855
       End
@@ -470,7 +470,9 @@ Begin VB.Form Rtc
          _ExtentX        =   450
          _ExtentY        =   873
          _Version        =   393216
+         Value           =   1
          Max             =   12
+         Min             =   1
          Enabled         =   -1  'True
       End
       Begin MSComCtl2.UpDown UpDown15 
@@ -482,7 +484,9 @@ Begin VB.Form Rtc
          _ExtentX        =   450
          _ExtentY        =   873
          _Version        =   393216
+         Value           =   1
          Max             =   31
+         Min             =   1
          Enabled         =   -1  'True
       End
       Begin MSComCtl2.UpDown UpDown14 
@@ -526,9 +530,9 @@ Begin VB.Form Rtc
          Caption         =   " H      M     S     D      M     Y"
          Height          =   255
          Left            =   3720
-         TabIndex        =   56
+         TabIndex        =   65
          Top             =   840
-         Width           =   2175
+         Width           =   2535
       End
       Begin VB.Shape Shape8 
          FillStyle       =   0  'Solid
@@ -734,7 +738,7 @@ Begin VB.Form Rtc
       Caption         =   "-"
       Height          =   255
       Left            =   4320
-      TabIndex        =   58
+      TabIndex        =   57
       Top             =   2880
       Width           =   495
    End
@@ -752,7 +756,7 @@ Begin VB.Form Rtc
       EndProperty
       Height          =   255
       Left            =   3120
-      TabIndex        =   57
+      TabIndex        =   56
       Top             =   2880
       Width           =   1215
    End
@@ -917,6 +921,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim Temp_Week As Single
 
 Function ParseInput()
 Dim Temp_String As String
@@ -932,15 +937,16 @@ Dim Temp_String As String
         UpDown14.Value = Val(Mid(value_string, 7, 2))
     End If
     If id_string = "RTC_DATE" Then
-        Label6.Caption = Val(Mid(value_string, 1, 4))
-        UpDown15.Value = Val(Mid(value_string, 1, 2))
+        Label4.Caption = Val(Mid(value_string, 9, 4))
+        UpDown15.Value = Val(Mid(value_string, 9, 2))
         Label5.Caption = Val(Mid(value_string, 6, 2))
         UpDown16.Value = Val(Mid(value_string, 6, 2))
-        Label4.Caption = Val(Mid(value_string, 9, 2))
-        UpDown17.Value = Val(Mid(value_string, 9, 2))
+        Label6.Caption = Val(Mid(value_string, 3, 2)) + 2000
+        UpDown17.Value = Val(Mid(value_string, 3, 2))
     End If
     If id_string = "RTC_DAYWEEK" Then
-        Select Case Val(value_string)
+        Temp_Week = Val(value_string)
+        Select Case Temp_Week
             Case 1
                 Temp_String = "Monday"
             Case 2
@@ -953,7 +959,7 @@ Dim Temp_String As String
                 Temp_String = "Friday"
             Case 6
                 Temp_String = "Saturday"
-            Case 7
+            Case 0
                 Temp_String = "Sunday"
             Case Else
                 Temp_String = "ERROR"
@@ -981,9 +987,9 @@ End Function
 
 Private Sub Check1_Click()
     If Check1.Value = 1 Then
-        SendData "<RTC_32OUT=TRUE>"
+        SendData "<RTC_32OUT=TRUE>", TCA_RTC
     Else
-        SendData "<RTC_32OUT=FALSE>"
+        SendData "<RTC_32OUT=FALSE>", TCA_RTC
     End If
 End Sub
 
@@ -995,40 +1001,38 @@ Private Sub Check4_Click()
     End If
 End Sub
 
-Private Sub Command1_Click()
-
-End Sub
 
 Private Sub Command2_Click()
-    SendData "<RTC_TIME?>"
-    SendData "<RTC_DATE?>"
-    SendData "<RTC_DAYWEEK?>"
-    SendData "<RTC_VALID?>"
-    SendData "<RTC_RUNNING?>"
-    SendData "<RTC_TEMP?>"
+    SendData "<RTC_TIME?>", TCA_RTC
+    SendData "<RTC_DATE?>", TCA_NONE
+    SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_VALID?>", TCA_NONE
+    SendData "<RTC_RUNNING?>", TCA_NONE
+    SendData "<RTC_TEMP?>", TCA_NONE
    ' SendData "<RTC_AGOFFS?>" provoca bug que nao executa time? correctamente.. arduino side?
 
 End Sub
 
 Private Sub Command4_Click()
-    SendData "<RTC_HOUR=" & Hour(Now) & ">"
-    SendData "<RTC_MINUTE=" & Minute(Now) & ">"
-    SendData "<RTC_SECOND=" & Second(Now) & ">"
+    SendData "<RTC_HOUR=" & Hour(Now) & ">", TCA_RTC
+    SendData "<RTC_MINUTE=" & Minute(Now) & ">", TCA_NONE
+    SendData "<RTC_SECOND=" & Second(Now) & ">", TCA_NONE
     
-    SendData "<RTC_YEAR=" & Year(Now) & ">"
-    SendData "<RTC_MONTH=" & Month(Now) & ">"
-    SendData "<RTC_DAY=" & Day(Now) & ">"
+    SendData "<RTC_YEAR=" & Year(Now) - 2000 & ">", TCA_NONE
+    'Debug.Print Year(Now)
+    SendData "<RTC_MONTH=" & Month(Now) & ">", TCA_NONE
+    SendData "<RTC_DAY=" & Day(Now) & ">", TCA_NONE
     
-    SendData "<RTC_DAYWEEK?>"
-    SendData "<RTC_VALID?>"
-    SendData "<RTC_RUNNING?>"
-    SendData "<RTC_TEMP?>"
+    SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_VALID?>", TCA_NONE
+    SendData "<RTC_RUNNING?>", TCA_NONE
+    SendData "<RTC_TEMP?>", TCA_NONE
 
 
 End Sub
 
 Private Sub Form_Load()
-    SendData "<RTC_START=>"
+    SendData "<RTC_START=>", TCA_RTC
     
     Combo4.AddItem "(H M S W) Match"
     Combo4.AddItem "Once Minute"
@@ -1054,69 +1058,68 @@ Private Sub Form_Load()
     Combo2.AddItem "1 kHz"
     Combo2.AddItem "4 kHz"
     Combo2.AddItem "8 kHz"
-    
+
     
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<RTC_RUNNING?>"
-    SendData "<RTC_TIME?>"
-    SendData "<RTC_DATE?>"
-    SendData "<RTC_DAYWEEK?>"
-    SendData "<RTC_TEMP?>"
-
-    SendData "<RTC_VALID?"
-    'SendData "<RTC_RUNNING?>"
+    SendData "<RTC_RUNNING?>", TCA_RTC
+    SendData "<RTC_TIME?>", TCA_NONE
+    SendData "<RTC_DATE?>", TCA_NONE
+    SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_TEMP?>", TCA_NONE
+    SendData "<RTC_VALID?", TCA_NONE
 End Sub
 
 Private Sub UpDown12_DownClick()
-    SendData "<RTC_HOUR=" & UpDown12.Value & ">"
+    SendData "<RTC_HOUR=" & UpDown12.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown13_DownClick()
-    SendData "<RTC_MINUTE=" & UpDown13.Value & ">"
+    SendData "<RTC_MINUTE=" & UpDown13.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown14_DownClick()
-    SendData "<RTC_SECOND=" & UpDown14.Value & ">"
+    SendData "<RTC_SECOND=" & UpDown14.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown15_DownClick()
-    SendData "<RTC_DAY=" & UpDown15.Value & ">"
+    SendData "<RTC_DAY=" & UpDown15.Value & ">", TCA_RTC
+    SendData "<RTC_DAYWEEK?>", TCA_RTC
 End Sub
 
 Private Sub UpDown16_DownClick()
-    SendData "<RTC_MONTH=" & UpDown16.Value & ">"
+    SendData "<RTC_MONTH=" & UpDown16.Value & ">", TCA_RTC
+    SendData "<RTC_DAYWEEK?>", TCA_RTC
 End Sub
 
 Private Sub UpDown17_DownClick()
-    SendData "<RTC_YEAR=" & UpDown17.Value & ">"
+    SendData "<RTC_YEAR=" & UpDown17.Value & ">", TCA_RTC
+    SendData "<RTC_DAYWEEK?>", TCA_RTC
 End Sub
 
-
-
 Private Sub UpDown12_UpClick()
-    SendData "<RTC_HOUR=" & UpDown12.Value & ">"
+    SendData "<RTC_HOUR=" & UpDown12.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown13_UpClick()
-    SendData "<RTC_MINUTE=" & UpDown13.Value & ">"
+    SendData "<RTC_MINUTE=" & UpDown13.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown14_UpClick()
-    SendData "<RTC_SECOND=" & UpDown14.Value & ">"
+    SendData "<RTC_SECOND=" & UpDown14.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown15_UpClick()
-    SendData "<RTC_DAY=" & UpDown15.Value & ">"
+    SendData "<RTC_DAY=" & UpDown15.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown16_UpClick()
-    SendData "<RTC_MONTH=" & UpDown16.Value & ">"
+    SendData "<RTC_MONTH=" & UpDown16.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown17_UpClick()
-    SendData "<RTC_YEAR=" & UpDown17.Value & ">"
+    SendData "<RTC_YEAR=" & UpDown17.Value & ">", TCA_RTC
 End Sub
 
 Private Sub UpDown7_DownClick()

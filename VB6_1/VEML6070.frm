@@ -127,8 +127,8 @@ Private Sub Check1_Click()
 End Sub
 
 Private Sub Command1_Click()
-    SendData "<UV_READ?>"
-    SendData "<UV_SETIT=" & List1.ListIndex & ">"
+    SendData "<UV_READ?>", TCA_UV
+    SendData "<UV_SETIT=" & List1.ListIndex & ">", TCA_UV
 End Sub
 
 Private Sub Form_Load()
@@ -137,19 +137,19 @@ Private Sub Form_Load()
     List1.AddItem "250 ms"
     List1.AddItem "500 ms"
     List1.ListIndex = 1
-    SendData "<UV_START=>"
-    SendData "<UV_SETIT=1>"
+    SendData "<UV_START=>", TCA_UV
+    SendData "<UV_SETIT=1>", TCA_UV
 
 End Sub
 
 
 Private Sub List1_Click()
     'Debug.Print List1.ListIndex
-    SendData "<UV_INTTIME=" & List1.ListIndex & ">"
+    SendData "<UV_INTTIME=" & List1.ListIndex & ">", TCA_UV
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<UV_READ?>"
+    SendData "<UV_READ?>", TCA_UV
 End Sub
 
 Function UV_Parse()

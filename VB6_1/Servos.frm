@@ -170,44 +170,44 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Command1_Click()
-SendData "<SERVO1=68>"
-SendData "<SERVO2=68>"
+SendData "<SERVO1=68>", TCA_NONE
+SendData "<SERVO2=68>", TCA_NONE
 
 End Sub
 
 Private Sub Command2_Click()
     If Shape1.FillColor = vbRed Then
-        SendData "<SERVO1_ATTACH=>"
+        SendData "<SERVO1_ATTACH=>", TCA_NONE
     Else
-        SendData "<SERVO1_DETACH=>"
+        SendData "<SERVO1_DETACH=>", TCA_NONE
     End If
 End Sub
 
 Private Sub Command3_Click()
     If Shape2.FillColor = vbRed Then
-        SendData "<SERVO2_ATTACH=>"
+        SendData "<SERVO2_ATTACH=>", TCA_NONE
     Else
-        SendData "<SERVO2_DETACH=>"
+        SendData "<SERVO2_DETACH=>", TCA_NONE
     End If
 End Sub
 
 Private Sub Command4_Click()
-    SendData "<SERVO1=" & Int(Rnd() * 180) & ">"
-    SendData "<SERVO2=" & Int(Rnd() * 180) & ">"
+    SendData "<SERVO1=" & Int(Rnd() * 180) & ">", TCA_NONE
+    SendData "<SERVO2=" & Int(Rnd() * 180) & ">", TCA_NONE
 End Sub
 
 Private Sub Form_Load()
-SendData "<SERVO1_ISATTACHED?>"
-SendData "<SERVO2_ISATTACHED?>"
+SendData "<SERVO1_ISATTACHED?>", TCA_NONE
+SendData "<SERVO2_ISATTACHED?>", TCA_NONE
 
 End Sub
 
 Private Sub Slider1_Change()
-SendData "<SERVO1=" & Slider1.Value & ">"
+SendData "<SERVO1=" & Slider1.Value & ">", TCA_NONE
 End Sub
 
 Private Sub Slider2_Change()
-SendData "<SERVO2=" & Slider2.Value & ">"
+SendData "<SERVO2=" & Slider2.Value & ">", TCA_NONE
 End Sub
 
 

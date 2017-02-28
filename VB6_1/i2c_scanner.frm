@@ -120,19 +120,23 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim ScanWithTCA As Boolean
+
+
 Private Sub Command1_Click()
     ListView1.ListItems.Clear
-    SendData "<I2C_SCAN?>"
+    SendData "<I2C_SCAN?>", TCA_NONE
 End Sub
 
 Function parse_i2cscan_normal()
+    ScanWithTCA = False
     ListView1.ListItems.Add.Text = value_string
     ListView1.ListItems.Item(ListView1.ListItems.Count).ListSubItems.Add.Text = I2C_Addr2Name(Val(value_string))
 
 End Function
 
 Function parse_i2cscan_tca()
-
+    ScanWithTCA = True
 
     'If id_string = "I2C_SCAN" Then ListView1.ListItems.Item(1).ListSubItems.Add.Text = Val(value_string)
     
@@ -152,6 +156,9 @@ Function I2C_Addr2Name(addr As Integer) As String
     Case 30
       I2C_Addr2Name = "HMC5883L"
       
+    Case 32
+      I2C_Addr2Name = "MCP23017"
+      
     Case 35
       I2C_Addr2Name = "BH1750FVI"
     
@@ -167,18 +174,24 @@ Function I2C_Addr2Name(addr As Integer) As String
     Case 57
       I2C_Addr2Name = "VEML6070_L"
 
-    Case 58
+    Case 64
       I2C_Addr2Name = "INA219"
+      
+    Case 72
+      I2C_Addr2Name = "ADS1115"
       
     Case 83
       I2C_Addr2Name = "AT24C32 Pin(A2)=1"
 
-    Case 87
-      I2C_Addr2Name = "DS3231"
+    'Case 87
+    '  I2C_Addr2Name = "? DS3231"
+    
+    Case 90
+      I2C_Addr2Name = "MLX90614"
 
     Case 104
-      I2C_Addr2Name = "MPU6050"
-
+      I2C_Addr2Name = "MPU6050/DS3231"
+    
     Case 112
       I2C_Addr2Name = "TCA9548A"
 
@@ -196,7 +209,7 @@ End Function
 
 Private Sub Command2_Click()
     ListView2.ListItems.Clear
-    SendData "<I2CSCAN_TCA?>"
+    SendData "<I2CSCAN_TCA?>", TCA_NONE
 End Sub
 
 

@@ -1,0 +1,29 @@
+[Version]
+Version=1.0.0.14
+
+[Project1_14.exe <0009>]
+Dest=$(AppPath)
+Date=26/02/2017
+Time=00:06
+Version=1.0.0.14
+CABFilename=Project1_14.CAB
+CABINFFile=Project1_14.INF
+Uses1=msvbvm60.dll
+Uses2=OLEAUT32.DLL
+Uses3=OLEPRO32.DLL
+Uses4=ASYCFILT.DLL
+Uses5=STDOLE2.TLB
+Uses6=COMCAT.DLL
+Uses7=MSCOMCTL.OCX
+Uses8=MSCOMM32.OCX
+Uses9=MSCHRT20.OCX
+Uses10=MSCOMCT2.OCX
+Uses11=COMCT332.OCX
+Uses12=RICHTX32.OCX
+Uses13=FM20.DLL
+
+[FM20.DLL <0009>]
+Dest=$(WinSysPath)
+Date=01/10/2012
+Time=19:31
+Version=15.0.4420.1017

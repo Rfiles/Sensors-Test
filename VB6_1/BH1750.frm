@@ -255,35 +255,35 @@ Private Sub Check1_Click()
 End Sub
 
 Private Sub Command1_Click()
-    SendData "<LIGHT_START?>"
-    'SendData "<LIGHT_SENS?>"
-    'SendData "<LIGHT_RES?>"
-    SendData "<LIGHT_READ?>"
+    SendData "<LIGHT_START?>", TCA_BH1750
+    'SendData "<LIGHT_SENS?>", TCA_BH1750
+    'SendData "<LIGHT_RES?>", TCA_BH1750
+    SendData "<LIGHT_READ?>", TCA_BH1750
 End Sub
 
 Private Sub Form_Load()
-    SendData "<LIGHT_START=>"
+    SendData "<LIGHT_START=>", TCA_BH1750
 End Sub
 
 Private Sub Option1_Click()
-    SendData "<LIGHT_RES=CHM2>"
+    SendData "<LIGHT_RES=CHM2>", TCA_BH1750
 End Sub
 
 Private Sub Option2_Click()
-    SendData "<LIGHT_RES=CHM>"
+    SendData "<LIGHT_RES=CHM>", TCA_BH1750
 End Sub
 
 Private Sub Option3_Click()
-    SendData "<LIGHT_RES=CLM>"
+    SendData "<LIGHT_RES=CLM>", TCA_BH1750
 End Sub
 
 Private Sub Slider1_Click()
     Label4.Caption = Slider1.Value / 10
-    SendData "<LIGHT_SENS=" & Slider1.Value & ">"
+    SendData "<LIGHT_SENS=" & Slider1.Value & ">", TCA_BH1750
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<LIGHT_READ?>"
+    SendData "<LIGHT_READ?>", TCA_BH1750
 End Sub
 
 Private Sub UpDown1_Change()

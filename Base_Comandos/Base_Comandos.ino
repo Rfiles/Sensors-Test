@@ -14,19 +14,23 @@
 //ease  13388 , 593 | 6500 , 191
 //ligh  11014 , 459 | 4126 , 57
 //ftr   7226  , 423 | 338  , 21
-//rgb   9084  , 483
-//  SUM 26654
-//  CMP 27856
+//rgb   9084  , 483 |
+//ads               | 936  , 37
 
 #define ENABLE_BME
 #define ENABLE_RTC
 #define ENABLE_I2CSCAN
-////#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
-#define ENABLE_SERVO_EASER        //either this or internal_servo
-#define ENABLE_BH1750
-#define ENABLE_FREETIME_REPORT
-#define ENABLE_UV
-#define ENABLE_RGB
+//#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
+//#define ENABLE_SERVO_EASER        //either this or internal_servo
+//#define ENABLE_BH1750
+//#define ENABLE_FREETIME_REPORT
+//#define ENABLE_UV
+//#define ENABLE_RGB
+//#define ENABLE_MLX
+#define ENABLE_ADS
+#define ENABLE_INT_TEMP
+#define ENABLE_LEDRGB
+//#define ENABLE_IOEXP
 
 
 // USER CONFIGURATION ABOVE ONLY
@@ -143,6 +147,8 @@ void ExecuteCommand() {
   if (id_string == F("LED13")) LED13_Data();
   if (id_string == F("AUTH")) Validate_Data();
   if (id_string == F("MODULES")) Modules_Data();
+  if (id_string == F("PING")) Serial.println(F("<PING=PONG>"));
+  if (id_string == F("TCA_SEL")) tca_sel_data();
 #ifdef ENABLE_FREETIME_REPORT  
   if (id_string == F("FTR")) FreeTime_Data();
 #endif
@@ -168,7 +174,7 @@ void ExecuteCommand() {
   if (id_string == F("BME_START")) start_bme();
   if (id_string == F("BME_RESET")) reset_bme();
 #endif
-  if (id_string == F("TCA_SELECT")) tca_sel_data();
+  
 #ifdef ENABLE_RTC
   if (id_string == F("RTC_START")) rtc_start();
   if (content == CMD_GET) {
@@ -230,7 +236,30 @@ void ExecuteCommand() {
   if (id_string == F("RGB_READ_2"))  rgb_cmd(4);
   if (id_string == F("RGB_PWR"))  rgb_cmd(5);
   if (id_string == F("RGB_ID"))  rgb_cmd(6);
-
+#endif
+#ifdef ENABLE_RGB
+  if (id_string == F("MLX_START"))  mlx_start();
+  if (id_string == F("MLX_AMB"))  mlx_cmd(0);
+  if (id_string == F("MLX_OBJ"))  mlx_cmd(1);
+#endif
+#ifdef ENABLE_ADS
+  if (id_string == F("ADS_START"))  ads_start();
+  if (id_string == F("ADS_READS"))  ads_read();
+#endif
+#ifdef ENABLE_INT_TEMP
+  if (id_string == F("ARDU_TEMP"))  Ardu_TEMP();
+#endif
+#ifdef ENABLE_LEDRGB
+  if (id_string == F("WS_START"))  ws_start();
+  if (id_string == F("WS_SLED"))   ws_cmd(0);
+  if (id_string == F("WS_SCOLOR")) ws_cmd(1);
+  if (id_string == F("WS_SHOW"))   ws_cmd(2);
+  if (id_string == F("WS_CLEAR"))  ws_cmd(3);
+  if (id_string == F("WS_SBRG"))   ws_cmd(4);
+#endif
+#ifdef ENABLE_IOEXP
+  if (id_string == F("IOE_START"))  ioexp_start();
+  
 #endif
 
   
@@ -263,7 +292,6 @@ void LED13_Data() {
     if ( value_string == F("ON") )  digitalWrite(LED_BUILTIN, HIGH);
     if ( value_string == F("OFF") ) digitalWrite(LED_BUILTIN, LOW);
   }
-
   if (digitalRead(LED_BUILTIN)) {
     Serial.println(F("<LED13=ON>"));
   } else {
@@ -286,10 +314,46 @@ void FreeTime_Data() {
 }
 #endif
 
+#ifdef ENABLE_INT_TEMP
+void Ardu_TEMP() {
+  unsigned int wADC;
+
+  // The internal temperature has to be used
+  // with the internal reference of 1.1V.
+  // Channel 8 can not be selected with
+  // the analogRead function yet.
+
+  // Set the internal reference and mux.
+  ADMUX = (_BV(REFS1) | _BV(REFS0) | _BV(MUX3));
+  ADCSRA |= _BV(ADEN);  // enable the ADC
+
+  delay(20);            // wait for voltages to become stable.
+
+  ADCSRA |= _BV(ADSC);  // Start the ADC
+
+  // Detect end-of-conversion
+  while (bit_is_set(ADCSRA,ADSC));
+
+  // Reading register "ADCW" takes care of how to read ADCL and ADCH.
+  wADC = ADCW;
+
+  // The offset of 324.31 could be wrong. It is just an indication.
+
+  // Temperature is in degrees Celsius.
+  Serial.print(F("<ARDU_TEMP="));
+  Serial.print((wADC - 324.31 ) / 1.22);
+  Serial.println(F(">"));
+}
+#endif
 
 void tca_sel_data() {
   if (content == CMD_SET) {
-    tcaselect(value_string.toInt());
+    if (value_string.toInt() < 8) {
+      tcaselect(value_string.toInt());
+      Serial.print(F("<TCA_SEL="));
+      Serial.print(value_string.toInt());
+      Serial.println(F(">"));
+    }
   }
 }
 
@@ -317,6 +381,18 @@ void Modules_Data(){
 #endif
 #ifdef ENABLE_RGB
   Serial.print(F("<ENABLE=RGB>"));
+#endif
+#ifdef ENABLE_MLX
+  Serial.print(F("<ENABLE=MLX>"));
+#endif
+#ifdef ENABLE_ADS
+  Serial.print(F("<ENABLE=ADS>"));
+#endif
+#ifdef ENABLE_INT_TEMP
+  Serial.print(F("<ENABLE=ATEMP>"));
+#endif
+#ifdef ENABLE_LEDRGB
+  Serial.print(F("<ENABLE=WS>"));
 #endif
   
 }

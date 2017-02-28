@@ -74,7 +74,7 @@ Begin VB.Form TCS
          _ExtentY        =   661
          _Version        =   393216
          Appearance      =   1
-         Max             =   16384
+         Max             =   65536
          Scrolling       =   1
       End
       Begin MSComctlLib.ProgressBar ProgressBar5 
@@ -418,7 +418,7 @@ Begin VB.Form TCS
       _Version        =   393216
       Value           =   1000
       BuddyControl    =   "Label1"
-      BuddyDispid     =   196614
+      BuddyDispid     =   196645
       OrigLeft        =   3600
       OrigTop         =   5400
       OrigRight       =   3855
@@ -463,6 +463,14 @@ Begin VB.Form TCS
       TabIndex        =   0
       Top             =   5040
       Width           =   1455
+   End
+   Begin VB.Label Label21 
+      Alignment       =   2  'Center
+      Height          =   255
+      Left            =   7560
+      TabIndex        =   35
+      Top             =   1320
+      Width           =   1095
    End
    Begin VB.Shape Shape5 
       FillStyle       =   0  'Solid
@@ -628,23 +636,22 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Check2_Click()
-    
     Timer1.Enabled = Check2.Value
-    
 End Sub
 
 Private Sub Command1_Click()
-    SendData "<RGB_READ_1?>"
-    SendData "<RGB_READ_2?>"
+    SendData "<RGB_READ_1?>", TCA_TCS
+    SendData "<RGB_READ_2?>", TCA_TCS
+    Set_Color
 End Sub
 
 Private Sub Command2_Click()
     If Shape3.FillColor = vbRed Then
         Shape3.FillColor = vbGreen
-        SendData "<RGB_LED=ON>"
+        SendData "<RGB_LED=ON>", TCA_TCS
     Else
         Shape3.FillColor = vbRed
-        SendData "<RGB_LED=OFF>"
+        SendData "<RGB_LED=OFF>", TCA_TCS
     End If
 
 End Sub
@@ -652,17 +659,17 @@ End Sub
 Private Sub Command3_Click()
     If Shape4.FillColor = vbRed Then
         Shape4.FillColor = vbGreen
-        SendData "<RGB_PWR=ON>"
+        SendData "<RGB_PWR=ON>", TCA_TCS
     Else
         Shape4.FillColor = vbRed
-        SendData "<RGB_PWR=OFF>"
+        SendData "<RGB_PWR=OFF>", TCA_TCS
     End If
     
 End Sub
 
 Private Sub Form_Load()
-    SendData "<RGB_START=>"
-    SendData "<RGB_ID?>"
+    SendData "<RGB_START=>", TCA_TCS
+    SendData "<RGB_ID?>", TCA_TCS
     List1.AddItem "2.4 ms"
     List1.AddItem "24 ms"
     List1.AddItem "50 ms"
@@ -675,6 +682,7 @@ Private Sub Form_Load()
     List2.AddItem "60x"
     List1.ListIndex = 0
     List2.ListIndex = 0
+    'ir = (r + g + b > c) ? (r + g + b - c) / 2 : 0;
     
 End Sub
 
@@ -732,30 +740,43 @@ Private Sub List1_Click()
     'Debug.Print List1.ItemData(List1.ListIndex)
     Select Case (List1.ListIndex)
         Case 0
-            SendData "<RGB_IT=255>"
+            SendData "<RGB_IT=255>", TCA_TCS
         Case 1
-            SendData "<RGB_IT=246>"
+            SendData "<RGB_IT=246>", TCA_TCS
         Case 2
-            SendData "<RGB_IT=235>"
+            SendData "<RGB_IT=235>", TCA_TCS
         Case 3
-            SendData "<RGB_IT=213>"
+            SendData "<RGB_IT=213>", TCA_TCS
         Case 4
-            SendData "<RGB_IT=192>"
+            SendData "<RGB_IT=192>", TCA_TCS
         Case 5
-            SendData "<RGB_IT=0>"
+            SendData "<RGB_IT=0>", TCA_TCS
     End Select
 End Sub
 
 Private Sub List2_Click()
-    SendData "<RGB_GAIN=" & List2.ListIndex & ">"
+    SendData "<RGB_GAIN=" & List2.ListIndex & ">", TCA_TCS
     
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<RGB_READ_1?>"
-    SendData "<RGB_READ_2?>"
+    SendData "<RGB_READ_1?>", TCA_TCS
+    SendData "<RGB_READ_2?>", TCA_TCS
+    Set_Color
 End Sub
 
 Private Sub UpDown1_Change()
     Timer1.Interval = UpDown1.Value
 End Sub
+
+Function Set_Color()
+    If Label14.Caption <> "-" Then
+        c = Val(Label14.Caption) / 2
+        r = Val(Label11.Caption) / 2
+        g = Val(Label12.Caption) / 2
+        b = Val(Label13.Caption) / 2
+        calc = RGB(r, g, b)
+        Shape1.FillColor = calc
+        Label21.Caption = Hex(calc)
+    End If
+End Function

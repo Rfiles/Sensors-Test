@@ -7,6 +7,19 @@ Public value_string As String
 Public rx_byte_count As Double
 Public rx_counter As Long
 Public tx_counter As Long
+'------------------------------------------
+Public TCA_NONE As Single
+Public TCA_ADS As Single
+Public TCA_BH1750 As Single
+Public TCA_BME As Single
+Public TCA_MLX As Single
+Public TCA_RTC As Single
+Public TCA_TCS As Single
+Public TCA_UV As Single
+Public TCA_IMU As Single
+Public TCA_BMP As Single
+Public TCA_INA As Single
+'------------------------------------------
 
 Function ParseInput(indata As String)
 Dim loop1 As Single
@@ -77,10 +90,11 @@ Function ExecuteCommand()
             If value_string = "DONE" Then
                 main.Label1.Caption = "DEVICE READY"
                 main.Shape1.FillColor = vbGreen
-                SendData ("<ID1?>")
-                SendData ("<LED13?>")
+                SendData "<ID1?>", TCA_NONE
+                SendData "<LED13?>", TCA_NONE
                 main.menu_modulo.Enabled = True
                 main.Timer1.Enabled = False
+                main.Check1.Enabled = True
             End If
     '-----------------------------------------------------------------
         Case "ID1"
@@ -106,7 +120,15 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
         Case "LOOPFREETIME"
             main.Label17.Caption = Val(value_string)
+        Case "FTR"
+            If value_string = "ON" Then
+                FTR_Setting = True
+            Else
+                FTR_Setting = False
+            End If
     '-----------------------------------------------------------------
+        Case "ARDU_TEMP"
+            main.Label20.Caption = Val(value_string)
     '-----------------------------------------------------------------
         Case Else
     End Select
@@ -129,7 +151,7 @@ Function ExecuteCommand()
     End If
 
     '-----------------------------------------------------------------
-    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Validate.Parse_Cmd
+    If (id_string = "CHECK" Or id_string = "AUTH" Or id_string = "DEBUGKEY") And content = 1 Then Validate.parse_cmd
     
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "BME" And content = 1 Then
@@ -154,8 +176,23 @@ Function ExecuteCommand()
         UV.UV_Parse
     End If
     
+    '-----------------------------------------------------------------
     If Left(id_string, 3) = "RGB" And content = 1 Then
         TCS.RGB_Parse
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "MLX" And content = 1 Then
+        MLX.mlx_parse
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "ADS" And content = 1 Then
+        ADS.parse_ads
+    End If
+    '-----------------------------------------------------------------
+    If Left(id_string, 2) = "WS" And content = 1 Then
+        WS.Parse_WS
     End If
     
     
@@ -164,21 +201,18 @@ Function ExecuteCommand()
 End Function
 
 
-Function SendData(Texto As String)
+Function SendData(Texto As String, TCA As Single)
     If main.MSComm1.PortOpen Then
-        'Main.RichTextBox1.SelColor = vbRed
-        'Main.RichTextBox1.Text = Main.RichTextBox1.Text & "Tx: " & InBuffer
-        'Main.RichTextBox1.SelStart = Len(Main.RichTextBox1.Text)
-        'Main.RichTextBox1.SelColor = vbBlack
+        If TCA < 8 Then main.MSComm1.Output = "<TCA_SEL=" & TCA & ">"
         main.MSComm1.Output = Texto
         main.Timer2.Enabled = True
         tx_counter = tx_counter + Len(Texto)
         main.Label12.Caption = tx_counter & " Bytes "
     End If
     If main.menu_dbgin.Checked = True Then
-        Debug.Print "Enviado: " & Texto
+        Debug.Print "Enviado(" & TCA & "): " & Texto
     End If
-
+    
 End Function
 
 

@@ -451,32 +451,32 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Check1_Click()
     If Check1.Value = 1 Then
-        SendData "<ESERVO1_SETFLIP=TRUE>"
+        SendData "<ESERVO1_SETFLIP=TRUE>", TCA_NONE
     Else
-        SendData "<ESERVO1_SETFLIP=FALSE>"
+        SendData "<ESERVO1_SETFLIP=FALSE>", TCA_NONE
     End If
 End Sub
 
 Private Sub Check2_Click()
     If Check2.Value = 1 Then
-        SendData "<ESERVO2_SETFLIP=TRUE>"
+        SendData "<ESERVO2_SETFLIP=TRUE>", TCA_NONE
     Else
-        SendData "<ESERVO2_SETFLIP=FALSE>"
+        SendData "<ESERVO2_SETFLIP=FALSE>", TCA_NONE
     End If
 End Sub
 
 Private Sub Command1_Click()
     Shape2.FillColor = vbRed
     Shape7.FillColor = vbRed
-    SendData "<ESERVO1_ANGLE=70>"
-    SendData "<ESERVO2_ANGLE=70>"
+    SendData "<ESERVO1_ANGLE=70>", TCA_NONE
+    SendData "<ESERVO2_ANGLE=70>", TCA_NONE
 End Sub
 
 Private Sub Command2_Click()
     If Shape1.FillColor = vbGreen Then
-        SendData "<ESERVOS_LOOPEN=FALSE>"
+        SendData "<ESERVOS_LOOPEN=FALSE>", TCA_NONE
     Else
-        SendData "<ESERVOS_LOOPEN=TRUE>"
+        SendData "<ESERVOS_LOOPEN=TRUE>", TCA_NONE
     End If
     
 End Sub
@@ -484,33 +484,33 @@ End Sub
 Private Sub Command4_Click()
     Shape2.FillColor = vbRed
     Shape7.FillColor = vbRed
-    SendData "<ESERVO1_ANGLE=" & Int(Rnd() * 180) & ">"
-    SendData "<ESERVO2_ANGLE=" & Int(Rnd() * 180) & ">"
+    SendData "<ESERVO1_ANGLE=" & Int(Rnd() * 180) & ">", TCA_NONE
+    SendData "<ESERVO2_ANGLE=" & Int(Rnd() * 180) & ">", TCA_NONE
 
 End Sub
 
 Private Sub Command5_Click()
-    SendData "<ESERVOS_LOOPEN=FALSE>"
+    SendData "<ESERVOS_LOOPEN=FALSE>", TCA_NONE
 End Sub
 
 Private Sub Form_Load()
-    SendData "<ESERVOS_START=>"
-    SendData "<ESERVO1_DELAY=1000>"
-    SendData "<ESERVO2_DELAY=1000>"
+    SendData "<ESERVOS_START=>", TCA_NONE
+    SendData "<ESERVO1_DELAY=1000>", TCA_NONE
+    SendData "<ESERVO2_DELAY=1000>", TCA_NONE
     Slider3.Value = 1000
     Slider4.Value = 1000
-    SendData "<ESERVOS_LOOPEN=TRUE>"
-    SendData "<ESERVO1_ISRUN?>"
-    SendData "<ESERVO2_ISRUN?>"
+    SendData "<ESERVOS_LOOPEN=TRUE>", TCA_NONE
+    SendData "<ESERVO1_ISRUN?>", TCA_NONE
+    SendData "<ESERVO2_ISRUN?>", TCA_NONE
 End Sub
 
 Private Sub Slider1_Change()
-    SendData "<ESERVO1_ANGLE=" & Slider1.Value & ">"
+    SendData "<ESERVO1_ANGLE=" & Slider1.Value & ">", TCA_NONE
     Shape7.FillColor = vbRed
 End Sub
 
 Private Sub Slider2_Change()
-    SendData "<ESERVO2_ANGLE=" & Slider2.Value & ">"
+    SendData "<ESERVO2_ANGLE=" & Slider2.Value & ">", TCA_NONE
     Shape2.FillColor = vbRed
 End Sub
 
@@ -542,11 +542,11 @@ Function eservos_rx()
     End If
     If id_string = "ESERVO1_ARR" Then
         Shape7.FillColor = vbGreen
-        SendData "<ESERVO1_GETPOS?>"
+        SendData "<ESERVO1_GETPOS?>", TCA_NONE
     End If
     If id_string = "ESERVO2_ARR" Then
         Shape2.FillColor = vbGreen
-        SendData "<ESERVO2_GETPOS?>"
+        SendData "<ESERVO2_GETPOS?>", TCA_NONE
     End If
     If id_string = "ESERVO1_GETPOS" Then
         Label7.Caption = Val(value_string)
@@ -608,10 +608,10 @@ End Function
 
 Private Sub Slider3_Change()
     Label2.Caption = Slider3.Value
-    SendData "<ESERVO2_DELAY=" & Slider3.Value & ">"
+    SendData "<ESERVO2_DELAY=" & Slider3.Value & ">", TCA_NONE
 End Sub
 
 Private Sub Slider4_Change()
     Label1.Caption = Slider4.Value
-    SendData "<ESERVO1_DELAY=" & Slider4.Value & ">"
+    SendData "<ESERVO1_DELAY=" & Slider4.Value & ">", TCA_NONE
 End Sub

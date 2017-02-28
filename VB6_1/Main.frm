@@ -4,18 +4,31 @@ Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form Main 
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Modules Tester"
-   ClientHeight    =   5670
+   Caption         =   "Modules Tester - Arduino"
+   ClientHeight    =   6480
    ClientLeft      =   45
    ClientTop       =   690
    ClientWidth     =   11565
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   5670
+   ScaleHeight     =   6480
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer Timer5 
+      Enabled         =   0   'False
+      Interval        =   5000
+      Left            =   2640
+      Top             =   5880
+   End
+   Begin VB.Timer Timer4 
+      Enabled         =   0   'False
+      Interval        =   15000
+      Left            =   2160
+      Top             =   5880
+   End
    Begin VB.CheckBox Check1 
       Caption         =   "Ping MCU every 15 seconds"
+      Enabled         =   0   'False
       Height          =   255
       Left            =   8400
       TabIndex        =   25
@@ -25,14 +38,14 @@ Begin VB.Form Main
    Begin VB.Timer Timer3 
       Enabled         =   0   'False
       Interval        =   1000
-      Left            =   1800
-      Top             =   5040
+      Left            =   1680
+      Top             =   5880
    End
    Begin VB.Timer Timer2 
       Enabled         =   0   'False
       Interval        =   1000
-      Left            =   1320
-      Top             =   5040
+      Left            =   1200
+      Top             =   5880
    End
    Begin RichTextLib.RichTextBox RichTextBox1 
       Height          =   3375
@@ -50,8 +63,8 @@ Begin VB.Form Main
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   2000
-      Left            =   840
-      Top             =   5040
+      Left            =   720
+      Top             =   5880
    End
    Begin VB.CommandButton Command4 
       Caption         =   "Execute"
@@ -140,16 +153,51 @@ Begin VB.Form Main
    End
    Begin MSCommLib.MSComm MSComm1 
       Left            =   120
-      Top             =   5040
+      Top             =   5760
       _ExtentX        =   1005
       _ExtentY        =   1005
       _Version        =   393216
       DTREnable       =   -1  'True
       BaudRate        =   115200
    End
+   Begin VB.Label Label20 
+      Alignment       =   2  'Center
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "-"
+      Height          =   255
+      Left            =   5040
+      TabIndex        =   28
+      Top             =   4920
+      Width           =   735
+   End
+   Begin VB.Label Label19 
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "Arduino Temperature ('C):"
+      Height          =   255
+      Left            =   3120
+      TabIndex        =   27
+      Top             =   4920
+      Width           =   1935
+   End
+   Begin VB.Shape Shape6 
+      Height          =   495
+      Left            =   240
+      Top             =   120
+      Width           =   1215
+   End
+   Begin VB.Label Label18 
+      Alignment       =   2  'Center
+      Caption         =   "0"
+      Height          =   255
+      Left            =   10080
+      TabIndex        =   26
+      Top             =   1440
+      Width           =   855
+   End
    Begin VB.Label Label17 
       Alignment       =   2  'Center
       BackColor       =   &H80000016&
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "-"
       BeginProperty Font 
          Name            =   "Verdana"
@@ -167,6 +215,7 @@ Begin VB.Form Main
       Width           =   735
    End
    Begin VB.Label Label16 
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "MCU Idle Loop Since Last cmd (ms):"
       Height          =   255
       Left            =   1920
@@ -175,40 +224,45 @@ Begin VB.Form Main
       Width           =   2655
    End
    Begin VB.Label Label15 
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "RX"
       Height          =   255
-      Left            =   4920
+      Left            =   2280
       TabIndex        =   22
-      Top             =   5280
+      Top             =   5160
       Width           =   375
    End
    Begin VB.Label Label14 
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "TX"
       Height          =   255
-      Left            =   4920
+      Left            =   2280
       TabIndex        =   21
-      Top             =   5040
+      Top             =   4920
       Width           =   375
    End
    Begin VB.Label Label13 
       Alignment       =   1  'Right Justify
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "Bytes Counter  "
       Height          =   255
-      Left            =   3360
+      Left            =   720
       TabIndex        =   20
-      Top             =   5280
+      Top             =   5160
       Width           =   1575
    End
    Begin VB.Label Label12 
       Alignment       =   1  'Right Justify
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "Bytes Counter  "
       Height          =   255
-      Left            =   3360
+      Left            =   720
       TabIndex        =   19
-      Top             =   5040
+      Top             =   4920
       Width           =   1575
    End
    Begin VB.Label Label11 
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "RX:"
       Height          =   255
       Left            =   6120
@@ -218,6 +272,7 @@ Begin VB.Form Main
    End
    Begin VB.Label Label10 
       Alignment       =   1  'Right Justify
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "Data Rate"
       Height          =   255
       Left            =   6480
@@ -226,7 +281,7 @@ Begin VB.Form Main
       Width           =   1095
    End
    Begin VB.Label Label9 
-      Caption         =   "Is Response Long?"
+      Caption         =   "Resp. Long?"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -240,7 +295,7 @@ Begin VB.Form Main
       Left            =   8400
       TabIndex        =   16
       Top             =   1440
-      Width           =   2535
+      Width           =   1575
    End
    Begin VB.Shape Shape5 
       FillStyle       =   0  'Solid
@@ -406,8 +461,12 @@ Begin VB.Form Main
          Caption         =   "Input"
          Checked         =   -1  'True
       End
-      Begin VB.Menu menu_ftr 
-         Caption         =   "FreeTime Report"
+      Begin VB.Menu menu_ardtemp 
+         Caption         =   "Arduino Temperature"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_config 
+         Caption         =   "Change MCU Config"
       End
    End
    Begin VB.Menu menu_modulo 
@@ -451,6 +510,18 @@ Begin VB.Form Main
          Caption         =   "TCS34725"
          Enabled         =   0   'False
       End
+      Begin VB.Menu menu_mlx 
+         Caption         =   "MLX90614"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_ads 
+         Caption         =   "ADS1115"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_ws 
+         Caption         =   "WS2812B"
+         Enabled         =   0   'False
+      End
    End
 End
 Attribute VB_Name = "main"
@@ -459,6 +530,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
+
+Dim LongResponse As Long
+Dim FTR_Setting As Boolean
 
 Function Modules_Enabler()
     If value_string = "BME" Then menu_bme.Enabled = True
@@ -469,16 +543,24 @@ Function Modules_Enabler()
     If value_string = "BH1750" Then menu_light.Enabled = True
     If value_string = "UV" Then menu_uv.Enabled = True
     If value_string = "RGB" Then menu_rgb.Enabled = True
-
+    If value_string = "MLX" Then menu_mlx.Enabled = True
+    If value_string = "ATEMP" Then menu_ardtemp.Enabled = True
+    If value_string = "ADS" Then menu_ads.Enabled = True
+    If value_string = "WS" Then menu_ws.Enabled = True
+    
 End Function
 
+Private Sub Check1_Click()
+    If Shape1.FillColor = vbGreen Then
+        Timer4.Enabled = Check1.Value
+    End If
+End Sub
 
 Private Sub Command1_Click()
-    SendData Text1.Text
+    SendData Text1.Text, TCA_NONE
 End Sub
 
 Private Sub Command2_Click()
-    'Text2.Text = ""
     RichTextBox1.Text = ""
 End Sub
 
@@ -492,7 +574,6 @@ Private Sub Command3_Click()
         Timer1.Enabled = True
         Label1.Caption = "A Iniciar"
         Command3.Caption = "Disconnect"
-        'Text2.Text = ""
         RichTextBox1.Text = ""
     Else
         Timer3.Enabled = False
@@ -508,7 +589,7 @@ Private Sub Command3_Click()
         Shape3.FillColor = vbBlack
         Shape5.FillColor = vbBlack
         menu_modulo.Enabled = False
-        
+        Check1.Enabled = False
     End If
 End Sub
 
@@ -517,11 +598,46 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Form_Load()
-'TCS.Visible = True
+    TCA_NONE = 9    'invalid, will be ignored in MPU
+    TCA_ADS = 3
+    TCA_BH1750 = 2
+    TCA_BME = 5
+    TCA_MLX = 2
+    TCA_RTC = 5
+    TCA_TCS = 2
+    TCA_UV = 2
+    TCA_IMU = 7
+    TCA_BMP = 6
+    TCA_INA = 3
+'    WS.Visible = True
+End Sub
+
+Private Sub menu_ads_Click()
+    ADS.Visible = True
+End Sub
+
+Private Sub menu_ardtemp_Click()
+    If menu_ardtemp.Checked = True Then
+        menu_ardtemp.Checked = False
+        Timer5.Enabled = False
+    Else
+        menu_ardtemp.Checked = True
+        Timer5.Enabled = True
+    End If
+    SendData "<ARDU_TEMP?>", TCA_NONE
 End Sub
 
 Private Sub menu_bme_Click()
     BME.Visible = True
+End Sub
+
+Private Sub menu_config_Click()
+    If Shape3.FillColor = vbGreen Then
+        MCU_Conf.Visible = True
+    Else
+        MsgBox "You have to be autenticated to use this.", , "Warning"
+        Validate.Visible = True
+    End If
 End Sub
 
 Private Sub menu_dbgin_Click()
@@ -544,19 +660,6 @@ Private Sub menu_eservo_Click()
     EServos.Visible = True
 End Sub
 
-Private Sub menu_ftr_Click()
-    If menu_ftr.Checked = True Then
-            menu_ftr.Checked = False
-            SendData "<FTR=OFF>"
-    Else
-        If Shape3.FillColor = vbGreen Then
-            menu_ftr.Checked = True
-            SendData "<FTR=ON>"
-        Else
-            MsgBox "You have to be autenticated to get this info", , "Warning"
-        End If
-    End If
-End Sub
 
 Private Sub menu_I2CScan_Click()
     i2c_scanner.Visible = True
@@ -568,6 +671,10 @@ End Sub
 
 Private Sub menu_light_Click()
     BH1750.Visible = True
+End Sub
+
+Private Sub menu_mlx_Click()
+    MLX.Visible = True
 End Sub
 
 Private Sub menu_porta_Click()
@@ -594,6 +701,10 @@ Private Sub menu_validate_Click()
     Validate.Visible = True
 End Sub
 
+Private Sub menu_ws_Click()
+    WS.Visible = True
+End Sub
+
 Private Sub MSComm1_OnComm()
     Dim InBuffer As String
     InBuffer = MSComm1.Input
@@ -613,7 +724,6 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
    
 End Sub
 
-
 Private Sub Timer1_Timer()
     Timer1.Enabled = False
     Label1.Caption = "Connection Timeout"
@@ -623,10 +733,21 @@ End Sub
 
 Private Sub Timer2_Timer()
     Shape5.FillColor = vbRed
+    LongResponse = LongResponse + 1
+    Label18 = LongResponse
     ResetStrings
+    Timer2.Enabled = False
 End Sub
 
 Private Sub Timer3_Timer()
     Label10 = Round(((rx_byte_count * 8) / 1024), 2) & " kbps "
     rx_byte_count = 0
+End Sub
+
+Private Sub Timer4_Timer()
+    SendData "<PING?>", TCA_NONE
+End Sub
+
+Private Sub Timer5_Timer()
+    SendData "<ARDU_TEMP?>", TCA_NONE
 End Sub

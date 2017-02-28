@@ -394,9 +394,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Command1_Click()
-    SendData "<BME_REGS?>"
-    SendData "<BME_CALIB?>"
-    SendData "<BME_READING?>"
+    SendData "<BME_REGS?>", 5
+    SendData "<BME_CALIB?>", 5
+    SendData "<BME_READING?>", 5
 
 End Sub
 
@@ -439,8 +439,8 @@ Private Sub Form_Load()
     ListView2.ListItems.Add.Text = "tempOverSample"
     ListView2.ListItems.Add.Text = "pressOverSample"
     ListView2.ListItems.Add.Text = "humidOverSample"
-    SendData "<BME_SETUP?>"
-    SendData "<BME_START?>"
+    SendData "<BME_SETUP?>", TCA_BME
+    SendData "<BME_START?>", TCA_BME
 
 End Sub
 
@@ -505,13 +505,11 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<BME_READING?>"
+    SendData "<BME_READING?>", TCA_BME
 End Sub
 
 Private Sub UpDown1_Change()
     Timer1.Interval = Val(Label6.Caption)
 End Sub
 
-Function Modules_Enabler()
 
-End Function
