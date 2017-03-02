@@ -683,6 +683,9 @@ Private Sub Form_Load()
     List1.ListIndex = 0
     List2.ListIndex = 0
     'ir = (r + g + b > c) ? (r + g + b - c) / 2 : 0;
+    SendData "<RGB_READ_1?>", TCA_TCS
+    SendData "<RGB_READ_2?>", TCA_TCS
+    Set_Color
     
 End Sub
 

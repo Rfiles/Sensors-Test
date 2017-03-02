@@ -7,6 +7,7 @@ Public value_string As String
 Public rx_byte_count As Double
 Public rx_counter As Long
 Public tx_counter As Long
+Dim Current_TCA As Single
 '------------------------------------------
 Public TCA_NONE As Single
 Public TCA_ADS As Single
@@ -19,6 +20,7 @@ Public TCA_UV As Single
 Public TCA_IMU As Single
 Public TCA_BMP As Single
 Public TCA_INA As Single
+Public TCA_EIO As Single
 '------------------------------------------
 
 Function ParseInput(indata As String)
@@ -190,9 +192,15 @@ Function ExecuteCommand()
     If Left(id_string, 3) = "ADS" And content = 1 Then
         ADS.parse_ads
     End If
+    
     '-----------------------------------------------------------------
     If Left(id_string, 2) = "WS" And content = 1 Then
         WS.Parse_WS
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "INA" And content = 1 Then
+        INA.Parse_INA
     End If
     
     
@@ -203,7 +211,8 @@ End Function
 
 Function SendData(Texto As String, TCA As Single)
     If main.MSComm1.PortOpen Then
-        If TCA < 8 Then main.MSComm1.Output = "<TCA_SEL=" & TCA & ">"
+        If Current_TCA <> TCA And TCA < 8 Then main.MSComm1.Output = "<TCA_SEL=" & TCA & ">"
+        Current_TCA = TCA
         main.MSComm1.Output = Texto
         main.Timer2.Enabled = True
         tx_counter = tx_counter + Len(Texto)

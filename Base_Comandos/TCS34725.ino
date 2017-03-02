@@ -8,8 +8,8 @@ void rgb_start(void) {
 
   if (tcs.begin()) {
     Serial.println(F("<RGB_START=TRUE>"));
-    pinMode(4, OUTPUT);
-    digitalWrite(4, HIGH); 
+    //pinMode(4, OUTPUT);
+    //digitalWrite(4, HIGH); 
   } else {
     Serial.println(F("<RGB_START=FAIL>"));
   }
@@ -31,10 +31,10 @@ void rgb_cmd (uint8_t setting) {
       break;
     case 1://led
       if (value_string == F("ON")) {
-        digitalWrite(4, LOW); 
+        //digitalWrite(4, LOW); 
         Serial.println(F("<RGB_LED=ON>"));
       }else{
-        digitalWrite(4, HIGH); 
+        //digitalWrite(4, HIGH); 
         Serial.println(F("<RGB_LED=OFF>"));
       }
       break;

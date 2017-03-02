@@ -987,9 +987,9 @@ End Function
 
 Private Sub Check1_Click()
     If Check1.Value = 1 Then
-        SendData "<RTC_32OUT=TRUE>", TCA_RTC
+        SendData "<RTC_32K=TRUE>", TCA_RTC
     Else
-        SendData "<RTC_32OUT=FALSE>", TCA_RTC
+        SendData "<RTC_32K=FALSE>", TCA_RTC
     End If
 End Sub
 
@@ -1001,6 +1001,36 @@ Private Sub Check4_Click()
     End If
 End Sub
 
+Private Sub Combo1_Click()
+'Debug.Print Combo1.ListIndex
+    Select Case Combo1.ListIndex
+        Case 0
+            SendData "<RTC_SQWMODE=NONE>", TCA_RTC
+        Case 1
+            SendData "<RTC_SQWMODE=BATB>", TCA_RTC
+        Case 2
+            SendData "<RTC_SQWMODE=CLK>", TCA_RTC
+        Case 3
+            SendData "<RTC_SQWMODE=A1>", TCA_RTC
+        Case 4
+            SendData "<RTC_SQWMODE=A2>", TCA_RTC
+        Case 5
+            SendData "<RTC_SQWMODE=AB>", TCA_RTC
+    End Select
+End Sub
+
+Private Sub Combo2_Click()
+    Select Case Combo2.ListIndex
+        Case 0
+            SendData "<RTC_CF=1H>", TCA_RTC
+        Case 1
+            SendData "<RTC_CF=1K>", TCA_RTC
+        Case 2
+            SendData "<RTC_CF=4K>", TCA_RTC
+        Case 3
+            SendData "<RTC_CF=8K>", TCA_RTC
+    End Select
+End Sub
 
 Private Sub Command2_Click()
     SendData "<RTC_TIME?>", TCA_RTC
@@ -1009,7 +1039,7 @@ Private Sub Command2_Click()
     SendData "<RTC_VALID?>", TCA_NONE
     SendData "<RTC_RUNNING?>", TCA_NONE
     SendData "<RTC_TEMP?>", TCA_NONE
-   ' SendData "<RTC_AGOFFS?>" provoca bug que nao executa time? correctamente.. arduino side?
+   ' SendData "<RTC_AGOFFS?>" provoca bug que nao executa time? correctamente.. arduino side? overflow?
 
 End Sub
 
@@ -1053,12 +1083,20 @@ Private Sub Form_Load()
     Combo1.AddItem "Alarm 1"
     Combo1.AddItem "Alarm 2"
     Combo1.AddItem "Alarm 1 & 2"
+    Combo1.ListIndex = 0
     
     Combo2.AddItem "1 Hz"
     Combo2.AddItem "1 kHz"
     Combo2.AddItem "4 kHz"
     Combo2.AddItem "8 kHz"
-
+    Combo2.ListIndex = 2
+    
+    SendData "<RTC_TIME?>", TCA_RTC
+    SendData "<RTC_DATE?>", TCA_NONE
+    SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_VALID?>", TCA_NONE
+    SendData "<RTC_RUNNING?>", TCA_NONE
+    SendData "<RTC_TEMP?>", TCA_NONE
     
 End Sub
 

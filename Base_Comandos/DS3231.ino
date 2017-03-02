@@ -195,18 +195,63 @@ void rtc_set (uint8_t selected) {
       rtc_get(4);   
       break;
     case 7:
+      Serial.println(F("<RTC_32K="));
       if (value_string == "TRUE") {
         Rtc.Enable32kHzPin(true);
-        Serial.println("<RTC_32OUT=TRUE>");
+        Serial.print(F("TRUE"));
       } else {
         Rtc.Enable32kHzPin(false);
-        Serial.println("<RTC_32OUT=FALSE>");
+        Serial.print(F("FALSE"));
       }
+      Serial.println(F(">"));
       break;
     case 8:
-      
-    break;
-    default:
+      Serial.print(F("<RTC_CF="));
+      if ( value_string == "1H" ) {
+        Rtc.SetSquareWavePinClockFrequency(DS3231SquareWaveClock_1Hz);
+        Serial.print(F("1H"));
+      }
+      if ( value_string == "1K" ) {
+        Rtc.SetSquareWavePinClockFrequency(DS3231SquareWaveClock_1kHz);
+        Serial.print(F("1K"));
+      }
+      if ( value_string == "4K" ) {
+        Rtc.SetSquareWavePinClockFrequency(DS3231SquareWaveClock_4kHz);
+        Serial.print(F("4K"));
+      }
+      if ( value_string == "8K" ) {
+        Rtc.SetSquareWavePinClockFrequency(DS3231SquareWaveClock_8kHz);
+        Serial.print(F("8K"));
+      }
+      Serial.println(F(">"));
+      break;
+    case 9:
+      Serial.print(F("<RTC_SQWMODE="));
+      if ( value_string == "NONE" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
+        Serial.print(F("NONE"));
+      }
+      if ( value_string == "BATB" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeBatteryBackup);
+        Serial.print(F("BATB"));
+      }
+      if ( value_string == "CLK" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeClock);
+        Serial.print(F("CLK"));
+      }
+      if ( value_string == "A1" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeAlarmOne);
+        Serial.print(F("A1"));
+      }
+      if ( value_string == "A2" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeAlarmTwo);
+        Serial.print(F("A2"));
+      }
+      if ( value_string == "AB" ) {
+        Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeAlarmBoth);
+        Serial.print(F("AB"));
+      }
+      Serial.println(F(">"));
       break;
   }
   //Serial.println(value_temp);

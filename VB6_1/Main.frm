@@ -56,7 +56,6 @@ Begin VB.Form Main
       _ExtentX        =   12303
       _ExtentY        =   5953
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"Main.frx":0000
    End
@@ -522,6 +521,14 @@ Begin VB.Form Main
          Caption         =   "WS2812B"
          Enabled         =   0   'False
       End
+      Begin VB.Menu menu_ina 
+         Caption         =   "INA219"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_eio 
+         Caption         =   "MCP23017"
+         Enabled         =   0   'False
+      End
    End
 End
 Attribute VB_Name = "main"
@@ -547,6 +554,9 @@ Function Modules_Enabler()
     If value_string = "ATEMP" Then menu_ardtemp.Enabled = True
     If value_string = "ADS" Then menu_ads.Enabled = True
     If value_string = "WS" Then menu_ws.Enabled = True
+    If value_string = "INA" Then menu_ina.Enabled = True
+    If value_string = "EIO" Then menu_eio.Enabled = True
+    
     
 End Function
 
@@ -609,6 +619,7 @@ Private Sub Form_Load()
     TCA_IMU = 7
     TCA_BMP = 6
     TCA_INA = 3
+    TCA_EIO = 4
 '    WS.Visible = True
 End Sub
 
@@ -635,8 +646,12 @@ Private Sub menu_config_Click()
     If Shape3.FillColor = vbGreen Then
         MCU_Conf.Visible = True
     Else
-        MsgBox "You have to be autenticated to use this.", , "Warning"
-        Validate.Visible = True
+        If Shape1.FillColor = vbGreen Then
+            Validate.Visible = True
+            MsgBox "You have to be autenticated to use this.", , "Warning"
+        Else
+            MsgBox "You have to connect to the device first.", , "Attention"
+        End If
     End If
 End Sub
 
@@ -656,13 +671,20 @@ Private Sub menu_dbgout_Click()
     End If
 End Sub
 
+Private Sub menu_eio_Click()
+    EIO.Visible = True
+End Sub
+
 Private Sub menu_eservo_Click()
     EServos.Visible = True
 End Sub
 
-
 Private Sub menu_I2CScan_Click()
     i2c_scanner.Visible = True
+End Sub
+
+Private Sub menu_ina_Click()
+    INA.Visible = True
 End Sub
 
 Private Sub menu_led13_Click()

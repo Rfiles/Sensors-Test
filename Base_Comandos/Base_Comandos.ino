@@ -17,21 +17,23 @@
 //rgb   9084  , 483 |
 //ads               | 936  , 37
 
+
 #define ENABLE_BME
 #define ENABLE_RTC
 #define ENABLE_I2CSCAN
-//#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
 //#define ENABLE_SERVO_EASER        //either this or internal_servo
 //#define ENABLE_BH1750
-//#define ENABLE_FREETIME_REPORT
+#define ENABLE_FREETIME_REPORT
 //#define ENABLE_UV
 //#define ENABLE_RGB
-//#define ENABLE_MLX
-#define ENABLE_ADS
+#define ENABLE_MLX
+//#define ENABLE_ADS
 #define ENABLE_INT_TEMP
 #define ENABLE_LEDRGB
-//#define ENABLE_IOEXP
+#define ENABLE_EIO
+#define ENABLE_INA
 
+//#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
 
 // USER CONFIGURATION ABOVE ONLY
 //#################################################################################################
@@ -58,6 +60,10 @@ int checkkey, iscryptvalid, keytrylock=3, randomkey;
 unsigned long freetimeloop;
 bool enable_ftr;
 
+#ifdef ENABLE_EIO
+  volatile boolean awakenByInterrupt = false;
+#endif
+
 //#################################################################################################
 // SETUP
 //#################################################################################################
@@ -67,7 +73,11 @@ void setup() {
 //  myservo1.attach(7);  // attaches the servo on pin 9 to the servo object
 //  myservo2.attach(8);  // attaches the servo on pin 9 to the servo object
   Modules_Data();
-  Serial.println(F("<BOOT=DONE>"));
+  Serial.print(F("<MCU_CD="));
+  Serial.print(__DATE__);
+  Serial.print(F("|"));
+  Serial.print(__TIME__);
+  Serial.println(F("><BOOT=DONE>"));
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
@@ -124,6 +134,9 @@ void loop() {
 #ifdef ENABLE_SERVO_EASER
   EServos_Loop();
 #endif
+#ifdef ENABLE_EIO
+  if(awakenByInterrupt) handleInterrupt();
+#endif
 }//func
 
 //#################################################################################################
@@ -138,130 +151,193 @@ void ExecuteCommand() {
     freetimeloop = millis();
   }
 #endif
-//  Serial.print(" ( ");
-//  Serial.print(id_string);
-//  Serial.print(" - ");
-//  Serial.print(value_string);
-//  Serial.println(" ) ");
-  if (id_string == F("ID1"))   ID1_Execute();
-  if (id_string == F("LED13")) LED13_Data();
-  if (id_string == F("AUTH")) Validate_Data();
-  if (id_string == F("MODULES")) Modules_Data();
-  if (id_string == F("PING")) Serial.println(F("<PING=PONG>"));
-  if (id_string == F("TCA_SEL")) tca_sel_data();
-#ifdef ENABLE_FREETIME_REPORT  
-  if (id_string == F("FTR")) FreeTime_Data();
-#endif
+  if (content == CMD_SET) {
+    if (id_string == F("TCA_SEL")) tca_sel_data();
+  }
 #ifdef ENABLE_INTERNAL_SERVO
-  if (id_string == F("SERVO1")) Servo1_Data();
-  if (id_string == F("SERVO2")) Servo2_Data();
-  if (id_string == F("SERVO1_ATTACH")) Servo1_Setup(1);
-  if (id_string == F("SERVO1_DETACH")) Servo1_Setup(2);
-  if (id_string == F("SERVO1_ISATTACHED")) Servo1_Setup(3);
-  if (id_string == F("SERVO2_ATTACH")) Servo2_Setup(1);
-  if (id_string == F("SERVO2_DETACH")) Servo2_Setup(2);
-  if (id_string == F("SERVO2_ISATTACHED")) Servo2_Setup(3);
+  if (content == CMD_SET) {
+  if (id_string == F("SERVO1"))            Servo1_Data();
+  if (id_string == F("SERVO2"))            Servo2_Data();
+  if (id_string == F("SERVO1_ATTACH"))     Servo1_Setup(1);
+  if (id_string == F("SERVO1_DETACH"))     Servo1_Setup(2);
+  if (id_string == F("SERVO2_ATTACH"))     Servo2_Setup(1);
+  if (id_string == F("SERVO2_DETACH"))     Servo2_Setup(2);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("SERVO2_ISATTACHED")) Servo2_Setup(3);
+    if (id_string == F("SERVO1_ISATTACHED")) Servo1_Setup(3);
+  }
 #endif
 #ifdef ENABLE_I2CSCAN
-  if (id_string == F("I2C_SCAN")) scan_i2c();
-  if (id_string == F("I2CSCAN_TCA")) i2ctca_scanner();
+  if (content == CMD_GET) {
+    if (id_string == F("I2C_SCAN"))    scan_i2c();
+    if (id_string == F("I2CSCAN_TCA")) i2ctca_scanner();
+  }
 #endif
 #ifdef ENABLE_BME
-  if (id_string == F("BME_READING")) bme_reading();
-  if (id_string == F("BME_CALIB")) bme_calib();
-  if (id_string == F("BME_REGS")) bme_regs();
-  if (id_string == F("BME_SETUP")) setup_bme();
-  if (id_string == F("BME_START")) start_bme();
-  if (id_string == F("BME_RESET")) reset_bme();
-#endif
-  
-#ifdef ENABLE_RTC
-  if (id_string == F("RTC_START")) rtc_start();
+  if (content == CMD_SET) {
+    if (id_string == F("BME_SETUP"))   setup_bme();
+    if (id_string == F("BME_START"))   start_bme();
+    if (id_string == F("BME_RESET"))   reset_bme();
+  }
   if (content == CMD_GET) {
-    if (id_string == F("RTC_VALID")) rtc_get(1);
-    if (id_string == F("RTC_RUNNING")) rtc_get(2);
-    if (id_string == F("RTC_TEMP")) rtc_get(3);
-    if (id_string == F("RTC_DATE")) rtc_get(4);
-    if (id_string == F("RTC_TIME")) rtc_get(5);
-    if (id_string == F("RTC_AGOFFS")) rtc_get(6);
-    if (id_string == F("RTC_DAYWEEK")) rtc_get(7);
+    if (id_string == F("BME_READING")) bme_reading();
+    if (id_string == F("BME_CALIB"))   bme_calib();
+    if (id_string == F("BME_REGS"))    bme_regs();
+  }
+#endif
+#ifdef ENABLE_RTC
+  if (content == CMD_GET) {
+    if (id_string == F("RTC_VALID"))     rtc_get(1);
+    if (id_string == F("RTC_RUNNING"))   rtc_get(2);
+    if (id_string == F("RTC_TEMP"))      rtc_get(3);
+    if (id_string == F("RTC_DATE"))      rtc_get(4);
+    if (id_string == F("RTC_TIME"))      rtc_get(5);
+    if (id_string == F("RTC_AGOFFS"))    rtc_get(6);
+    if (id_string == F("RTC_DAYWEEK"))   rtc_get(7);
     if (id_string == F("RTC_ALARMFLAG")) rtc_get(8);
-    if (id_string == F("RTC_GETA1")) rtc_get(9);
-    if (id_string == F("RTC_GETA2")) rtc_get(10);
+    if (id_string == F("RTC_GETA1"))     rtc_get(9);
+    if (id_string == F("RTC_GETA2"))     rtc_get(10);
   }
   if (content == CMD_SET) {
-    if (id_string == F("RTC_HOUR")) rtc_set(1);
-    if (id_string == F("RTC_MINUTE")) rtc_set(2);
-    if (id_string == F("RTC_SECOND")) rtc_set(3);
-    if (id_string == F("RTC_YEAR")) rtc_set(4);
-    if (id_string == F("RTC_MONTH")) rtc_set(5);
-    if (id_string == F("RTC_DAY")) rtc_set(6);
+    if (id_string == F("RTC_START"))   rtc_start();
+    if (id_string == F("RTC_HOUR"))    rtc_set(1);
+    if (id_string == F("RTC_MINUTE"))  rtc_set(2);
+    if (id_string == F("RTC_SECOND"))  rtc_set(3);
+    if (id_string == F("RTC_YEAR"))    rtc_set(4);
+    if (id_string == F("RTC_MONTH"))   rtc_set(5);
+    if (id_string == F("RTC_DAY"))     rtc_set(6);
+    if (id_string == F("RTC_32K"))     rtc_set(7);
+    if (id_string == F("RTC_CF"))      rtc_set(8);
+    if (id_string == F("RTC_SQWMODE")) rtc_set(9);
   }
 #endif
 #ifdef ENABLE_SERVO_EASER
-  if (id_string == F("ESERVOS_START")) EServos_Start();
-  if (id_string == F("ESERVOS_LOOPEN"))  EServos_Setup(5);
-  if (id_string == F("ESERVO1_DELAY")) EServos_Setup(1);
-  if (id_string == F("ESERVO2_DELAY")) EServos_Setup(2);
-  if (id_string == F("ESERVO1_ANGLE")) EServos_Setup(3);
-  if (id_string == F("ESERVO2_ANGLE")) EServos_Setup(4);
-
-  if (id_string == F("ESERVO1_GETPOS"))  EServos_Setup(6);
-  if (id_string == F("ESERVO1_ISRUN"))  EServos_Setup(7);
-  if (id_string == F("ESERVO1_SETFLIP"))  EServos_Setup(8);
-  if (id_string == F("ESERVO1_ISFLIP"))  EServos_Setup(9);
-  
-  if (id_string == F("ESERVO2_GETPOS"))  EServos_Setup(10);
-  if (id_string == F("ESERVO2_ISRUN"))  EServos_Setup(11);
-  if (id_string == F("ESERVO2_SETFLIP"))  EServos_Setup(12);
-  if (id_string == F("ESERVO2_ISFLIP"))  EServos_Setup(13);
+  if (content == CMD_SET) {
+    if (id_string == F("ESERVOS_START"))  EServos_Start();
+    if (id_string == F("ESERVOS_LOOPEN")) EServos_Setup(5);
+    if (id_string == F("ESERVO1_DELAY"))  EServos_Setup(1);
+    if (id_string == F("ESERVO2_DELAY"))  EServos_Setup(2);
+    if (id_string == F("ESERVO1_ANGLE"))  EServos_Setup(3);
+    if (id_string == F("ESERVO2_ANGLE"))  EServos_Setup(4);
+    if (id_string == F("ESERVO1_SETFLIP")) EServos_Setup(8);
+    if (id_string == F("ESERVO2_SETFLIP")) EServos_Setup(12);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("ESERVO1_GETPOS"))  EServos_Setup(6);
+    if (id_string == F("ESERVO1_ISRUN"))   EServos_Setup(7);
+    if (id_string == F("ESERVO1_SETFLIP")) EServos_Setup(8);
+    if (id_string == F("ESERVO1_ISFLIP"))  EServos_Setup(9);
+    if (id_string == F("ESERVO2_GETPOS"))  EServos_Setup(10);
+    if (id_string == F("ESERVO2_ISRUN"))   EServos_Setup(11);
+    if (id_string == F("ESERVO2_SETFLIP")) EServos_Setup(12);
+    if (id_string == F("ESERVO2_ISFLIP"))  EServos_Setup(13);
+  }
 #endif
 #ifdef ENABLE_BH1750
-  if (id_string == F("LIGHT_START")) light_start();
-  if (id_string == F("LIGHT_RES"))  light_setup(1);
-  if (id_string == F("LIGHT_SENS"))  light_setup(2);
-  if (id_string == F("LIGHT_READ"))  light_setup(3);
+  if (content == CMD_SET) {
+    if (id_string == F("LIGHT_START")) light_start();
+    if (id_string == F("LIGHT_RES"))   light_setup(1);
+    if (id_string == F("LIGHT_SENS"))  light_setup(2);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("LIGHT_READ"))  light_setup(3);
+  }
 #endif
 #ifdef ENABLE_UV
-  if (id_string == F("UV_START"))  uv_start();
-  if (id_string == F("UV_READ"))  uv_read();
-  if (id_string == F("UV_SETIT"))  uv_set_it();
+  if (content == CMD_SET) {
+    if (id_string == F("UV_START")) uv_start();
+    if (id_string == F("UV_SETIT")) uv_set_it();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("UV_READ"))  uv_read();
+  }
 #endif
 #ifdef ENABLE_RGB
-  if (id_string == F("RGB_START"))  rgb_start();
-  if (id_string == F("RGB_READ_1"))  rgb_cmd(0);
-  if (id_string == F("RGB_LED"))  rgb_cmd(1);
-  if (id_string == F("RGB_IT"))  rgb_cmd(2);
-  if (id_string == F("RGB_GAIN"))  rgb_cmd(3);
-  if (id_string == F("RGB_READ_2"))  rgb_cmd(4);
-  if (id_string == F("RGB_PWR"))  rgb_cmd(5);
-  if (id_string == F("RGB_ID"))  rgb_cmd(6);
+  if (content == CMD_SET) {
+    if (id_string == F("RGB_START"))  rgb_start();
+    if (id_string == F("RGB_LED"))    rgb_cmd(1);
+    if (id_string == F("RGB_IT"))     rgb_cmd(2);
+    if (id_string == F("RGB_GAIN"))   rgb_cmd(3);
+    if (id_string == F("RGB_PWR"))    rgb_cmd(5);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("RGB_READ_1")) rgb_cmd(0);
+    if (id_string == F("RGB_READ_2")) rgb_cmd(4);
+    if (id_string == F("RGB_ID"))     rgb_cmd(6);
+  }
 #endif
 #ifdef ENABLE_RGB
-  if (id_string == F("MLX_START"))  mlx_start();
-  if (id_string == F("MLX_AMB"))  mlx_cmd(0);
-  if (id_string == F("MLX_OBJ"))  mlx_cmd(1);
+  if (content == CMD_SET) {
+    if (id_string == F("MLX_START")) mlx_start();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("MLX_AMB"))   mlx_cmd(0);
+    if (id_string == F("MLX_OBJ"))   mlx_cmd(1);
+  }
 #endif
 #ifdef ENABLE_ADS
-  if (id_string == F("ADS_START"))  ads_start();
-  if (id_string == F("ADS_READS"))  ads_read();
+  if (content == CMD_SET) {
+    if (id_string == F("ADS_START")) ads_start();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("ADS_READS")) ads_read();
+  }
 #endif
 #ifdef ENABLE_INT_TEMP
-  if (id_string == F("ARDU_TEMP"))  Ardu_TEMP();
+  if (content == CMD_GET) {
+    if (id_string == F("ARDU_TEMP")) Ardu_TEMP();
+  }
 #endif
 #ifdef ENABLE_LEDRGB
-  if (id_string == F("WS_START"))  ws_start();
-  if (id_string == F("WS_SLED"))   ws_cmd(0);
-  if (id_string == F("WS_SCOLOR")) ws_cmd(1);
-  if (id_string == F("WS_SHOW"))   ws_cmd(2);
-  if (id_string == F("WS_CLEAR"))  ws_cmd(3);
-  if (id_string == F("WS_SBRG"))   ws_cmd(4);
+  if (content == CMD_SET) {
+    if (id_string == F("WS_START"))  ws_start();
+    if (id_string == F("WS_SLED"))   ws_cmd(0);
+    if (id_string == F("WS_SCOLOR")) ws_cmd(1);
+    if (id_string == F("WS_SHOW"))   ws_cmd(2);
+    if (id_string == F("WS_CLEAR"))  ws_cmd(3);
+    if (id_string == F("WS_SBRG"))   ws_cmd(4);
+  }
 #endif
-#ifdef ENABLE_IOEXP
-  if (id_string == F("IOE_START"))  ioexp_start();
-  
+#ifdef ENABLE_INA
+  if (content == CMD_SET) {
+    if (id_string == F("INA_START"))  ina_start();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("INA_VBUS"))   ina_cmd(0);
+    if (id_string == F("INA_VSHUNT")) ina_cmd(1);
+    if (id_string == F("INA_VLOAD"))  ina_cmd(2);
+    if (id_string == F("INA_ALOAD"))  ina_cmd(3);
+  }
 #endif
-
+#ifdef ENABLE_FREETIME_REPORT
+  if (content == CMD_GET) {
+    if (id_string == F("FTR")) FreeTime_Data();
+  }
+#endif
+#ifdef ENABLE_EIO
+  if (content == CMD_SET) {
+    if (id_string == F("EIO_START")) eio_start();
+    if (id_string == F("EIO_PM"))    eio_cmd(0);
+    if (id_string == F("EIO_DW"))    eio_cmd(1);
+    if (id_string == F("EIO_PU"))    eio_cmd(3);
+    if (id_string == F("EIO_WALL"))  eio_cmd(5);
+    if (id_string == F("EIO_INT"))   eio_cmd(6);
+    if (id_string == F("EIO_SPIN"))  eio_cmd(7);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("EIO_DR"))    eio_cmd(2);
+    if (id_string == F("EIO_RALL"))  eio_cmd(4);
+  }
+#endif
+  // get or set handled by func
+  if (id_string == F("ID1"))     ID1_Execute();
+  if (id_string == F("LED13"))   LED13_Data();
+  if (id_string == F("AUTH"))    Validate_Data();
+  if (content == CMD_GET) {
+    if (id_string == F("MODULES")) Modules_Data();
+    if (id_string == F("PING"))    Serial.println(F("<PING=PONG>"));
+  }
   
   ResetStrings();
 }//func
@@ -394,6 +470,13 @@ void Modules_Data(){
 #ifdef ENABLE_LEDRGB
   Serial.print(F("<ENABLE=WS>"));
 #endif
+#ifdef ENABLE_EIO
+  Serial.print(F("<ENABLE=EIO>"));
+#endif
+#ifdef ENABLE_INA
+  Serial.print(F("<ENABLE=INA>"));
+#endif
+
   
 }
 

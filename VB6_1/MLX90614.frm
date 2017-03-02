@@ -32,7 +32,7 @@ Begin VB.Form MLX
       _Version        =   393216
       Value           =   250
       BuddyControl    =   "Label5"
-      BuddyDispid     =   196620
+      BuddyDispid     =   196622
       OrigLeft        =   3600
       OrigTop         =   4080
       OrigRight       =   3855
@@ -301,6 +301,8 @@ End Sub
 
 Private Sub Form_Load()
     SendData "<MLX_START=>", TCA_MLX
+    'SendData "<MLX_AMB?>", TCA_MLX
+    'SendData "<MLX_OBJ?>", TCA_MLX
 End Sub
 
 

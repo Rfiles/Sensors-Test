@@ -55,7 +55,7 @@ Begin VB.Form WS
    End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
-      Interval        =   250
+      Interval        =   1000
       Left            =   5280
       Top             =   4680
    End
@@ -68,7 +68,7 @@ Begin VB.Form WS
       _ExtentX        =   450
       _ExtentY        =   450
       _Version        =   393216
-      Value           =   500
+      Value           =   1000
       BuddyControl    =   "Label1"
       BuddyDispid     =   196623
       OrigLeft        =   4800
@@ -84,15 +84,6 @@ Begin VB.Form WS
    End
    Begin VB.CheckBox Check1 
       Caption         =   "Auto Update"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   3360
       TabIndex        =   7
@@ -101,15 +92,6 @@ Begin VB.Form WS
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Update All"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   495
       Left            =   120
       TabIndex        =   6
@@ -119,15 +101,6 @@ Begin VB.Form WS
    Begin VB.Frame Frame1 
       BackColor       =   &H80000000&
       Caption         =   "Leds"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   3015
       Left            =   600
       TabIndex        =   0
@@ -242,16 +215,8 @@ Begin VB.Form WS
       Width           =   2535
    End
    Begin VB.Label Label2 
+      Alignment       =   2  'Center
       Caption         =   "ms"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   4320
       TabIndex        =   10
@@ -260,16 +225,7 @@ Begin VB.Form WS
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
-      Caption         =   "250"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
+      Caption         =   "1000"
       Height          =   255
       Left            =   3360
       TabIndex        =   8
@@ -378,3 +334,7 @@ End Sub
 Function Parse_WS()
 '
 End Function
+
+Private Sub UpDown1_Change()
+    Timer1.Interval = UpDown1.Value
+End Sub

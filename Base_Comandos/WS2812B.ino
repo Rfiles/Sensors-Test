@@ -19,6 +19,7 @@ void ws_start() {
 }
 
 void ws_cmd(uint8_t Setting) {
+  //CRGB temp_color_struct;
   switch (Setting) {
     case 0:
       SelectedLed = value_string.toInt();
@@ -28,6 +29,7 @@ void ws_cmd(uint8_t Setting) {
       break;
     case 1:
       leds[SelectedLed]= CHSV(value_string.toInt(),255,255);
+      //hsv2rgb_spectrum(CHSV(value_string.toInt(),255,255), temp_color_struct);
       Serial.print(F("<WS_SCOLOR"));Serial.print(SelectedLed); Serial.print(F("=")); Serial.print(leds[SelectedLed].Red); 
       Serial.print(F("><WS_SCOLOR"));Serial.print(SelectedLed); Serial.print(F("=")); Serial.print(leds[SelectedLed].Green); 
       Serial.print(F("><WS_SCOLOR"));Serial.print(SelectedLed); Serial.print(F("=")); Serial.print(leds[SelectedLed].Blue); 
