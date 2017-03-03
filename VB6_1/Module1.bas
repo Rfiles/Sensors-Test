@@ -203,6 +203,11 @@ Function ExecuteCommand()
         INA.Parse_INA
     End If
     
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "EIO" Then
+        EIO.Parse_EIO
+    End If
+    
     
         
     ResetStrings

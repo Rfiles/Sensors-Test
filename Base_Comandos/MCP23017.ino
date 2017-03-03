@@ -75,12 +75,12 @@ void eio_cmd(uint8_t Setting) {
       break;
     case 3://pullup
       Serial.print(F("<EIO_PU="));
-      if (value_string == "OUT") {
-        mcp.pullUp(SelectedPin, OUTPUT);
-        Serial.print(F("OUT"));
+      if (value_string == "ON") {
+        mcp.pullUp(SelectedPin, HIGH);
+        Serial.print(F("ON"));
       }else{
-        mcp.pullUp(SelectedPin, INPUT);
-        Serial.print(F("IN"));
+        mcp.pullUp(SelectedPin, LOW);
+        Serial.print(F("OFF"));
       }
       Serial.println(F(">"));
       break;

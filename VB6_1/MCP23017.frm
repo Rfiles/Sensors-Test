@@ -244,7 +244,6 @@ Begin VB.Form EIO
          Width           =   255
       End
       Begin VB.CheckBox Check52 
-         Caption         =   "Check31"
          Height          =   255
          Left            =   2640
          TabIndex        =   72
@@ -252,7 +251,6 @@ Begin VB.Form EIO
          Width           =   255
       End
       Begin VB.CheckBox Check51 
-         Caption         =   "Check32"
          Height          =   255
          Left            =   3120
          TabIndex        =   71
@@ -260,7 +258,6 @@ Begin VB.Form EIO
          Width           =   255
       End
       Begin VB.CheckBox Check50 
-         Caption         =   "Check33"
          Height          =   255
          Left            =   3600
          TabIndex        =   70
@@ -389,7 +386,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label32 
          Alignment       =   2  'Center
-         Caption         =   "0"
+         Caption         =   "7"
          Height          =   255
          Left            =   240
          TabIndex        =   116
@@ -398,7 +395,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label31 
          Alignment       =   2  'Center
-         Caption         =   "1"
+         Caption         =   "6"
          Height          =   255
          Left            =   720
          TabIndex        =   115
@@ -407,7 +404,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label30 
          Alignment       =   2  'Center
-         Caption         =   "2"
+         Caption         =   "5"
          Height          =   255
          Left            =   1200
          TabIndex        =   114
@@ -416,7 +413,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label29 
          Alignment       =   2  'Center
-         Caption         =   "3"
+         Caption         =   "4"
          Height          =   255
          Left            =   1680
          TabIndex        =   113
@@ -425,7 +422,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label28 
          Alignment       =   2  'Center
-         Caption         =   "4"
+         Caption         =   "3"
          Height          =   255
          Left            =   2160
          TabIndex        =   112
@@ -434,7 +431,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label27 
          Alignment       =   2  'Center
-         Caption         =   "5"
+         Caption         =   "2"
          Height          =   255
          Left            =   2640
          TabIndex        =   111
@@ -443,7 +440,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label26 
          Alignment       =   2  'Center
-         Caption         =   "6"
+         Caption         =   "1"
          Height          =   255
          Left            =   3120
          TabIndex        =   110
@@ -452,7 +449,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label25 
          Alignment       =   2  'Center
-         Caption         =   "7"
+         Caption         =   "0"
          Height          =   255
          Left            =   3600
          TabIndex        =   109
@@ -472,7 +469,7 @@ Begin VB.Form EIO
       Begin VB.Label Label23 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "INT"
+         Caption         =   "EN INT"
          Height          =   255
          Left            =   4200
          TabIndex        =   107
@@ -502,7 +499,7 @@ Begin VB.Form EIO
       Begin VB.Label Label20 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "PIN MODE"
+         Caption         =   "PIN OUT"
          Height          =   255
          Left            =   4200
          TabIndex        =   104
@@ -578,7 +575,7 @@ Begin VB.Form EIO
       Begin VB.Label Label18 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "LATCH"
+         Caption         =   "SET"
          Height          =   255
          Left            =   4200
          TabIndex        =   102
@@ -900,7 +897,7 @@ Begin VB.Form EIO
       Begin VB.Label Label17 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "LATCH"
+         Caption         =   "SET"
          Height          =   255
          Left            =   4200
          TabIndex        =   60
@@ -976,7 +973,7 @@ Begin VB.Form EIO
       Begin VB.Label Label15 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "PIN MODE"
+         Caption         =   "PIN OUT"
          Height          =   255
          Left            =   4200
          TabIndex        =   34
@@ -1006,7 +1003,7 @@ Begin VB.Form EIO
       Begin VB.Label Label10 
          Alignment       =   2  'Center
          BackColor       =   &H80000000&
-         Caption         =   "INT"
+         Caption         =   "EN INT"
          Height          =   255
          Left            =   4200
          TabIndex        =   23
@@ -1025,7 +1022,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label8 
          Alignment       =   2  'Center
-         Caption         =   "7"
+         Caption         =   "0"
          Height          =   255
          Left            =   3600
          TabIndex        =   13
@@ -1034,7 +1031,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label7 
          Alignment       =   2  'Center
-         Caption         =   "6"
+         Caption         =   "1"
          Height          =   255
          Left            =   3120
          TabIndex        =   12
@@ -1043,7 +1040,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label6 
          Alignment       =   2  'Center
-         Caption         =   "5"
+         Caption         =   "2"
          Height          =   255
          Left            =   2640
          TabIndex        =   11
@@ -1052,7 +1049,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label5 
          Alignment       =   2  'Center
-         Caption         =   "4"
+         Caption         =   "3"
          Height          =   255
          Left            =   2160
          TabIndex        =   10
@@ -1061,7 +1058,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label4 
          Alignment       =   2  'Center
-         Caption         =   "3"
+         Caption         =   "4"
          Height          =   255
          Left            =   1680
          TabIndex        =   9
@@ -1070,7 +1067,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label3 
          Alignment       =   2  'Center
-         Caption         =   "2"
+         Caption         =   "5"
          Height          =   255
          Left            =   1200
          TabIndex        =   8
@@ -1079,7 +1076,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label2 
          Alignment       =   2  'Center
-         Caption         =   "1"
+         Caption         =   "6"
          Height          =   255
          Left            =   720
          TabIndex        =   7
@@ -1088,7 +1085,7 @@ Begin VB.Form EIO
       End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
-         Caption         =   "0"
+         Caption         =   "7"
          Height          =   255
          Left            =   240
          TabIndex        =   6
@@ -1184,13 +1181,17 @@ Begin VB.Form EIO
       _ExtentY        =   450
       _Version        =   393216
       Value           =   1000
-      OrigLeft        =   4800
-      OrigTop         =   4800
-      OrigRight       =   5055
-      OrigBottom      =   5055
+      BuddyControl    =   "Label14"
+      BuddyDispid     =   196760
+      OrigLeft        =   4920
+      OrigTop         =   5520
+      OrigRight       =   5175
+      OrigBottom      =   5775
       Increment       =   250
-      Max             =   2000
-      Min             =   1000
+      Max             =   5000
+      Min             =   250
+      SyncBuddy       =   -1  'True
+      BuddyProperty   =   65537
       Enabled         =   -1  'True
    End
    Begin VB.Shape Shape34 
@@ -1228,7 +1229,7 @@ Begin VB.Form EIO
       Left            =   3480
       TabIndex        =   3
       Top             =   5520
-      Width           =   840
+      Width           =   825
    End
 End
 Attribute VB_Name = "EIO"
@@ -1236,3 +1237,135 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+Private Sub Check1_Click()
+    Timer1.Enabled = Check1.Value
+End Sub
+
+Private Sub Check42_Click()
+    SendData "<EIO_SPIN=8>", TCA_EIO
+    If Check42.Value = 1 Then
+        SendData "<EIO_DW=HIGH>", TCA_EIO
+    Else
+        SendData "<EIO_DW=LOW>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check43_Click()
+    SendData "<EIO_SPIN=9>", TCA_EIO
+    If Check43.Value = 1 Then
+        SendData "<EIO_DW=HIGH>", TCA_EIO
+    Else
+        SendData "<EIO_DW=LOW>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check44_Click()
+    SendData "<EIO_SPIN=10>", TCA_EIO
+    If Check44.Value = 1 Then
+        SendData "<EIO_DW=HIGH>", TCA_EIO
+    Else
+        SendData "<EIO_DW=LOW>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check50_Click()
+    SendData "<EIO_SPIN=8>", TCA_EIO
+    If Check50.Value = 1 Then
+        SendData "<EIO_PM=OUT>", TCA_EIO
+    Else
+        SendData "<EIO_DW=IN>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check51_Click()
+    SendData "<EIO_SPIN=9>", TCA_EIO
+    If Check51.Value = 1 Then
+        SendData "<EIO_PM=OUT>", TCA_EIO
+    Else
+        SendData "<EIO_DW=IN>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check52_Click()
+    SendData "<EIO_SPIN=10>", TCA_EIO
+    If Check52.Value = 1 Then
+        SendData "<EIO_PM=OUT>", TCA_EIO
+    Else
+        SendData "<EIO_DW=IN>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Command1_Click()
+    SendData "<EIO_RALL?>", TCA_EIO
+
+End Sub
+
+Private Sub Form_Load()
+    SendData "<EIO_START=>", TCA_EIO
+    
+End Sub
+
+Function Pin_Show(Setting As Long)
+    If Setting And 1 Then Shape8.FillColor = vbRed Else Shape8.FillColor = vbBlack
+    If Setting And 2 Then Shape7.FillColor = vbRed Else Shape7.FillColor = vbBlack
+    If Setting And 4 Then Shape6.FillColor = vbRed Else Shape6.FillColor = vbBlack
+    If Setting And 8 Then Shape5.FillColor = vbRed Else Shape5.FillColor = vbBlack
+    If Setting And 16 Then Shape4.FillColor = vbRed Else Shape4.FillColor = vbBlack
+    If Setting And 32 Then Shape3.FillColor = vbRed Else Shape3.FillColor = vbBlack
+    If Setting And 64 Then Shape2.FillColor = vbRed Else Shape2.FillColor = vbBlack
+    If Setting And 128 Then Shape1.FillColor = vbRed Else Shape1.FillColor = vbBlack
+    
+    If Setting And 1 Then Check41.Value = 1 Else Check41.Value = 0
+    If Setting And 2 Then Check40.Value = 1 Else Check40.Value = 0
+    If Setting And 4 Then Check39.Value = 1 Else Check39.Value = 0
+    If Setting And 8 Then Check38.Value = 1 Else Check38.Value = 0
+    If Setting And 16 Then Check37.Value = 1 Else Check37.Value = 0
+    If Setting And 32 Then Check36.Value = 1 Else Check36.Value = 0
+    If Setting And 64 Then Check35.Value = 1 Else Check35.Value = 0
+    If Setting And 128 Then Check34.Value = 1 Else Check34.Value = 0
+    
+    
+    If Setting And 256 Then Shape26.FillColor = vbRed Else Shape26.FillColor = vbBlack
+    If Setting And 512 Then Shape27.FillColor = vbRed Else Shape27.FillColor = vbBlack
+    If Setting And 1024 Then Shape28.FillColor = vbRed Else Shape28.FillColor = vbBlack
+    If Setting And 2048 Then Shape29.FillColor = vbRed Else Shape29.FillColor = vbBlack
+    If Setting And 4096 Then Shape30.FillColor = vbRed Else Shape30.FillColor = vbBlack
+    If Setting And 8192 Then Shape31.FillColor = vbRed Else Shape31.FillColor = vbBlack
+    If Setting And 16384 Then Shape32.FillColor = vbRed Else Shape32.FillColor = vbBlack
+    If Setting And 32768 Then Shape33.FillColor = vbRed Else Shape33.FillColor = vbBlack
+    
+    If Setting And 256 Then Check42.Value = 1 Else Check42.Value = 0
+    If Setting And 512 Then Check43.Value = 1 Else Check43.Value = 0
+    If Setting And 1024 Then Check44.Value = 1 Else Check44.Value = 0
+    If Setting And 2048 Then Check45.Value = 1 Else Check45.Value = 0
+    If Setting And 4096 Then Check46.Value = 1 Else Check46.Value = 0
+    If Setting And 8192 Then Check47.Value = 1 Else Check47.Value = 0
+    If Setting And 16384 Then Check48.Value = 1 Else Check48.Value = 0
+    If Setting And 32768 Then Check49.Value = 1 Else Check49.Value = 0
+
+    
+    
+End Function
+
+Function Parse_EIO()
+    Select Case id_string
+        Case "EIO_RALL"
+            Pin_Show CLng("&H" & value_string)
+        Case "EIO_WALL"
+            Pin_Show CLng("&H" & value_string)
+        Case "EIO_START"
+            Shape34.FillColor = vbGreen
+        Case "EIO_DW"
+        Case "EIO_DR"
+    End Select
+End Function
+
+
+Private Sub Timer1_Timer()
+    SendData "<EIO_RALL?>", TCA_EIO
+End Sub
+
+Private Sub UpDown1_Change()
+    Timer1.Interval = UpDown1.Value
+End Sub

@@ -267,7 +267,7 @@ void ExecuteCommand() {
     if (id_string == F("RGB_ID"))     rgb_cmd(6);
   }
 #endif
-#ifdef ENABLE_RGB
+#ifdef ENABLE_MLX
   if (content == CMD_SET) {
     if (id_string == F("MLX_START")) mlx_start();
   }

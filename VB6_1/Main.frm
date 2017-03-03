@@ -5,13 +5,13 @@ Begin VB.Form Main
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Modules Tester - Arduino"
-   ClientHeight    =   6480
+   ClientHeight    =   6390
    ClientLeft      =   45
    ClientTop       =   690
    ClientWidth     =   11565
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   6480
+   ScaleHeight     =   6390
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer Timer5 

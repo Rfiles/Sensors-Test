@@ -1034,26 +1034,26 @@ End Sub
 
 Private Sub Command2_Click()
     SendData "<RTC_TIME?>", TCA_RTC
-    SendData "<RTC_DATE?>", TCA_NONE
-    SendData "<RTC_DAYWEEK?>", TCA_NONE
-    SendData "<RTC_VALID?>", TCA_NONE
-    SendData "<RTC_RUNNING?>", TCA_NONE
-    SendData "<RTC_TEMP?>", TCA_NONE
+    SendData "<RTC_DATE?>", TCA_RTC
+    SendData "<RTC_DAYWEEK?>", TCA_RTC
+    SendData "<RTC_VALID?>", TCA_RTC
+    SendData "<RTC_RUNNING?>", TCA_RTC
+    SendData "<RTC_TEMP?>", TCA_RTC
    ' SendData "<RTC_AGOFFS?>" provoca bug que nao executa time? correctamente.. arduino side? overflow?
 
 End Sub
 
 Private Sub Command4_Click()
     SendData "<RTC_HOUR=" & Hour(Now) & ">", TCA_RTC
-    SendData "<RTC_MINUTE=" & Minute(Now) & ">", TCA_NONE
-    SendData "<RTC_SECOND=" & Second(Now) & ">", TCA_NONE
+    SendData "<RTC_MINUTE=" & Minute(Now) & ">", TCA_RTC
+    SendData "<RTC_SECOND=" & Second(Now) & ">", TCA_RTC
     
-    SendData "<RTC_YEAR=" & Year(Now) - 2000 & ">", TCA_NONE
+    SendData "<RTC_YEAR=" & Year(Now) - 2000 & ">", TCA_RTC
     'Debug.Print Year(Now)
-    SendData "<RTC_MONTH=" & Month(Now) & ">", TCA_NONE
-    SendData "<RTC_DAY=" & Day(Now) & ">", TCA_NONE
+    SendData "<RTC_MONTH=" & Month(Now) & ">", TCA_RTC
+    SendData "<RTC_DAY=" & Day(Now) & ">", TCA_RTC
     
-    SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_DAYWEEK?>", TCA_RTC
     SendData "<RTC_VALID?>", TCA_NONE
     SendData "<RTC_RUNNING?>", TCA_NONE
     SendData "<RTC_TEMP?>", TCA_NONE
@@ -1101,12 +1101,12 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Timer1_Timer()
-    SendData "<RTC_RUNNING?>", TCA_RTC
-    SendData "<RTC_TIME?>", TCA_NONE
-    SendData "<RTC_DATE?>", TCA_NONE
-    SendData "<RTC_DAYWEEK?>", TCA_NONE
-    SendData "<RTC_TEMP?>", TCA_NONE
-    SendData "<RTC_VALID?", TCA_NONE
+    'SendData "<RTC_RUNNING?>", TCA_RTC
+    SendData "<RTC_TIME?>", TCA_RTC
+    'SendData "<RTC_DATE?>", TCA_NONE
+    'SendData "<RTC_DAYWEEK?>", TCA_NONE
+    SendData "<RTC_TEMP?>", TCA_RTC
+    'SendData "<RTC_VALID?", TCA_NONE
 End Sub
 
 Private Sub UpDown12_DownClick()
