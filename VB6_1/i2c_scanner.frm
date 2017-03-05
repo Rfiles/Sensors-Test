@@ -175,7 +175,7 @@ Function I2C_Addr2Name(addr As Integer) As String
       I2C_Addr2Name = "VEML6070_L"
 
     Case 64
-      I2C_Addr2Name = "INA219"
+      I2C_Addr2Name = "INA219/PCA9685"
       
     Case 72
       I2C_Addr2Name = "ADS1115"

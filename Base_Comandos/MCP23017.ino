@@ -11,7 +11,7 @@ byte arduinoInterrupt=1;
 
 byte SelectedPin;
 
-void eio_start() {  
+void eio_start() {
 
   pinMode(arduinoIntPin,INPUT);
 

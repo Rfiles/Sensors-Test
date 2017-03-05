@@ -18,20 +18,21 @@
 //ads               | 936  , 37
 
 
-#define ENABLE_BME
-#define ENABLE_RTC
-#define ENABLE_I2CSCAN
+//#define ENABLE_BME
+//#define ENABLE_RTC
+//#define ENABLE_I2CSCAN
 //#define ENABLE_SERVO_EASER        //either this or internal_servo
 //#define ENABLE_BH1750
-#define ENABLE_FREETIME_REPORT
+//#define ENABLE_FREETIME_REPORT
 //#define ENABLE_UV
 //#define ENABLE_RGB
-#define ENABLE_MLX
+//#define ENABLE_MLX
 //#define ENABLE_ADS
-#define ENABLE_INT_TEMP
-#define ENABLE_LEDRGB
-#define ENABLE_EIO
-#define ENABLE_INA
+//#define ENABLE_INT_TEMP
+//#define ENABLE_LEDRGB
+//#define ENABLE_EIO
+//#define ENABLE_INA
+#define ENABLE_EEP
 
 //#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
 
@@ -68,17 +69,20 @@ bool enable_ftr;
 // SETUP
 //#################################################################################################
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(250000);
   Wire.begin();
 //  myservo1.attach(7);  // attaches the servo on pin 9 to the servo object
 //  myservo2.attach(8);  // attaches the servo on pin 9 to the servo object
   Modules_Data();
+  ID1_Execute();
   Serial.print(F("<MCU_CD="));
   Serial.print(__DATE__);
   Serial.print(F("|"));
   Serial.print(__TIME__);
   Serial.println(F("><BOOT=DONE>"));
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(14, OUTPUT);
+  digitalWrite(14, LOW);
 }
 
 //#################################################################################################
@@ -330,6 +334,17 @@ void ExecuteCommand() {
     if (id_string == F("EIO_RALL"))  eio_cmd(4);
   }
 #endif
+#ifdef ENABLE_EEP
+  if (content == CMD_SET) {
+    if (id_string == F("EEP_START")) eep_start();
+    if (id_string == F("EEP_WR"))  eep_cmd(0);
+  }
+  if (content == CMD_GET) {
+    
+  }
+#endif
+
+
   // get or set handled by func
   if (id_string == F("ID1"))     ID1_Execute();
   if (id_string == F("LED13"))   LED13_Data();
@@ -337,6 +352,19 @@ void ExecuteCommand() {
   if (content == CMD_GET) {
     if (id_string == F("MODULES")) Modules_Data();
     if (id_string == F("PING"))    Serial.println(F("<PING=PONG>"));
+  }
+  if (content == CMD_SET) {
+    if (id_string == F("PWR_5V")) {
+      Serial.print(F("<PWR_5V="));
+      if (value_string == "ON") {
+        digitalWrite(14, LOW);
+        Serial.print(F("ON"));
+      }else{
+        digitalWrite(14, HIGH);
+        Serial.print(F("OFF"));
+      }
+      Serial.println(F(">"));
+    }
   }
   
   ResetStrings();
@@ -433,6 +461,15 @@ void tca_sel_data() {
   }
 }
 
+void Eco_Command() {
+  Serial.print(F("<"));
+  Serial.print(id_string);
+  Serial.print(F("="));
+  Serial.print(value_string);
+  Serial.println(F(">"));
+}
+
+
 void Modules_Data(){
 #ifdef ENABLE_BME
   Serial.print(F("<ENABLE=BME>"));
@@ -475,6 +512,9 @@ void Modules_Data(){
 #endif
 #ifdef ENABLE_INA
   Serial.print(F("<ENABLE=INA>"));
+#endif
+#ifdef ENABLE_EEP
+  Serial.print(F("<ENABLE=EEP>"));
 #endif
 
   

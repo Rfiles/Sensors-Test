@@ -2,10 +2,11 @@ VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form EIO 
    BackColor       =   &H80000010&
-   Caption         =   "MCP27023 I/O-Expander"
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "MCP23017 I/O-Expander"
    ClientHeight    =   6045
-   ClientLeft      =   120
-   ClientTop       =   465
+   ClientLeft      =   45
+   ClientTop       =   390
    ClientWidth     =   11910
    BeginProperty Font 
       Name            =   "Verdana"
@@ -17,6 +18,8 @@ Begin VB.Form EIO
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   6045
    ScaleWidth      =   11910
    StartUpPosition =   2  'CenterScreen

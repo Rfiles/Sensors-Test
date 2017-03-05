@@ -21,6 +21,8 @@ Public TCA_IMU As Single
 Public TCA_BMP As Single
 Public TCA_INA As Single
 Public TCA_EIO As Single
+Public TCA_EEP As Single
+Public TCA_PCA As Single
 '------------------------------------------
 
 Function ParseInput(indata As String)
@@ -132,6 +134,13 @@ Function ExecuteCommand()
         Case "ARDU_TEMP"
             main.Label20.Caption = Val(value_string)
     '-----------------------------------------------------------------
+        Case "MCU_CD"
+            a = InStr(value_string, "|")
+            b = Left(value_string, a - 1)
+            d = Right(value_string, Len(value_string) - a)
+            main.Label22.Caption = b
+            main.Label23.Caption = d
+            
         Case Else
     End Select
     
@@ -206,6 +215,11 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "EIO" Then
         EIO.Parse_EIO
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "EEP" Then
+        EEP.Parse_EEP
     End If
     
     

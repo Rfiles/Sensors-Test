@@ -5,13 +5,22 @@ Begin VB.Form Main
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Modules Tester - Arduino"
-   ClientHeight    =   6390
+   ClientHeight    =   5685
    ClientLeft      =   45
    ClientTop       =   690
    ClientWidth     =   11565
+   BeginProperty Font 
+      Name            =   "Verdana"
+      Size            =   8.25
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   6390
+   ScaleHeight     =   5685
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer Timer5 
@@ -29,6 +38,15 @@ Begin VB.Form Main
    Begin VB.CheckBox Check1 
       Caption         =   "Ping MCU every 15 seconds"
       Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   8400
       TabIndex        =   25
@@ -58,6 +76,15 @@ Begin VB.Form Main
       _Version        =   393217
       ScrollBars      =   2
       TextRTF         =   $"Main.frx":0000
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
@@ -67,6 +94,15 @@ Begin VB.Form Main
    End
    Begin VB.CommandButton Command4 
       Caption         =   "Execute"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   10080
       TabIndex        =   12
@@ -74,11 +110,20 @@ Begin VB.Form Main
       Width           =   735
    End
    Begin VB.TextBox Text4 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1575
       Left            =   8520
       MultiLine       =   -1  'True
       TabIndex        =   10
-      Text            =   "Main.frx":0082
+      Text            =   "Main.frx":007D
       Top             =   3600
       Width           =   2295
    End
@@ -119,6 +164,15 @@ Begin VB.Form Main
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Clean"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
       Left            =   6240
       TabIndex        =   6
@@ -126,6 +180,15 @@ Begin VB.Form Main
       Width           =   1455
    End
    Begin VB.TextBox Text1 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   285
       Left            =   720
       TabIndex        =   1
@@ -159,10 +222,87 @@ Begin VB.Form Main
       DTREnable       =   -1  'True
       BaudRate        =   115200
    End
+   Begin VB.Label Label24 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "INFO: Serial Speed is 250kbps!"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000080&
+      Height          =   255
+      Left            =   8160
+      TabIndex        =   32
+      Top             =   5400
+      Width           =   3015
+   End
+   Begin VB.Label Label23 
+      Alignment       =   2  'Center
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "Time"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   5040
+      TabIndex        =   31
+      Top             =   5280
+      Width           =   735
+   End
+   Begin VB.Label Label22 
+      Alignment       =   2  'Center
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "Date"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   4080
+      TabIndex        =   30
+      Top             =   5280
+      Width           =   975
+   End
+   Begin VB.Label Label21 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Firmware:"
+      Height          =   255
+      Left            =   3120
+      TabIndex        =   29
+      Top             =   5280
+      Width           =   855
+   End
    Begin VB.Label Label20 
       Alignment       =   2  'Center
       BorderStyle     =   1  'Fixed Single
       Caption         =   "-"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   5040
       TabIndex        =   28
@@ -172,6 +312,15 @@ Begin VB.Form Main
    Begin VB.Label Label19 
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Arduino Temperature ('C):"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   3120
       TabIndex        =   27
@@ -187,6 +336,15 @@ Begin VB.Form Main
    Begin VB.Label Label18 
       Alignment       =   2  'Center
       Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   10080
       TabIndex        =   26
@@ -198,15 +356,6 @@ Begin VB.Form Main
       BackColor       =   &H80000016&
       BorderStyle     =   1  'Fixed Single
       Caption         =   "-"
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   4560
       TabIndex        =   24
@@ -216,6 +365,15 @@ Begin VB.Form Main
    Begin VB.Label Label16 
       BorderStyle     =   1  'Fixed Single
       Caption         =   "MCU Idle Loop Since Last cmd (ms):"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   1920
       TabIndex        =   23
@@ -225,6 +383,15 @@ Begin VB.Form Main
    Begin VB.Label Label15 
       BorderStyle     =   1  'Fixed Single
       Caption         =   "RX"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   2280
       TabIndex        =   22
@@ -234,6 +401,15 @@ Begin VB.Form Main
    Begin VB.Label Label14 
       BorderStyle     =   1  'Fixed Single
       Caption         =   "TX"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   2280
       TabIndex        =   21
@@ -244,6 +420,15 @@ Begin VB.Form Main
       Alignment       =   1  'Right Justify
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Bytes Counter  "
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   720
       TabIndex        =   20
@@ -254,6 +439,15 @@ Begin VB.Form Main
       Alignment       =   1  'Right Justify
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Bytes Counter  "
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   720
       TabIndex        =   19
@@ -263,6 +457,15 @@ Begin VB.Form Main
    Begin VB.Label Label11 
       BorderStyle     =   1  'Fixed Single
       Caption         =   "RX:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   6120
       TabIndex        =   18
@@ -273,6 +476,15 @@ Begin VB.Form Main
       Alignment       =   1  'Right Justify
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Data Rate"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   6480
       TabIndex        =   17
@@ -353,6 +565,15 @@ Begin VB.Form Main
    End
    Begin VB.Label Label6 
       Caption         =   "Simulate RX"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   8520
       TabIndex        =   11
@@ -361,6 +582,15 @@ Begin VB.Form Main
    End
    Begin VB.Label Label5 
       Caption         =   "COM PORT"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   8400
       TabIndex        =   9
@@ -413,6 +643,15 @@ Begin VB.Form Main
    End
    Begin VB.Label Label2 
       Caption         =   "Received Data:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   720
       TabIndex        =   3
@@ -529,6 +768,10 @@ Begin VB.Form Main
          Caption         =   "MCP23017"
          Enabled         =   0   'False
       End
+      Begin VB.Menu menu_eep 
+         Caption         =   "Ext EEPROM"
+         Enabled         =   0   'False
+      End
    End
 End
 Attribute VB_Name = "main"
@@ -537,6 +780,28 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
+Private Declare Function SetCommState Lib "Kernel32" (ByVal hCommDev As Long, lpDCB As DCB) As Long
+
+Private Declare Function GetCommState Lib "Kernel32" (ByVal nCid As Long, lpDCB As DCB) As Long
+
+Private Type DCB ' Win32API.TXT is incorrect here.
+    DCBlength As Long
+    BaudRate As Long
+    Bits1 As Long
+    wReserved As Integer
+    XonLim As Integer
+    XoffLim As Integer
+    ByteSize As Byte
+    Parity As Byte
+    StopBits As Byte
+    XonChar As Byte
+    XoffChar As Byte
+    ErrorChar As Byte
+    EofChar As Byte
+    EvtChar As Byte
+    wReserved2 As Integer
+End Type
+
 
 Dim LongResponse As Long
 Dim FTR_Setting As Boolean
@@ -556,6 +821,7 @@ Function Modules_Enabler()
     If value_string = "WS" Then menu_ws.Enabled = True
     If value_string = "INA" Then menu_ina.Enabled = True
     If value_string = "EIO" Then menu_eio.Enabled = True
+    If value_string = "EEP" Then menu_eep.Enabled = True
     
     
 End Function
@@ -581,6 +847,7 @@ Private Sub Command3_Click()
         MSComm1.CommPort = Val(Text3.Text)
         MSComm1.RThreshold = 1
         MSComm1.PortOpen = True
+        SetSpeed 250000
         Timer1.Enabled = True
         Label1.Caption = "A Iniciar"
         Command3.Caption = "Disconnect"
@@ -607,6 +874,14 @@ Private Sub Command4_Click()
     ParseInput (Text4.Text)
 End Sub
 
+Private Sub SetSpeed(ByVal Speed As Long)
+    Dim MSCommDCB As DCB
+    Dim Port As Integer
+    Port = GetCommState(MSComm1.CommID, MSCommDCB)
+    MSCommDCB.BaudRate = Speed
+    Port = SetCommState(MSComm1.CommID, MSCommDCB)
+End Sub
+
 Private Sub Form_Load()
     TCA_NONE = 9    'invalid, will be ignored in MPU
     TCA_ADS = 3
@@ -620,6 +895,11 @@ Private Sub Form_Load()
     TCA_BMP = 6
     TCA_INA = 3
     TCA_EIO = 4
+    TCA_EEP = 5
+    TCA_PCA = 6
+    
+    SetSpeed 250000
+    
 '    WS.Visible = True
 End Sub
 
@@ -647,8 +927,8 @@ Private Sub menu_config_Click()
         MCU_Conf.Visible = True
     Else
         If Shape1.FillColor = vbGreen Then
-            Validate.Visible = True
             MsgBox "You have to be autenticated to use this.", , "Warning"
+            Validate.Visible = True
         Else
             MsgBox "You have to connect to the device first.", , "Attention"
         End If
@@ -669,6 +949,10 @@ Private Sub menu_dbgout_Click()
     Else
         menu_dbgout.Checked = True
     End If
+End Sub
+
+Private Sub menu_eep_Click()
+    EEP.Visible = True
 End Sub
 
 Private Sub menu_eio_Click()
@@ -773,3 +1057,5 @@ End Sub
 Private Sub Timer5_Timer()
     SendData "<ARDU_TEMP?>", TCA_NONE
 End Sub
+
+

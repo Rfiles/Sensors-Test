@@ -9,7 +9,7 @@ void rgb_start(void) {
   if (tcs.begin()) {
     Serial.println(F("<RGB_START=TRUE>"));
     //pinMode(4, OUTPUT);
-    //digitalWrite(4, HIGH); 
+    //digitalWrite(4, HIGH);
   } else {
     Serial.println(F("<RGB_START=FAIL>"));
   }

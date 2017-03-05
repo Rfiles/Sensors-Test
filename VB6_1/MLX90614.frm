@@ -301,8 +301,8 @@ End Sub
 
 Private Sub Form_Load()
     SendData "<MLX_START=>", TCA_MLX
-    'SendData "<MLX_AMB?>", TCA_MLX
-    'SendData "<MLX_OBJ?>", TCA_MLX
+    SendData "<MLX_AMB?>", TCA_MLX
+    SendData "<MLX_OBJ?>", TCA_MLX
 End Sub
 
 
