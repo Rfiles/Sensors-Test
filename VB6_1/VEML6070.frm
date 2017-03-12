@@ -46,7 +46,7 @@ Begin VB.Form UV
       _Version        =   393216
       Value           =   1000
       BuddyControl    =   "Label2"
-      BuddyDispid     =   196611
+      BuddyDispid     =   196616
       OrigLeft        =   1320
       OrigTop         =   840
       OrigRight       =   1575
@@ -168,3 +168,7 @@ Function UV_Parse()
     End Select
     
 End Function
+
+Private Sub UpDown1_Change()
+    Timer1.Interval = UpDown1.Value
+End Sub

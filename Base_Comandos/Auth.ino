@@ -8,9 +8,14 @@ void Validate_Data () {
         randomSeed(millis());
         randomkey = random(0,1024);       // chave de resposta
         checkkey = randomkey ^ cryptokey; // xor challenge
-//        Serial.print(F("<DEBUGKEY="));
-//        Serial.print(randomkey);
-//        Serial.println(F(">"));
+//        checkkey = randomkey ^ mcu_vars.AuthPass; // xor challenge
+#ifdef ENABLE_CRYPTO_DEBUG        
+        Serial.print(F("<DEBUGKEY="));
+        Serial.print(mcu_data.mcu_vars.AuthPass);
+        Serial.print(F(","));
+        Serial.print(randomkey);
+        Serial.println(F(">"));
+#endif
         Serial.print(F("<CHECK="));
         Serial.print(checkkey);
         Serial.println(F(">"));

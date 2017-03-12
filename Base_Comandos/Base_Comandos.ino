@@ -12,27 +12,32 @@
 //bme   14948 , 493 | 8060 , 91
 //scan  7630  , 402 | 742  , 0
 //ease  13388 , 593 | 6500 , 191
-//ligh  11014 , 459 | 4126 , 57
+//ligh  11014 , 459 | 4126 , 57          re do
 //ftr   7226  , 423 | 338  , 21
 //rgb   9084  , 483 |
 //ads               | 936  , 37
 
 
-//#define ENABLE_BME
-//#define ENABLE_RTC
-//#define ENABLE_I2CSCAN
-//#define ENABLE_SERVO_EASER        //either this or internal_servo
-//#define ENABLE_BH1750
-//#define ENABLE_FREETIME_REPORT
-//#define ENABLE_UV
-//#define ENABLE_RGB
-//#define ENABLE_MLX
-//#define ENABLE_ADS
-//#define ENABLE_INT_TEMP
-//#define ENABLE_LEDRGB
-//#define ENABLE_EIO
-//#define ENABLE_INA
+#define ENABLE_BME
+#define ENABLE_RTC
+#define ENABLE_I2CSCAN
+#define ENABLE_SERVO_EASER        //either this or internal_servo
+#define ENABLE_BH1750
+#define ENABLE_FREETIME_REPORT
+#define ENABLE_CRYPTO_DEBUG
+#define ENABLE_UV
+#define ENABLE_RGB
+#define ENABLE_MLX
+#define ENABLE_ADS
+#define ENABLE_INT_TEMP
+#define ENABLE_LEDRGB
+#define ENABLE_EIO
+#define ENABLE_INA
 #define ENABLE_EEP
+#define ENABLE_IEP
+#define ENABLE_PCA
+#define ENABLE_MPU
+#define ENABLE_MAG
 
 //#define ENABLE_INTERNAL_SERVO     //either this or servo_easer
 
@@ -60,6 +65,21 @@ int DEVICE_ID = 1234;
 int checkkey, iscryptvalid, keytrylock=3, randomkey;
 unsigned long freetimeloop;
 bool enable_ftr;
+
+struct IEP_Addr {
+  int   mcu_id1;
+  int   AuthPass;
+  int   AuthLock;
+};
+
+typedef union  {
+    IEP_Addr  mcu_vars;
+    byte      stream[sizeof(IEP_Addr)];
+} IEP_Data;
+
+IEP_Data mcu_data;
+
+//IEP_Addr mcu_vars;
 
 #ifdef ENABLE_EIO
   volatile boolean awakenByInterrupt = false;
@@ -338,9 +358,55 @@ void ExecuteCommand() {
   if (content == CMD_SET) {
     if (id_string == F("EEP_START")) eep_start();
     if (id_string == F("EEP_WR"))  eep_cmd(0);
+    if (id_string == F("EEP_ER"))  eep_cmd(2);
   }
   if (content == CMD_GET) {
-    
+    if (id_string == F("EEP_RD"))  eep_cmd(1);    
+  }
+#endif
+#ifdef ENABLE_IEP
+  if (content == CMD_SET) {
+    if (id_string == F("IEP_START")) iep_start();
+    if (id_string == F("IEP_WR"))  iep_cmd(0);
+    if (id_string == F("IEP_ER"))  iep_cmd(2);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("IEP_RD"))  iep_cmd(1);
+  }
+#endif
+#ifdef ENABLE_PCA
+  if (content == CMD_SET) {
+    if (id_string == F("PCA_START")) pca_start();
+    if (id_string == F("PCA_SERVO")) pca_cmd(0);
+    if (id_string == F("PCA_WR"))    pca_cmd(1);
+    if (id_string == F("PCA_SLP"))   pca_cmd(3);
+    if (id_string == F("PCA_PF"))    pca_cmd(4);
+    if (id_string == F("PCA_PS"))    pca_cmd(5);
+    if (id_string == F("PCA_ONE"))   pca_cmd(6);
+    if (id_string == F("PCA_OD"))    pca_cmd(7);
+    if (id_string == F("PCA_ONT"))   pca_cmd(8);
+    if (id_string == F("PCA_OFT"))   pca_cmd(9);
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("PCA_RD"))    pca_cmd(2);
+  }
+#endif
+#ifdef ENABLE_MPU
+  if (content == CMD_SET) {
+    if (id_string == F("MPU_START")) mpu_start();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("MPU_AG"))    mpu_cmd(0);
+    if (id_string == F("MPU_T"))     mpu_cmd(1);
+  }
+#endif
+#ifdef ENABLE_MAG
+  if (content == CMD_SET) {
+    if (id_string == F("MAG_START")) mag_start();
+  }
+  if (content == CMD_GET) {
+    if (id_string == F("MAG_DATA"))  mag_cmd(0);
+    if (id_string == F("MAG_HEAD"))  mag_cmd(1);
   }
 #endif
 
@@ -515,6 +581,18 @@ void Modules_Data(){
 #endif
 #ifdef ENABLE_EEP
   Serial.print(F("<ENABLE=EEP>"));
+#endif
+#ifdef ENABLE_IEP
+  Serial.print(F("<ENABLE=IEP>"));
+#endif
+#ifdef ENABLE_PCA
+  Serial.print(F("<ENABLE=PCA>"));
+#endif
+#ifdef ENABLE_MPU
+  Serial.print(F("<ENABLE=MPU>"));
+#endif
+#ifdef ENABLE_MAG
+  Serial.print(F("<ENABLE=MAG>"));
 #endif
 
   

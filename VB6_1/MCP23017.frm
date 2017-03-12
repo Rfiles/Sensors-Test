@@ -1272,6 +1272,15 @@ Private Sub Check44_Click()
     End If
 End Sub
 
+Private Sub Check45_Click()
+    SendData "<EIO_SPIN=11>", TCA_EIO
+    If Check45.Value = 1 Then
+        SendData "<EIO_DW=HIGH>", TCA_EIO
+    Else
+        SendData "<EIO_DW=LOW>", TCA_EIO
+    End If
+End Sub
+
 Private Sub Check50_Click()
     SendData "<EIO_SPIN=8>", TCA_EIO
     If Check50.Value = 1 Then
@@ -1293,6 +1302,15 @@ End Sub
 Private Sub Check52_Click()
     SendData "<EIO_SPIN=10>", TCA_EIO
     If Check52.Value = 1 Then
+        SendData "<EIO_PM=OUT>", TCA_EIO
+    Else
+        SendData "<EIO_DW=IN>", TCA_EIO
+    End If
+End Sub
+
+Private Sub Check53_Click()
+    SendData "<EIO_SPIN=11>", TCA_EIO
+    If Check53.Value = 1 Then
         SendData "<EIO_PM=OUT>", TCA_EIO
     Else
         SendData "<EIO_DW=IN>", TCA_EIO

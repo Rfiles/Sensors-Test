@@ -39,7 +39,7 @@ void rgb_cmd (uint8_t setting) {
       }
       break;
     case 2://it
-      tcs.setIntegrationTime(value_string.toInt());
+      tcs.setIntegrationTime((long int)value_string.toInt());
       Serial.print(F("<RGB_IT=SET>"));
       break;
     case 3://gain

@@ -23,9 +23,20 @@ Begin VB.Form Main
    ScaleHeight     =   5685
    ScaleWidth      =   11565
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox Check2 
+      Caption         =   "PWR"
+      Enabled         =   0   'False
+      Height          =   495
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   33
+      Top             =   2280
+      Value           =   1  'Checked
+      Width           =   495
+   End
    Begin VB.Timer Timer5 
       Enabled         =   0   'False
-      Interval        =   5000
+      Interval        =   1000
       Left            =   2640
       Top             =   5880
    End
@@ -74,6 +85,7 @@ Begin VB.Form Main
       _ExtentX        =   12303
       _ExtentY        =   5953
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"Main.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -685,12 +697,6 @@ Begin VB.Form Main
    End
    Begin VB.Menu menu_ligacao 
       Caption         =   "Settings"
-      Begin VB.Menu menu_porta 
-         Caption         =   "Comm Port"
-      End
-   End
-   Begin VB.Menu menu_debug 
-      Caption         =   "Debug"
       Begin VB.Menu menu_dbgout 
          Caption         =   "Output"
          Checked         =   -1  'True
@@ -706,28 +712,16 @@ Begin VB.Form Main
       Begin VB.Menu menu_config 
          Caption         =   "Change MCU Config"
       End
-   End
-   Begin VB.Menu menu_modulo 
-      Caption         =   "Module"
-      Enabled         =   0   'False
-      Begin VB.Menu menu_eservo 
-         Caption         =   "Servos Easer"
-         Enabled         =   0   'False
-      End
-      Begin VB.Menu menu_I2CScan 
-         Caption         =   "I2C Scanner"
-         Enabled         =   0   'False
-      End
-      Begin VB.Menu menu_servo 
-         Caption         =   "Servos"
-         Enabled         =   0   'False
-      End
-      Begin VB.Menu menu_led13 
-         Caption         =   "Led13"
-      End
       Begin VB.Menu menu_validate 
          Caption         =   "Validate"
       End
+      Begin VB.Menu menu_porta 
+         Caption         =   "Comm Port"
+      End
+   End
+   Begin VB.Menu menu_ins 
+      Caption         =   "Inputs"
+      Enabled         =   0   'False
       Begin VB.Menu menu_bme 
          Caption         =   "BME280"
          Enabled         =   0   'False
@@ -756,12 +750,35 @@ Begin VB.Form Main
          Caption         =   "ADS1115"
          Enabled         =   0   'False
       End
-      Begin VB.Menu menu_ws 
-         Caption         =   "WS2812B"
-         Enabled         =   0   'False
-      End
       Begin VB.Menu menu_ina 
          Caption         =   "INA219"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_mpu 
+         Caption         =   "MPU6050"
+         Enabled         =   0   'False
+      End
+   End
+   Begin VB.Menu menu_modulo 
+      Caption         =   "Outputs"
+      Enabled         =   0   'False
+      Begin VB.Menu menu_eservo 
+         Caption         =   "Servos Easer"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_I2CScan 
+         Caption         =   "I2C Scanner"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_servo 
+         Caption         =   "Servos"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_led13 
+         Caption         =   "Led13"
+      End
+      Begin VB.Menu menu_ws 
+         Caption         =   "WS2812B"
          Enabled         =   0   'False
       End
       Begin VB.Menu menu_eio 
@@ -770,6 +787,10 @@ Begin VB.Form Main
       End
       Begin VB.Menu menu_eep 
          Caption         =   "Ext EEPROM"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menu_pca 
+         Caption         =   "PCA9685"
          Enabled         =   0   'False
       End
    End
@@ -822,6 +843,8 @@ Function Modules_Enabler()
     If value_string = "INA" Then menu_ina.Enabled = True
     If value_string = "EIO" Then menu_eio.Enabled = True
     If value_string = "EEP" Then menu_eep.Enabled = True
+    If value_string = "PCA" Then menu_pca.Enabled = True
+    If value_string = "MPU" Then menu_mpu.Enabled = True
     
     
 End Function
@@ -830,6 +853,15 @@ Private Sub Check1_Click()
     If Shape1.FillColor = vbGreen Then
         Timer4.Enabled = Check1.Value
     End If
+End Sub
+
+Private Sub Check2_Click()
+    If Check2.Value = 1 Then
+        SendData "<PWR_5V=ON>", TCA_NONE
+    Else
+        SendData "<PWR_5V=OFF>", TCA_NONE
+    End If
+    
 End Sub
 
 Private Sub Command1_Click()
@@ -852,6 +884,7 @@ Private Sub Command3_Click()
         Label1.Caption = "A Iniciar"
         Command3.Caption = "Disconnect"
         RichTextBox1.Text = ""
+        Check2.Enabled = True
     Else
         Timer3.Enabled = False
         Label10.Caption = "-"
@@ -866,7 +899,9 @@ Private Sub Command3_Click()
         Shape3.FillColor = vbBlack
         Shape5.FillColor = vbBlack
         menu_modulo.Enabled = False
+        menu_ins.Enabled = False
         Check1.Enabled = False
+        Check2.Enabled = False
     End If
 End Sub
 
@@ -898,9 +933,9 @@ Private Sub Form_Load()
     TCA_EEP = 5
     TCA_PCA = 6
     
-    SetSpeed 250000
+    SetSpeed 250000 'Serial Comms
     
-'    WS.Visible = True
+    'PCA.Visible = True
 End Sub
 
 Private Sub menu_ads_Click()
@@ -981,6 +1016,14 @@ End Sub
 
 Private Sub menu_mlx_Click()
     MLX.Visible = True
+End Sub
+
+Private Sub menu_mpu_Click()
+    MPU.Visible = True
+End Sub
+
+Private Sub menu_pca_Click()
+    PCA.Visible = True
 End Sub
 
 Private Sub menu_porta_Click()

@@ -21,7 +21,7 @@ Begin VB.Form INA
    MaxButton       =   0   'False
    ScaleHeight     =   4260
    ScaleWidth      =   6000
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin VB.CommandButton Command1 
       Caption         =   "Update All"
@@ -169,7 +169,7 @@ Begin VB.Form INA
       _Version        =   393216
       Value           =   1000
       BuddyControl    =   "Label14"
-      BuddyDispid     =   196628
+      BuddyDispid     =   196626
       OrigLeft        =   4800
       OrigTop         =   4800
       OrigRight       =   5055

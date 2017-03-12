@@ -94,9 +94,12 @@ Function ExecuteCommand()
             If value_string = "DONE" Then
                 main.Label1.Caption = "DEVICE READY"
                 main.Shape1.FillColor = vbGreen
-                SendData "<ID1?>", TCA_NONE
+                SendData "<PWR_5V=OFF>", TCA_NONE
+                SendData "<PWR_5V=ON>", TCA_NONE
+                'SendData "<ID1?>", TCA_NONE
                 SendData "<LED13?>", TCA_NONE
                 main.menu_modulo.Enabled = True
+                main.menu_ins.Enabled = True
                 main.Timer1.Enabled = False
                 main.Check1.Enabled = True
             End If
@@ -220,6 +223,16 @@ Function ExecuteCommand()
     '-----------------------------------------------------------------
     If Left(id_string, 3) = "EEP" Then
         EEP.Parse_EEP
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "PCA" Then
+        PCA.Parse_PCA
+    End If
+    
+    '-----------------------------------------------------------------
+    If Left(id_string, 3) = "MPU" Then
+        MPU.Parse_MPU
     End If
     
     
